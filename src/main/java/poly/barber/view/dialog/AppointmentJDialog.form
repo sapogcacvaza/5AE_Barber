@@ -461,6 +461,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="CH&#x1ecc;N NG&#xc0;Y"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChooseDateActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblDate">
               <Properties>

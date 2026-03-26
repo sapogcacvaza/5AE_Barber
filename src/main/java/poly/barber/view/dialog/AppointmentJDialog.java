@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.controller.Impl.AppointmentController;
 import poly.barber.entity.Appointment;
@@ -13,6 +14,7 @@ import poly.barber.service.BarberService;
 import poly.barber.service.CustomerService;
 import poly.barber.service.ServiceCategoryService;
 import poly.barber.service.ServiceService;
+import poly.barber.util.CustomCalendar;
 
 public class AppointmentJDialog extends javax.swing.JDialog implements AppointmentController {
 
@@ -33,6 +35,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     BarberService serBarber = new BarberService();
     ServiceCategoryService serServiceCategory = new ServiceCategoryService();
     CustomerService serCustomer = new CustomerService();
+
+    JPopupMenu popCalendar = new JPopupMenu();
+    CustomCalendar cal = new CustomCalendar();
 
     List<Object[]> dichVu = new ArrayList<>();
 
@@ -284,6 +289,11 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblCusName.setText("TÊN KHÁCH HÀNG:");
 
         btnChooseDate.setText("CHỌN NGÀY");
+        btnChooseDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChooseDateActionPerformed(evt);
+            }
+        });
 
         lblDate.setText("NGÀY:");
 
@@ -656,6 +666,10 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         Tabbs.setSelectedIndex(1);
     }//GEN-LAST:event_btnAddAppointActionPerformed
 
+    private void btnChooseDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseDateActionPerformed
+        popCalendar.show(btnChooseDate, 0, btnChooseDate.getHeight());
+    }//GEN-LAST:event_btnChooseDateActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -701,6 +715,12 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         fillToComboCustomer();
 
         fillToComboTimeRange();
+
+        cal.setOnDateSelected(date -> {
+            txtAppointmentDate.setText(date); // Điền vào ô text ngày hẹn
+            popCalendar.setVisible(false);   // Đóng lịch
+        });
+        popCalendar.add(cal);
 
         cboWeek.setSelectedIndex(1);
 
