@@ -98,6 +98,28 @@ public class XQuery {
         }
         return bean;
     }
+    
+    /**
+     * Truy vấn lấy danh sách mảng đối tượng (Dùng cho bảng có JOIN)
+     */
+    public static List<Object[]> getRawList(String sql, Object... values) {
+        List<Object[]> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = XJdbc.executeQuery(sql, values);
+            // Lấy số lượng cột từ ResultSet
+            int columnCount = resultSet.getMetaData().getColumnCount();
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    row[i] = resultSet.getObject(i + 1);
+                }
+                list.add(row);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
 

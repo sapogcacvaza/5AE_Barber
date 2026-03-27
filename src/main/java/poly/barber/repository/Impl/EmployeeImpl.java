@@ -30,7 +30,9 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     String sqlSearchByName = "select * from Employee where LastName like ?";
     String sqlSearchByPhone = "select * from Employee where Phone like ?";
     String sqlSearchByEmail = "select * from Employee where Email like ?";
-
+    
+    
+    
     public List<Employee> searchByEmail(String email){
         return XQuery.getBeanList(Employee.class, sqlSearchByEmail, "%"+email+"%");
     }
