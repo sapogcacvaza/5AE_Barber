@@ -1,0 +1,65 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package poly.barber.repository.Impl;
+
+import java.util.List;
+import poly.barber.entity.Employee;
+import poly.barber.entity.Invoice;
+import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XQuery;
+
+/**
+ *
+ * @author Admin
+ */
+public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer> {
+
+    public String sqlGetAll = "select * from Invoice";
+    public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
+    public String sqlGetDetailsByInvoiceId = "SELECT \n"
+            + "    s.ServiceName, \n"
+            + "    id.Quantity, \n"
+            + "    id.Price, \n"
+            + "    (id.Quantity * id.Price) AS Total\n"
+            + "FROM InvoiceDetail id\n"
+            + "JOIN Service s ON id.ServiceID = s.ServiceID\n"
+            + "WHERE id.InvoiceID = ?";
+    public String sqlGetByEmployeeName = "SELECT Invoice.* FROM Invoice "
+               + "JOIN Employee ON Invoice.CreatedByEmployeeID = Employee.EmployeeID "
+               + "WHERE (Employee.FirstName + ' ' + Employee.LastName) LIKE ?";
+
+    public List<Invoice> getByEmployeeName(String fullName) {
+        return XQuery.getBeanList(Invoice.class, sqlGetByEmployeeName, "%" + fullName + "%");
+    }
+
+    @Override
+    public Invoice getOne(Integer id) {
+        return XQuery.getSingleBean(Invoice.class, sqlGetOneById, id);
+    }
+
+    @Override
+    public void add(Invoice obj) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void update(Invoice obj) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Invoice> getAll() {
+        return XQuery.getBeanList(Invoice.class, sqlGetAll);
+    }
+
+    public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
+        return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
+    }
+}
