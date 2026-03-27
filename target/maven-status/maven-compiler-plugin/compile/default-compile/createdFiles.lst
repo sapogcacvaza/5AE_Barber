@@ -6,34 +6,24 @@ poly\barber\repository\Impl\AppointmentRepositoryImpl.class
 poly\barber\util\XDialog.class
 poly\barber\entity\Barber$BarberBuilder.class
 poly\barber\entity\InvoiceDetail.class
-<<<<<<< HEAD
-poly\barber\entity\EmployeePosition$EmployeePositionBuilder.class
-poly\barber\util\CustomCalendar.class
-=======
 poly\barber\controller\Impl\EmployeeController.class
->>>>>>> master
 poly\barber\entity\Discount.class
 poly\barber\util\XIcon.class
 poly\barber\entity\PaymentMethod$PaymentMethodBuilder.class
-<<<<<<< HEAD
 poly\barber\view\dialog\AppointmentJDialog$20$1.class
-poly\barber\entity\Barber.class
-poly\barber\entity\Invoice$InvoiceBuilder.class
-poly\barber\view\Barber5AEJFrame$1.class
-=======
 poly\barber\view\dialog\CustomerView$4.class
 poly\barber\view\dialog\CustomerView$7.class
->>>>>>> master
 poly\barber\repository\Impl\BarberRepositoryImpl.class
 poly\barber\view\dialog\CustomerView$11.class
 poly\barber\view\dialog\AccountView$10.class
+poly\barber\view\dialog\CustomerView$13.class
 poly\barber\view\dialog\AppointmentJDialog$2.class
 poly\barber\view\dialog\AppointmentJDialog$11.class
 poly\barber\controller\CrudController.class
 poly\barber\view\dialog\EmployeeView$11.class
-poly\barber\view\dialog\AppointmentJDialog$19$1.class
 poly\barber\view\dialog\EmployeeView$1.class
 poly\barber\view\dialog\EmployeeView$4.class
+poly\barber\view\dialog\AppointmentJDialog$20.class
 poly\barber\repository\Impl\CustomerImpl.class
 poly\barber\entity\Appointment$AppointmentBuilder.class
 poly\barber\entity\ServiceCategory.class
@@ -46,6 +36,7 @@ poly\barber\view\dialog\AppointmentJDialog$14.class
 poly\barber\view\dialog\AccountView$3.class
 poly\barber\entity\AppointmentDetail$AppointmentDetailBuilder.class
 poly\barber\view\dialog\CustomerView$10.class
+poly\barber\view\dialog\BarberJDialog$2.class
 poly\barber\view\dialog\AccountView$7.class
 poly\barber\entity\Employee.class
 poly\barber\entity\Customer.class
@@ -58,9 +49,11 @@ poly\barber\view\dialog\AccountView$11.class
 poly\barber\view\dialog\CustomerView.class
 poly\barber\entity\InvoiceDetail$InvoiceDetailBuilder.class
 poly\barber\view\dialog\AppointmentJDialog$13.class
+poly\barber\view\dialog\BarberJDialog$1.class
 poly\barber\controller\Impl\AccountController.class
 poly\barber\entity\Customer$CustomerBuilder.class
 poly\barber\entity\Payment$PaymentBuilder.class
+poly\barber\controller\Impl\BarberController.class
 poly\barber\view\dialog\AppointmentJDialog$4.class
 poly\barber\view\dialog\EmployeeView$6.class
 poly\barber\repository\Impl\AppointmentDetatilRepositoryImpl.class
@@ -69,8 +62,10 @@ poly\barber\view\dialog\AccountView.class
 poly\barber\view\dialog\AccountView$2.class
 poly\barber\view\dialog\AccountView$12.class
 poly\barber\view\dialog\AccountView$8.class
+poly\barber\util\DateSelectListener.class
 poly\barber\view\dialog\CustomerView$8.class
 poly\barber\view\dialog\EmployeeView$13.class
+poly\barber\view\dialog\CustomerView$13$1.class
 poly\barber\view\dialog\AppointmentJDialog$12.class
 poly\barber\entity\BarberPosition.class
 poly\barber\view\dialog\EmployeeView$2.class
@@ -79,6 +74,7 @@ poly\barber\entity\Invoice.class
 poly\barber\view\dialog\EmployeeView$5.class
 poly\barber\view\dialog\AppointmentJDialog$3.class
 poly\barber\entity\EmployeePosition$EmployeePositionBuilder.class
+poly\barber\util\CustomCalendar.class
 poly\barber\view\dialog\AccountView$1.class
 poly\barber\util\XStr.class
 poly\barber\view\dialog\AppointmentJDialog$6.class
@@ -101,12 +97,7 @@ poly\barber\entity\AppointmentDetail.class
 poly\barber\repository\Impl\ServiceCategoryRepositoryImpl.class
 poly\barber\entity\Appointment.class
 poly\barber\service\BarberService.class
-<<<<<<< HEAD
-poly\barber\view\dialog\AppointmentJDialog$20.class
-poly\barber\entity\Appointment$AppointmentBuilder.class
-=======
 poly\barber\controller\Impl\CrudController.class
->>>>>>> master
 poly\barber\entity\Service$ServiceBuilder.class
 poly\barber\repository\Impl\CustomerRepositoryImpl.class
 poly\barber\entity\Employee$EmployeeBuilder.class
@@ -114,12 +105,12 @@ poly\barber\view\dialog\CustomerView$3.class
 poly\barber\entity\InvoiceDiscount$InvoiceDiscountBuilder.class
 poly\barber\entity\Service.class
 poly\barber\repository\Impl\ServiceRepositoryImpl.class
-poly\barber\view\dialog\CustomerView$12$1.class
 poly\barber\view\Barber5AEJFrame.class
 poly\barber\view\dialog\AppointmentJDialog$8.class
 poly\barber\view\dialog\CustomerView$5.class
 poly\barber\service\ServiceCategoryService.class
 poly\barber\controller\Impl\AppointmentController.class
+poly\barber\view\dialog\BarberJDialog$2$1.class
 poly\barber\repository\Impl\EmployeeImpl.class
 poly\barber\util\XQuery.class
 poly\barber\util\XDate.class
@@ -128,6 +119,7 @@ poly\barber\view\dialog\EmployeeView$3.class
 poly\barber\view\dialog\AppointmentJDialog$17.class
 poly\barber\entity\Payment.class
 poly\barber\service\CustomerService.class
+poly\barber\view\dialog\BarberJDialog.class
 poly\barber\repository\ICommonRepository.class
 poly\barber\service\AppointmentService.class
 poly\barber\util\TimeRange.class
@@ -143,10 +135,6 @@ poly\barber\view\dialog\EmployeeView$16.class
 poly\barber\view\dialog\AppointmentJDialog$10.class
 poly\barber\view\dialog\EmployeeView$9.class
 poly\barber\view\dialog\AppointmentJDialog$16.class
-<<<<<<< HEAD
-poly\barber\util\DateSelectListener.class
-=======
 poly\barber\view\dialog\EmployeeView.class
 poly\barber\repository\Impl\EmployeePositionImpl.class
 poly\barber\view\dialog\CustomerView$12.class
->>>>>>> master
