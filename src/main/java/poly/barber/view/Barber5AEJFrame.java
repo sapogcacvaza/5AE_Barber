@@ -4,6 +4,8 @@
  */
 package poly.barber.view;
 
+import poly.barber.view.Dialog.ServiceJDialog;
+
 /**
  *
  * @author Admin

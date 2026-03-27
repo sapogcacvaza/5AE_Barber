@@ -120,9 +120,14 @@ public class XQuery {
         }
         return list;
     }
-
-    public static void main(String[] args) {
-
+public static void update(String sql, Object... values) {
+    try {
+        // Gọi đến lớp XJdbc của bạn để thực thi
+        XJdbc.executeUpdate(sql, values);
+    } catch (Exception ex) {
+        throw new RuntimeException("Lỗi thực thi SQL: " + ex.getMessage(), ex);
     }
 
+
+}
 }
