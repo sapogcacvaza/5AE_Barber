@@ -28,4 +28,8 @@ public class ServiceCategoryService {
     public ServiceCategory getOne(int id) {
         return repo.getOne(id);
     }
+
+    public ServiceCategory getOneByName(String name) {
+        return repo.getOneByName(name);
+    }
 }

@@ -1,5 +1,7 @@
 package poly.barber.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import poly.barber.entity.Barber;
@@ -35,5 +37,9 @@ public class BarberService {
         }
 
         return barberName;
+    }
+    
+    public List<Barber> getListAvailableBarber (LocalDate date, LocalTime time , String categoryName) {
+        return repo.getListAvailableBarber(date, time, categoryName);
     }
 }
