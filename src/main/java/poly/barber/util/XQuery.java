@@ -98,9 +98,36 @@ public class XQuery {
         }
         return bean;
     }
-
-    public static void main(String[] args) {
-
+    
+    /**
+     * Truy vấn lấy danh sách mảng đối tượng (Dùng cho bảng có JOIN)
+     */
+    public static List<Object[]> getRawList(String sql, Object... values) {
+        List<Object[]> list = new ArrayList<>();
+        try {
+            ResultSet resultSet = XJdbc.executeQuery(sql, values);
+            // Lấy số lượng cột từ ResultSet
+            int columnCount = resultSet.getMetaData().getColumnCount();
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 0; i < columnCount; i++) {
+                    row[i] = resultSet.getObject(i + 1);
+                }
+                list.add(row);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return list;
+    }
+public static void update(String sql, Object... values) {
+    try {
+        // Gọi đến lớp XJdbc của bạn để thực thi
+        XJdbc.executeUpdate(sql, values);
+    } catch (Exception ex) {
+        throw new RuntimeException("Lỗi thực thi SQL: " + ex.getMessage(), ex);
     }
 
+
+}
 }

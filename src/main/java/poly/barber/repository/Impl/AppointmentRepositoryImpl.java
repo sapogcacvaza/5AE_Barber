@@ -16,7 +16,8 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
     String getAll = "select * from Appointment";
     String getUniversalCalendar = "{CALL getUniversalCalendar(?, ?, ?, ?)}";
     String getUniversalCalendar_ShowAll = "{CALL getUniversalCalendar_ShowAll(?, ?, ?, ?)}";
-
+    public String sqlGetOne = "SELECT * FROM Appointment WHERE AppointmentID = ?";
+    
     @Override
     public List<Appointment> getAll() {
         return XQuery.getBeanList(Appointment.class, getAll);
@@ -80,7 +81,7 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
 
     @Override
     public Appointment getOne(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return XQuery.getSingleBean(Appointment.class, sqlGetOne, id);
     }
 
     @Override

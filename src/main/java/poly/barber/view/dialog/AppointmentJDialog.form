@@ -309,7 +309,6 @@
                                           <Component id="cboCategory" pref="150" max="32767" attributes="0"/>
                                           <Component id="cboService" alignment="0" pref="150" max="32767" attributes="0"/>
                                           <Component id="cboTimeRange" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="cboCustomer" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -322,10 +321,7 @@
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="btnBarber" pref="150" max="32767" attributes="0"/>
-                                          <Component id="cboBarberName" max="32767" attributes="0"/>
-                                      </Group>
+                                      <Component id="btnBarber" min="-2" pref="150" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="lblBarberName" min="-2" pref="65" max="-2" attributes="0"/>
@@ -381,7 +377,6 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblCusName1" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtCustomerPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cboCustomer" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -419,7 +414,6 @@
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblBarberPosition" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtBarberPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cboBarberName" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -451,6 +445,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="CH&#x1ecc;N KH&#xc1;CH H&#xc0;NG"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChooseCustomerActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblCusName">
               <Properties>
@@ -461,6 +458,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="CH&#x1ecc;N NG&#xc0;Y"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChooseDateActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblDate">
               <Properties>
@@ -526,6 +526,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="CH&#x1ecc;N TH&#x1ee2; C&#x1eae;T T&#xd3;C"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBarberActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblBarberName">
               <Properties>
@@ -629,32 +632,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="GHI CH&#xda;:"/>
               </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cboCustomer">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboCustomerActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cboBarberName">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cboBarberNameActionPerformed"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

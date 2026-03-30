@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Invoice {
     private int invoiceID;
+    private String invoiceCode; // Mã Hóa Đơn
     private LocalDateTime checkInDateTime;
     private LocalDateTime checkOutDateTime;
     private BigDecimal totalAmount;
