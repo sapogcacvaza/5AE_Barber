@@ -16,6 +16,7 @@ poly\barber\repository\Impl\BarberRepositoryImpl.class
 poly\barber\view\dialog\CustomerView$11.class
 poly\barber\view\dialog\AccountView$10.class
 poly\barber\view\dialog\AppointmentJDialog$2.class
+poly\barber\view\dialog\EmployeeView$17$1.class
 poly\barber\view\dialog\AppointmentJDialog$11.class
 poly\barber\controller\CrudController.class
 poly\barber\view\dialog\EmployeeView$11.class
@@ -104,6 +105,7 @@ poly\barber\view\dialog\CustomerView$5.class
 poly\barber\service\ServiceCategoryService.class
 poly\barber\controller\Impl\AppointmentController.class
 poly\barber\repository\Impl\EmployeeImpl.class
+poly\barber\view\dialog\EmployeeView$17.class
 poly\barber\util\XQuery.class
 poly\barber\util\XDate.class
 poly\barber\view\dialog\AppointmentJDialog$1.class
@@ -114,7 +116,6 @@ poly\barber\service\CustomerService.class
 poly\barber\repository\ICommonRepository.class
 poly\barber\service\AppointmentService.class
 poly\barber\util\TimeRange.class
-poly\barber\view\dialog\EmployeeView$16$1.class
 poly\barber\entity\InvoiceDiscount.class
 poly\barber\entity\Discount$DiscountBuilder.class
 poly\barber\controller\Impl\CustomerController.class

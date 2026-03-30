@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package poly.barber.view.dialog;
+
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -10,7 +11,6 @@ import javax.swing.table.DefaultTableModel;
 import poly.barber.controller.Impl.CustomerController;
 import poly.barber.entity.Customer;
 import poly.barber.repository.Impl.CustomerImpl;
-
 
 /**
  *
@@ -71,6 +71,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         rdoNam = new javax.swing.JRadioButton();
         txtCustomerID = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txtCustomerCode = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Khách hàng");
@@ -87,18 +89,18 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Phone", "Email", "Gender"
+                "ID", "Name", "Phone", "Email", "Gender", "CustomerCode"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -261,6 +263,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel13.setText("CustomerID");
 
+        jLabel14.setText("CustomerCode");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -268,9 +272,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -280,23 +282,21 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                             .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13))
                         .addGap(102, 102, 102)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rdoNam, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel10)
+                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCustomerCode, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(rdoNam)
                                 .addGap(18, 18, 18)
-                                .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(52, 52, 52))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPhone, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 13, Short.MAX_VALUE)))
-                        .addGap(13, 13, 13))))
+                                .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel12))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -314,26 +314,32 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoNu)
-                    .addComponent(rdoNam))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomerCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnThem)
                             .addComponent(btnUpdate)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(155, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(rdoNu)
+                            .addComponent(rdoNam))))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnThem, btnUpdate});
@@ -479,6 +485,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -491,6 +498,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
     private javax.swing.JTable tblKhachHang;
+    private javax.swing.JTextField txtCustomerCode;
     private javax.swing.JTextField txtCustomerID;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtName;
@@ -518,6 +526,10 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             JOptionPane.showMessageDialog(this, "Email không đúng định dạng");
             return false;
         }
+        if (txtCustomerCode.getText().length() > 9) {
+            JOptionPane.showMessageDialog(this, "CustomerCode vượt quá 9 ký tự!");
+            return false;
+        }
 
         return true;
     }
@@ -530,6 +542,10 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
             if (txtEmail.getText().equalsIgnoreCase(kh.getEmail())) {
                 JOptionPane.showMessageDialog(this, "Email đã tồn tại");
+                return false;
+            }
+            if (txtCustomerCode.getText().equalsIgnoreCase(kh.getCustomerCode())) {
+                JOptionPane.showMessageDialog(this, "CustomerCode đã tồn tại");
                 return false;
             }
         }
@@ -550,6 +566,10 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
             if (txtEmail.getText().equalsIgnoreCase(kh.getEmail())) {
                 JOptionPane.showMessageDialog(this, "Email đã tồn tại");
+                return false;
+            }
+            if (txtCustomerCode.getText().equalsIgnoreCase(kh.getCustomerCode())) {
+                JOptionPane.showMessageDialog(this, "CustomerCode đã tồn tại");
                 return false;
             }
         }
@@ -578,6 +598,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         } else {
             rdoNu.setSelected(true);
         }
+        txtCustomerCode.setText(tblKhachHang.getValueAt(index, 5) + "");
     }
 
     @Override
@@ -588,6 +609,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         kh.setEmail(txtEmail.getText());
         kh.setGender(rdoNam.isSelected());
         kh.setCustomerID(Integer.parseInt(txtCustomerID.getText()));
+        kh.setCustomerCode(txtCustomerCode.getText());
         return kh;
     }
 
@@ -595,7 +617,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     public void fillToTable(List<Customer> lst) {
         dtm.setRowCount(0);
         for (Customer kh : lst) {
-            dtm.addRow(new Object[]{kh.getCustomerID(), kh.getFullname(), kh.getPhone(), kh.getEmail(), kh.isGender() ? "Nam" : "Nữ"});
+            dtm.addRow(new Object[]{kh.getCustomerID(), kh.getFullname(), kh.getPhone(), kh.getEmail(), kh.isGender() ? "Nam" : "Nữ", kh.getCustomerCode()});
         }
     }
 

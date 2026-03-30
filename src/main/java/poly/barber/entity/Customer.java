@@ -16,4 +16,5 @@ public class Customer {
     private String email;
     private boolean gender;
     private String note;
+    private String customerCode;
 }

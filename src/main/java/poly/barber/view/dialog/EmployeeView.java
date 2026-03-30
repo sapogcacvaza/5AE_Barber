@@ -288,6 +288,12 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel11.setText("Email:");
 
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
+
         jLabel12.setText("Gender:");
 
         jLabel13.setText("Address:");
@@ -526,6 +532,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         fillToTable(nvrepo.getAll());
      }//GEN-LAST:event_btnTimKiemActionPerformed
 
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEmailActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -644,6 +654,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         }
         if (txtPhone.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Phone");
+            return false;
+        }
+        if (txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Email");
             return false;
         }
         return true;
