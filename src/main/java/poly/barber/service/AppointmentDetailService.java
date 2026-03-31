@@ -15,4 +15,8 @@ public class AppointmentDetailService {
     public List<AppointmentDetail> getAllByAppID(int appointmentID) {
         return repo.getAllByAppID(appointmentID);
     }
+
+    public void add(AppointmentDetail obj) {
+        repo.add(obj);
+    }
 }

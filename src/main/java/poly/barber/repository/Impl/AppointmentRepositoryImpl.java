@@ -16,8 +16,11 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
     String getAll = "select * from Appointment";
     String getUniversalCalendar = "{CALL getUniversalCalendar(?, ?, ?, ?)}";
     String getUniversalCalendar_ShowAll = "{CALL getUniversalCalendar_ShowAll(?, ?, ?, ?)}";
-    public String sqlGetOne = "SELECT * FROM Appointment WHERE AppointmentID = ?";
-    
+    String getOne = "select * from Appointment where AppointmentID = ?";
+    String createSql = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)";
+    String createAndReturn = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)"
+            + "SELECT * FROM Appointment WHERE AppointmentID = SCOPE_IDENTITY();";
+
     @Override
     public List<Appointment> getAll() {
         return XQuery.getBeanList(Appointment.class, getAll);
@@ -81,12 +84,30 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
 
     @Override
     public Appointment getOne(Integer id) {
-        return XQuery.getSingleBean(Appointment.class, sqlGetOne, id);
+        return XQuery.getSingleBean(Appointment.class, getOne, id);
     }
 
     @Override
     public void add(Appointment obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getAppointmentDateTime(),
+            obj.getNote(),
+            obj.getTotalDuration(),
+            obj.getCreatedByEmployeeID(),
+            obj.getCustomerID()
+        };
+        XJdbc.executeQuery(createSql, values);
+    }
+
+    public Appointment addAndReturn(Appointment obj) {
+        Object[] values = {
+            obj.getAppointmentDateTime(),
+            obj.getNote(),
+            obj.getTotalDuration(),
+            obj.getCreatedByEmployeeID(),
+            obj.getCustomerID()
+        };
+        return XQuery.getSingleBean(Appointment.class,createAndReturn, values);
     }
 
     @Override

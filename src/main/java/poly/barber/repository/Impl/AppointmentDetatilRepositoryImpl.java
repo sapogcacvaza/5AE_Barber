@@ -3,13 +3,15 @@ package poly.barber.repository.Impl;
 import java.util.List;
 import poly.barber.entity.AppointmentDetail;
 import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XJdbc;
 import poly.barber.util.XQuery;
 
 public class AppointmentDetatilRepositoryImpl implements ICommonRepository<AppointmentDetail, Integer> {
 
     String getAll = "select * from AppointmentDetail";
-
     String getAllByAppID = "select * from AppointmentDetail where AppointmentID = ?";
+    String getOne = "select * from AppointmentDetail where AppointmentID = ? and ServiceID = ?";
+    String createSql = "insert into AppointmentDetail (ServiceID, AppointmentID, Duration, Price, Quantity, BarberID) values (?,?,?,?,?,?)";
 
     @Override
     public List<AppointmentDetail> getAll() {
@@ -27,7 +29,15 @@ public class AppointmentDetatilRepositoryImpl implements ICommonRepository<Appoi
 
     @Override
     public void add(AppointmentDetail obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getServiceID(),
+            obj.getAppointmentID(),
+            obj.getDuration(),
+            obj.getPrice(),
+            obj.getQuantity(),
+            obj.getBarberID()
+        };
+        XJdbc.executeUpdate(createSql, values);
     }
 
     @Override

@@ -67,7 +67,9 @@ public class AppointmentService {
 
         while (!start.isAfter(end)) {
             if (isToday) {
-                if (!start.isBefore(now)) {
+                LocalTime limitTime = now.plusMinutes(10);
+
+                if (!start.isBefore(limitTime)) {
                     times.add(start.format(formatter));
                 }
             } else {
@@ -80,8 +82,11 @@ public class AppointmentService {
         return times;
     }
 
-//    public static void main(String[] args) {
-//        AppointmentService ser = new AppointmentService();
-//        ser.fillToComboTimeRange();
-//    }
+    public void add(Appointment obj) {
+        repo.add(obj);
+    }
+
+    public Appointment addAndReturn(Appointment obj) {
+        return repo.addAndReturn(obj);
+    }
 }

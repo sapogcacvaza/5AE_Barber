@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class AppointmentDetail {
    private int serviceID;
-   private int AppointmentID;
+   private int appointmentID;
    private int duration; // Phút
    private BigDecimal price;
    private int quantity;
