@@ -15,9 +15,10 @@ import poly.barber.util.XQuery;
  * @author Dell
  */
 public class CustomerImpl implements ICommonRepository<Customer, Integer> {
+
     String sqlSearchByPhone = "select * from Customer where Phone like ?";
     String sqlSearchByName = "select * from Customer where Fullname like ?";
-    String sqlGetAll = "select CustomerID,Fullname,Phone,Email,Gender,Note from Customer";
+    String sqlGetAll = "select CustomerID,Fullname,Phone,Email,Gender,Note,CustomerCode from Customer";
     String sqlGetOne = "select CustomerID,Fullname,Phone,Email,Gender,Note from Customer where CustomerID = ?";
     String sqlGetGender = "select *from Customer  where Gender like ?";
     String sqlDeleteInvoiceDiscount = """
@@ -61,16 +62,18 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
 """;
     String sqlDeleteAppointment = "DELETE FROM Appointment WHERE CustomerID = ?";
     String sqlDeleteCustomer = "DELETE FROM Customer WHERE CustomerID = ?";
-    String sqlAdd = "insert into Customer values\n"
+    String sqlAdd = "insert into Customer (Fullname,Phone,Email,Gender,Note) values\n"
             + "(?,?,?,?,?)";
-    String sqlUpdate = "update Customer set Fullname = ?,Phone = ?,Email = ?,Gender = ?,Note = ? where CustomerID = ?";
+    String sqlUpdate = "update Customer set Fullname = ?,Phone = ?,Email = ?,Gender = ?,Note = ?,CustomerCode = ? where CustomerID = ?";
 
-    public List<Customer> searchByPhone(String phone){
-        return XQuery.getBeanList(Customer.class , sqlSearchByPhone, "%"+phone+"%");
+    public List<Customer> searchByPhone(String phone) {
+        return XQuery.getBeanList(Customer.class, sqlSearchByPhone, "%" + phone + "%");
     }
-    public List<Customer> searchByName(String name){
-        return XQuery.getBeanList(Customer.class , sqlSearchByName, "%"+name+"%");
+
+    public List<Customer> searchByName(String name) {
+        return XQuery.getBeanList(Customer.class, sqlSearchByName, "%" + name + "%");
     }
+
     @Override
 
     public List<Customer> getAll() {
@@ -78,7 +81,7 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
     }
 
     public List<Customer> getGender(int id) {
-        return XQuery.getBeanList(Customer.class, sqlGetGender,id);
+        return XQuery.getBeanList(Customer.class, sqlGetGender, id);
     }
 
     @Override
@@ -107,7 +110,7 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
 
     @Override
     public void update(Customer obj) {
-        Object[] data = {obj.getFullname(), obj.getPhone(), obj.getEmail(), obj.isGender(), obj.getNote(), obj.getCustomerID()};
+        Object[] data = {obj.getFullname(), obj.getPhone(), obj.getEmail(), obj.isGender(), obj.getNote(), obj.getCustomerCode(), obj.getCustomerID()};
         XJdbc.executeUpdate(sqlUpdate, data);
     }
 
