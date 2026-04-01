@@ -149,13 +149,10 @@ poly\barber\view\dialog\ServiceJDialog$9.class
 poly\barber\service\ServiceCategoryService.class
 poly\barber\controller\Impl\AppointmentController.class
 poly\barber\repository\Impl\EmployeeImpl.class
-<<<<<<< HEAD
 poly\barber\view\dialog\EmployeeView$17.class
-=======
 poly\barber\view\dialog\HistoryJdialog$4.class
 poly\barber\view\dialog\ServiceJDialog.class
 poly\barber\view\dialog\ServiceJDialog$3.class
->>>>>>> 9c32ebe74dcff6f88227f48833ee792b7fdc032c
 poly\barber\util\XQuery.class
 poly\barber\view\dialog\StatisticalJdialog.class
 poly\barber\util\XDate.class

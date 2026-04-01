@@ -81,10 +81,10 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         cboBarber = new javax.swing.JComboBox<>();
         btnCancelFilter = new javax.swing.JButton();
         btnFind = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        lblFilterByBarber = new javax.swing.JLabel();
+        lblFilterByWeek = new javax.swing.JLabel();
+        lblFind = new javax.swing.JLabel();
+        lblFilterByStatus = new javax.swing.JLabel();
         panelCrud = new javax.swing.JPanel();
         btnChooseCustomer = new javax.swing.JButton();
         btnChooseDate = new javax.swing.JButton();
@@ -112,17 +112,23 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         btnAddAppointment = new javax.swing.JButton();
         txtNote = new java.awt.TextArea();
         lblNote = new javax.swing.JLabel();
-        lblTotalAmount1 = new javax.swing.JLabel();
-        lblTotalAmount2 = new javax.swing.JLabel();
+        lblCustomerName = new javax.swing.JLabel();
+        lblCustomerPhone = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tblBarber = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
+        tblAppointment = new javax.swing.JTable();
+        lblTitle1 = new javax.swing.JLabel();
         btnGetListBarber = new javax.swing.JButton();
         lblTotalAmount4 = new javax.swing.JLabel();
         txtTotalDuration = new javax.swing.JTextField();
         txtTotalPrice = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         btnClear = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblBarber = new javax.swing.JTable();
+        lblTitle2 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LỊCH");
@@ -234,13 +240,13 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
-        jLabel1.setText("LỌC THEO THỢ CẮT");
+        lblFilterByBarber.setText("LỌC THEO THỢ CẮT");
 
-        jLabel2.setText("LỌC THEO TUẦN");
+        lblFilterByWeek.setText("LỌC THEO TUẦN");
 
-        jLabel3.setText("TÌM KIẾM THEO TÊN VÀ SĐT KH");
+        lblFind.setText("TÌM KIẾM THEO TÊN VÀ SĐT KH");
 
-        jLabel4.setText("LỌC THEO TÌNH TRẠNG");
+        lblFilterByStatus.setText("LỌC THEO TÌNH TRẠNG");
 
         javax.swing.GroupLayout panelCalendarLayout = new javax.swing.GroupLayout(panelCalendar);
         panelCalendar.setLayout(panelCalendarLayout);
@@ -252,8 +258,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(jScrollPane1)
                     .addGroup(panelCalendarLayout.createSequentialGroup()
                         .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblFind)
+                            .addComponent(lblFilterByStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelCalendarLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
@@ -274,16 +280,16 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                                 .addGap(18, 18, 18)
                                 .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
+                                .addComponent(lblFilterByBarber)
                                 .addGap(18, 18, 18)
                                 .addComponent(cboBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblFilterByWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(cboWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnAddAppoint, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 6, Short.MAX_VALUE)))
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelCalendarLayout.setVerticalGroup(
@@ -296,9 +302,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(btnAddAppoint)
                     .addComponent(cboBarber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFind)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(lblFilterByBarber)
+                    .addComponent(lblFilterByWeek)
+                    .addComponent(lblFind))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoWaiting)
@@ -306,7 +312,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(rdoCheckIned)
                     .addComponent(btnCancelFilter)
                     .addComponent(rdoAll)
-                    .addComponent(jLabel4)
+                    .addComponent(lblFilterByStatus)
                     .addComponent(rdoPending))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -413,24 +419,24 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         lblNote.setText("GHI CHÚ:");
 
-        lblTotalAmount1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTotalAmount1.setText("TÊN KH:");
+        lblCustomerName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblCustomerName.setText("TÊN KH:");
 
-        lblTotalAmount2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTotalAmount2.setText("SỐ ĐT KH:");
+        lblCustomerPhone.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblCustomerPhone.setText("SỐ ĐT KH:");
 
-        tblBarber.setModel(new javax.swing.table.DefaultTableModel(
+        tblAppointment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Họ và tên", "Vị trí"
+                "Mã lịch", "Tên khách hàng", "Số khách hàng", "Thời gian hẹn", "Trạng thái"
             }
         ));
-        jScrollPane3.setViewportView(tblBarber);
+        jScrollPane3.setViewportView(tblAppointment);
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setText("THÊM DỊCH VỤ VÀO LỊCH MỚI");
+        lblTitle1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle1.setText("THÊM DỊCH VỤ VÀO LỊCH MỚI");
 
         btnGetListBarber.setText("XUẤT DANH SÁCH THỢ");
         btnGetListBarber.addActionListener(new java.awt.event.ActionListener() {
@@ -449,11 +455,32 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        tblBarber.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Họ và tên", "Vị trí"
+            }
+        ));
+        jScrollPane4.setViewportView(tblBarber);
+
+        lblTitle2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lblTitle2.setText("QUẢN LÝ TRẠNG THÁI LỊCH VÀ DỊCH VỤ");
+
+        jRadioButton1.setBackground(new java.awt.Color(153, 255, 153));
+        jRadioButton1.setText("Đã đến");
+
+        jRadioButton2.setBackground(new java.awt.Color(255, 204, 204));
+        jRadioButton2.setText("Hủy lịch");
+
+        jButton1.setText("THAY ĐỔI TRẠNG THÁI");
+
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
         panelCrud.setLayout(panelCrudLayout);
         panelCrudLayout.setHorizontalGroup(
             panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCrudLayout.createSequentialGroup()
+            .addGroup(panelCrudLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1)
@@ -461,10 +488,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                         .addGap(9, 9, 9)
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(panelCrudLayout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTitle1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(btnChooseBarber, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCrudLayout.createSequentialGroup()
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -498,33 +524,47 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                                 .addComponent(lblQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(45, 45, 45)
                                 .addComponent(txtQuantity))
-                            .addComponent(btnAddService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnAddService, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelCrudLayout.createSequentialGroup()
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
                                         .addComponent(lblNote)
-                                        .addGap(186, 186, 186)
-                                        .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(148, 148, 148)
+                                        .addComponent(btnChooseCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(38, 38, 38))
                                     .addComponent(txtNote, javax.swing.GroupLayout.PREFERRED_SIZE, 458, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
-                                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(lblTotalAmount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(lblTotalAmount4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(lblTotalAmount2, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                                            .addComponent(lblTotalAmount1, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(txtCustomerPhone, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                .addComponent(lblCustomerPhone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(lblCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(lblTotalAmount4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE))
+                                            .addComponent(lblTotalAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, Short.MAX_VALUE)
+                                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtCustomerPhone, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                                            .addComponent(txtCustomerName)
                                             .addComponent(txtTotalDuration)
-                                            .addComponent(txtTotalPrice)
-                                            .addComponent(txtCustomerName, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)))
+                                            .addComponent(txtTotalPrice)))
                                     .addComponent(btnAddAppointment, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(jScrollPane2))))
                 .addGap(15, 15, 15))
+            .addGroup(panelCrudLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                    .addComponent(lblTitle2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelCrudLayout.setVerticalGroup(
             panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -533,7 +573,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCrudLayout.createSequentialGroup()
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
+                            .addComponent(lblTitle1)
                             .addComponent(btnClear))
                         .addGap(18, 18, 18)
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -555,35 +595,38 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                         .addGap(18, 18, 18)
                         .addComponent(btnGetListBarber)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelCrudLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCrudLayout.createSequentialGroup()
+                        .addComponent(btnChooseBarber)
+                        .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelCrudLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelCrudLayout.createSequentialGroup()
-                                        .addComponent(lblBarberName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblBarberPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblBarberName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
                                         .addGap(1, 1, 1)
-                                        .addComponent(txtBarberName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
+                                        .addComponent(txtBarberName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(18, 18, 18)
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblBarberPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelCrudLayout.createSequentialGroup()
+                                        .addGap(1, 1, 1)
                                         .addComponent(txtBarberPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblQuantity)
                                     .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnAddService, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txtNote, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelCrudLayout.createSequentialGroup()
+                                .addGap(20, 20, 20)
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(lblTotalAmount2)
+                                    .addComponent(lblCustomerPhone)
                                     .addComponent(txtCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(21, 21, 21)
+                                .addGap(18, 18, 18)
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblTotalAmount4)
                                     .addComponent(txtTotalDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -592,19 +635,31 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                                     .addComponent(lblTotalAmount)
                                     .addComponent(txtTotalPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAddAppointment)))
-                        .addGap(18, 18, 18))
+                                .addComponent(btnAddAppointment))))
                     .addGroup(panelCrudLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnChooseBarber)
                             .addComponent(lblNote)
                             .addComponent(btnChooseCustomer)
-                            .addComponent(lblTotalAmount1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCustomerName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCustomerPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(19, 19, 19)
+                        .addComponent(txtNote, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(177, 177, 177))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTitle2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelCrudLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addGap(12, 12, 12))
+                    .addGroup(panelCrudLayout.createSequentialGroup()
+                        .addComponent(jRadioButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
+                        .addContainerGap(115, Short.MAX_VALUE))))
         );
 
         Tabbs.addTab("ĐẶT LỊCH", panelCrud);
@@ -613,15 +668,13 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Tabbs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(Tabbs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(Tabbs, javax.swing.GroupLayout.PREFERRED_SIZE, 873, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         pack();
@@ -728,10 +781,10 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     }//GEN-LAST:event_txtAppointmentDateActionPerformed
 
     private void btnChooseBarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseBarberActionPerformed
-        int index = tblBarber.getSelectedRow();
+        int index = tblAppointment.getSelectedRow();
 
-        String barberName = tblBarber.getValueAt(index, 0) + "";
-        String barberPositionName = tblBarber.getValueAt(index, 1) + "";
+        String barberName = tblAppointment.getValueAt(index, 0) + "";
+        String barberPositionName = tblAppointment.getValueAt(index, 1) + "";
 
         txtBarberName.setText(barberName);
         txtBarberPosition.setText(barberPositionName);
@@ -844,7 +897,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 LocalDate date = LocalDate.parse(selectedDate, dateFormatter);
                 LocalTime time = LocalTime.parse(selectedTime, timeFormatter);
 
-                modelBarber = (DefaultTableModel) tblBarber.getModel();
+                modelBarber = (DefaultTableModel) tblAppointment.getModel();
                 modelBarber.setRowCount(0);
 
                 List<Barber> lst = serBarber.getListAvailableBarber(date, time, selectedCategory);
@@ -1005,6 +1058,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         for (Object[] rows : data) {
             modelCalendar.addRow(rows);
         }
+ 
     }
 
     public void fillToComboWeek() {
@@ -1371,26 +1425,31 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.JComboBox<String> cboService;
     private javax.swing.JComboBox<String> cboTimeRange;
     private javax.swing.JComboBox<String> cboWeek;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblAppointmentTime;
     private javax.swing.JLabel lblBarberName;
     private javax.swing.JLabel lblBarberPosition;
+    private javax.swing.JLabel lblCustomerName;
+    private javax.swing.JLabel lblCustomerPhone;
     private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblFilterByBarber;
+    private javax.swing.JLabel lblFilterByStatus;
+    private javax.swing.JLabel lblFilterByWeek;
+    private javax.swing.JLabel lblFind;
     private javax.swing.JLabel lblNote;
     private javax.swing.JLabel lblQuantity;
     private javax.swing.JLabel lblService;
     private javax.swing.JLabel lblServiceCategory;
+    private javax.swing.JLabel lblTitle1;
+    private javax.swing.JLabel lblTitle2;
     private javax.swing.JLabel lblTotalAmount;
-    private javax.swing.JLabel lblTotalAmount1;
-    private javax.swing.JLabel lblTotalAmount2;
     private javax.swing.JLabel lblTotalAmount4;
     private javax.swing.JPanel panelCalendar;
     private javax.swing.JPanel panelCrud;
@@ -1399,6 +1458,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.JRadioButton rdoCheckIned;
     private javax.swing.JRadioButton rdoPending;
     private javax.swing.JRadioButton rdoWaiting;
+    private javax.swing.JTable tblAppointment;
     private javax.swing.JTable tblBarber;
     private javax.swing.JTable tblCalendar;
     private javax.swing.JTable tblSercive;

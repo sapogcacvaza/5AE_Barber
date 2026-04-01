@@ -14,7 +14,6 @@ import poly.barber.util.XQuery;
 public class AppointmentRepositoryImpl implements ICommonRepository<Appointment, Integer> {
 
     String getAll = "select * from Appointment";
-    String getUniversalCalendar = "{CALL getUniversalCalendar(?, ?, ?, ?)}";
     String getUniversalCalendar_ShowAll = "{CALL getUniversalCalendar_ShowAll(?, ?, ?, ?)}";
     String getOne = "select * from Appointment where AppointmentID = ?";
     String createSql = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)";
