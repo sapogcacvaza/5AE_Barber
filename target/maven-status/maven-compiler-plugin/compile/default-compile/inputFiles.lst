@@ -1,6 +1,7 @@
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\CrudController.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\AccountController.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\AppointmentController.java
+D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\BarberController.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\CrudController.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\CustomerController.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\controller\Impl\EmployeeController.java
@@ -24,6 +25,7 @@ D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\ICommonRe
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\AccountImpl.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\AppointmentDetatilRepositoryImpl.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\AppointmentRepositoryImpl.java
+D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\BarberPositionRepositoryImpl.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\BarberRepositoryImpl.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\CustomerImpl.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\repository\Impl\CustomerRepositoryImpl.java
@@ -48,5 +50,6 @@ D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\util\XStr.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\Barber5AEJFrame.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\dialog\AccountView.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\dialog\AppointmentJDialog.java
+D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\dialog\BarberJDialog.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\dialog\CustomerView.java
 D:\Du_An_1\5AEBARBER_3\5AE_Barber\src\main\java\poly\barber\view\dialog\EmployeeView.java

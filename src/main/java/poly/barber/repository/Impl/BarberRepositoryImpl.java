@@ -9,10 +9,24 @@ import poly.barber.util.XQuery;
 
 public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> {
 
-    String getAll = "select * from Barber";
-    String getOne = "select * from Barber where id = ?";
+    String getAll = "select BarberID,IsBusy,Status,FirstName,LastName,Phone,Email,PositionID from Barber";
+    String getOne = "select BarberID,IsBusy,Status,FirstName,LastName,Phone,Email,PositionID from Barber where BarberID = ?";
     String getOneByName = "select * from Barber where (Lastname + ' ' + Firstname) like ?";
     String getPositionNameByID = "select PositionName from BarberPosition where PositionID = ?";
+    String sqlUpdate = "update Barber set Status = ?,FirstName = ?,LastName = ?, Phone = ?, Email = ?, PositionID = ? where BarberID = ?";
+    String sqlAdd = "insert into Barber (Status,FirstName,LastName,Phone,Email,PositionID) values\n"
+            + "(?,?,?,?,?,?)";
+    String sqlDelete = "delete Barber where BarberID = ?";
+    String sqlStatusFilter = "select *from Barber where Status = ?";
+    String sqlIsBusyFilter = "select *from Barber where isBusy = ?";
+
+    public List<Barber> statusFilter(int id) {
+        return XQuery.getBeanList(Barber.class, sqlStatusFilter, id);
+    }
+
+    public List<Barber> isBusyFilter(int id) {
+        return XQuery.getBeanList(Barber.class, sqlIsBusyFilter, id);
+    }
 
     @Override
     public List<Barber> getAll() {
@@ -48,17 +62,23 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
 
     @Override
     public void add(Barber obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] data = {obj.isStatus(), obj.getFirstname(), obj.getLastname(), obj.getPhone(), obj.getEmail(), obj.getPositionID()};
+        XJdbc.executeUpdate(sqlAdd, data);
     }
 
     @Override
     public void delete(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        XJdbc.executeUpdate(sqlDelete, id);
     }
 
     @Override
     public void update(Barber obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] data = {obj.isStatus(), obj.getFirstname(), obj.getLastname(), obj.getPhone(), obj.getEmail(), obj.getPositionID(), obj.getBarberID()};
+        XJdbc.executeUpdate(sqlUpdate, data);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new BarberRepositoryImpl().getAll());
     }
 
 }
