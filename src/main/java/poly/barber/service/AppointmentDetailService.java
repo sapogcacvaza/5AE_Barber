@@ -19,4 +19,16 @@ public class AppointmentDetailService {
     public void add(AppointmentDetail obj) {
         repo.add(obj);
     }
+
+    public List<AppointmentDetail> getAllByAppCode(String appointmentCode) {
+        return repo.getAllByAppCode(appointmentCode);
+    }
+
+    public void updateStatus(int status, int appointmentID, int serviceID) {
+        repo.updateStatus(status, appointmentID, serviceID);
+    }
+
+    public void updateStatusByAppID(int status, int appointmentID) {
+        repo.updateStatusByAppID(status, appointmentID);
+    }
 }

@@ -47,6 +47,10 @@ public class AppointmentService {
         return repo.getAll();
     }
 
+    public List<Appointment> getAllWhereStatusIsWaiting() {
+        return repo.getAllWhereStatusIsWaiting();
+    }
+
     public List<Object[]> getUniversalCalendar(int weekIndex, int status, String barber, String customer) {
         return repo.getUniversalCalendar(weekIndex, status, barber, customer);
     }
@@ -54,6 +58,10 @@ public class AppointmentService {
     public List<String> getAppointmentHtmlDetails(java.sql.Date targetDate, java.util.Date targetTime) {
         java.sql.Time sqlTime = new java.sql.Time(targetTime.getTime());
         return repo.getAppointmentHtmlDetails(targetDate, sqlTime);
+    }
+
+    public boolean isConflict(int customerID, LocalDate appointmentDate, LocalTime appointmentTime, int duration) {
+        return repo.isConflict(customerID, appointmentDate, appointmentTime, duration);
     }
 
     public List<String> fillToComboTimeRange(boolean isToday) {
@@ -88,5 +96,9 @@ public class AppointmentService {
 
     public Appointment addAndReturn(Appointment obj) {
         return repo.addAndReturn(obj);
+    }
+
+    public void updateStatus(int appointmentID, int status) {
+        repo.updateStatus(appointmentID, status);
     }
 }

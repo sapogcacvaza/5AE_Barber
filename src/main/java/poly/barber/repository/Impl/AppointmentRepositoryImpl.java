@@ -3,6 +3,10 @@ package poly.barber.repository.Impl;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import poly.barber.entity.Appointment;
@@ -14,15 +18,22 @@ import poly.barber.util.XQuery;
 public class AppointmentRepositoryImpl implements ICommonRepository<Appointment, Integer> {
 
     String getAll = "select * from Appointment";
+    String getAllWhereStatusIsWaiting = "select * from Appointment where Status = 1 or Status = 2 or Status = 4";
+
     String getUniversalCalendar_ShowAll = "{CALL getUniversalCalendar_ShowAll(?, ?, ?, ?)}";
     String getOne = "select * from Appointment where AppointmentID = ?";
     String createSql = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)";
     String createAndReturn = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)"
             + "SELECT * FROM Appointment WHERE AppointmentID = SCOPE_IDENTITY();";
+    String updateStatus = "update Appointment set Status = ? where AppointmentID = ?";
 
     @Override
     public List<Appointment> getAll() {
         return XQuery.getBeanList(Appointment.class, getAll);
+    }
+
+    public List<Appointment> getAllWhereStatusIsWaiting() {
+        return XQuery.getBeanList(Appointment.class, getAllWhereStatusIsWaiting);
     }
 
     public List<Object[]> getUniversalCalendar(int weekIndex, int status, String barber, String customer) {
@@ -81,6 +92,28 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
         return details;
     }
 
+    public boolean isConflict(int customerID, LocalDate appointmentDate, LocalTime appTime, int duration) {
+        // Thêm một dấu ? cho tham số Date
+        String sql = "{call sp_CheckCustomerAppointmentConflict(?, ?, ?, ?)}";
+        try (Connection con = XJdbc.openConnection(); CallableStatement cs = con.prepareCall(sql)) {
+
+            cs.setInt(1, customerID);
+            // Truyền ngày (Date)
+            cs.setDate(2, java.sql.Date.valueOf(appointmentDate));
+            // Truyền giờ (Time)
+            cs.setTime(3, java.sql.Time.valueOf(appTime));
+            cs.setInt(4, duration);
+
+            ResultSet rs = cs.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("IsConflict") == 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public Appointment getOne(Integer id) {
         return XQuery.getSingleBean(Appointment.class, getOne, id);
@@ -106,7 +139,7 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
             obj.getCreatedByEmployeeID(),
             obj.getCustomerID()
         };
-        return XQuery.getSingleBean(Appointment.class,createAndReturn, values);
+        return XQuery.getSingleBean(Appointment.class, createAndReturn, values);
     }
 
     @Override
@@ -116,7 +149,21 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
 
     @Override
     public void update(Appointment obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getStatus(),
+            obj.getAppointmentID()
+        };
+
+        XJdbc.executeUpdate(updateStatus, values);
+    }
+
+    public void updateStatus(int appointmentID, int status) {
+        Object[] values = {
+            status,
+            appointmentID
+        };
+
+        XJdbc.executeUpdate(updateStatus, values);
     }
 
 }

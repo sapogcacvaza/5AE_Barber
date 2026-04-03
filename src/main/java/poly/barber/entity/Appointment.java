@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class Appointment {
-
+    
     private int appointmentID;
     private LocalDateTime createdDateTime;
     private LocalDateTime appointmentDateTime;
@@ -20,6 +20,7 @@ public class Appointment {
     private int status;
     private int createdByEmployeeID;
     private int customerID;
+    private int appointmentCode;
 
     public Appointment(LocalDateTime appointmentDateTime, String note, int totalDuration, int createdByEmployeeID, int customerID) {
         this.appointmentDateTime = appointmentDateTime;

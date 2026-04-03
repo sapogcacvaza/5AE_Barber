@@ -15,9 +15,11 @@ import poly.barber.util.XQuery;
 public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> {
 
     String getAll = "select * from Barber";
-    String getOne = "select * from Barber where id = ?";
+    String getOne = "select * from Barber where BarberID = ?";
     String getOneByName = "select * from Barber where (Lastname + ' ' + Firstname) like ?";
     String getPositionNameByID = "select PositionName from BarberPosition where PositionID = ?";
+    String updateStatus = "update Barber set Status = ? where BarberID = ?";
+    String updateIsBusy = "update Barber set updateIsBusy = ? where BarberID = ?";
 
     @Override
     public List<Barber> getAll() {
@@ -105,6 +107,22 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     @Override
     public void update(Barber obj) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void updateStatus(int status, int barberID) {
+        Object[] values = {
+            status,
+            barberID
+        };
+        XJdbc.executeUpdate(updateStatus, values);
+    }
+
+    public void updateIsBusy(int status, int barberID) {
+        Object[] values = {
+            status,
+            barberID
+        };
+        XJdbc.executeUpdate(updateIsBusy, values);
     }
 
 }
