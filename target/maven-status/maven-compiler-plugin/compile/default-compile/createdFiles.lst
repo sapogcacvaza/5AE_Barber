@@ -1,5 +1,6 @@
 poly\barber\view\dialog\AppointmentJDialog$19.class
 poly\barber\service\AppointmentDetailService.class
+poly\barber\view\dialog\BarberJDialog$12.class
 poly\barber\util\XDialog.class
 poly\barber\entity\Barber$BarberBuilder.class
 poly\barber\controller\Impl\EmployeeController.class
@@ -8,6 +9,7 @@ poly\barber\view\dialog\ServiceJDialog$8.class
 poly\barber\view\dialog\StatisticalJdialog$5.class
 poly\barber\view\dialog\CustomerView$7.class
 poly\barber\view\dialog\CustomerView$11.class
+poly\barber\view\dialog\BarberJDialog$6.class
 poly\barber\controller\CrudController.class
 poly\barber\view\dialog\EmployeeView$11.class
 poly\barber\view\dialog\EmployeeView$1.class
@@ -33,10 +35,10 @@ poly\barber\view\dialog\BarberJDialog$1.class
 poly\barber\entity\Customer$CustomerBuilder.class
 poly\barber\entity\Payment$PaymentBuilder.class
 poly\barber\view\dialog\AppointmentJDialog$4.class
+poly\barber\view\dialog\BarberJDialog$13.class
 poly\barber\view\dialog\ServiceJDialog$12.class
 poly\barber\view\dialog\EmployeeView$6.class
 poly\barber\repository\Impl\AppointmentDetatilRepositoryImpl.class
-poly\barber\view\dialog\BarberJDialog$3$1.class
 poly\barber\view\dialog\CustomerView$1.class
 poly\barber\view\dialog\AccountView.class
 poly\barber\view\dialog\AppointmentJDialog$25.class
@@ -50,14 +52,17 @@ poly\barber\view\dialog\CustomerView$13$1.class
 poly\barber\view\dialog\AppointmentJDialog$22.class
 poly\barber\view\dialog\HistoryJdialog$2.class
 poly\barber\view\dialog\ServiceJDialog$4.class
+poly\barber\view\dialog\BarberJDialog$17$1.class
 poly\barber\entity\Invoice.class
 poly\barber\view\dialog\ServiceJDialog$1.class
+poly\barber\repository\Impl\BarberPositionRepositoryImpl.class
 poly\barber\view\dialog\AppointmentJDialog$6.class
 poly\barber\entity\Barber.class
 poly\barber\view\Barber5AEJFrame$1.class
 poly\barber\view\dialog\EmployeeView$8.class
 poly\barber\view\dialog\AppointmentJDialog$9.class
 poly\barber\view\dialog\AccountView$4.class
+poly\barber\view\dialog\BarberJDialog$11.class
 poly\barber\view\dialog\AppointmentJDialog$18.class
 poly\barber\view\dialog\CustomerView$6.class
 poly\barber\view\dialog\AccountView$6.class
@@ -95,6 +100,7 @@ poly\barber\view\dialog\EmployeeView$9.class
 poly\barber\view\dialog\AppointmentJDialog$16.class
 poly\barber\view\dialog\ServiceJDialog$2.class
 poly\barber\repository\Impl\EmployeePositionImpl.class
+poly\barber\view\dialog\BarberJDialog$10.class
 poly\barber\view\dialog\HistoryJdialog$5.class
 poly\barber\view\dialog\StatisticalJdialog$7$1.class
 poly\barber\view\dialog\ServiceJDialog$16.class
@@ -120,6 +126,7 @@ poly\barber\view\dialog\HistoryJdialog$3.class
 poly\barber\view\dialog\EmployeeView$4.class
 poly\barber\view\dialog\BarberJDialog$3.class
 poly\barber\view\dialog\StatisticalJdialog$7.class
+poly\barber\view\dialog\BarberJDialog$15.class
 poly\barber\repository\Impl\CustomerImpl.class
 poly\barber\entity\ServiceCategory.class
 poly\barber\view\dialog\AppointmentJDialog$23.class
@@ -137,9 +144,12 @@ poly\barber\entity\Customer.class
 poly\barber\view\dialog\CustomerView$9.class
 poly\barber\entity\EmployeePosition.class
 poly\barber\view\dialog\AccountView$11.class
+poly\barber\view\dialog\BarberJDialog$14.class
+poly\barber\view\dialog\BarberJDialog$9.class
 poly\barber\controller\Impl\AccountController.class
 poly\barber\controller\Impl\BarberController.class
 poly\barber\view\dialog\StatisticalJdialog$3.class
+poly\barber\view\dialog\BarberJDialog$8.class
 poly\barber\view\dialog\ServiceJDialog$5.class
 poly\barber\view\dialog\AppointmentJDialog$30$1.class
 poly\barber\util\DateSelectListener.class
@@ -151,9 +161,11 @@ poly\barber\view\dialog\EmployeeView$12.class
 poly\barber\view\dialog\EmployeeView$5.class
 poly\barber\view\dialog\StatisticalJdialog$6.class
 poly\barber\view\dialog\AppointmentJDialog$3.class
+poly\barber\view\dialog\BarberJDialog$7.class
 poly\barber\entity\EmployeePosition$EmployeePositionBuilder.class
 poly\barber\util\CustomCalendar.class
 poly\barber\view\dialog\AccountView$1.class
+poly\barber\view\dialog\BarberJDialog$4.class
 poly\barber\util\XStr.class
 poly\barber\entity\Invoice$InvoiceBuilder.class
 poly\barber\view\dialog\AccountView$9.class
@@ -171,6 +183,7 @@ poly\barber\repository\Impl\ServiceRepositoryImpl.class
 poly\barber\view\Barber5AEJFrame.class
 poly\barber\view\dialog\ServiceJDialog$9.class
 poly\barber\controller\Impl\AppointmentController.class
+poly\barber\view\dialog\BarberJDialog$17.class
 poly\barber\repository\Impl\EmployeeImpl.class
 poly\barber\view\dialog\ServiceJDialog.class
 poly\barber\view\dialog\AppointmentJDialog$27.class
@@ -182,10 +195,12 @@ poly\barber\util\TimeRange.class
 poly\barber\view\dialog\AppointmentJDialog$28.class
 poly\barber\entity\InvoiceDiscount.class
 poly\barber\view\dialog\AppointmentJDialog.class
+poly\barber\view\dialog\BarberJDialog$16.class
 poly\barber\view\dialog\HistoryJdialog$5$1.class
 poly\barber\view\dialog\ServiceJDialog$15.class
 poly\barber\entity\PaymentMethod.class
 poly\barber\view\dialog\EmployeeView$10.class
 poly\barber\view\dialog\AppointmentJDialog$10.class
+poly\barber\view\dialog\BarberJDialog$5.class
 poly\barber\view\dialog\EmployeeView.class
 poly\barber\view\dialog\CustomerView$12.class
