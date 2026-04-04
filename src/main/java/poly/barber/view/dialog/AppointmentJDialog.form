@@ -439,22 +439,30 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jSeparator1" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="lblTitle2" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="rdoCheckIn" min="-2" pref="75" max="-2" attributes="0"/>
+                                              <Component id="rdoCheckIn" min="-2" pref="66" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="rdoCancel" min="-2" pref="73" max="-2" attributes="0"/>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="rdoCancel" min="-2" pref="75" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="jRadioButton1" min="-2" pref="98" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                               <Component id="btnChangeAppointmentStatus" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace pref="20" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                               <Component id="btnUpdateDetails" min="-2" pref="147" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="jScrollPane3" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane3" min="-2" pref="609" max="-2" attributes="0"/>
+                                          <Component id="lblTitle2" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
+                                              <Component id="lblTitle3" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
+                                              <Component id="chkChooseAll" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="jScrollPane5" alignment="1" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
                                               <Component id="rdoInProcess" min="-2" pref="83" max="-2" attributes="0"/>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="rdoIsDone" min="-2" pref="77" max="-2" attributes="0"/>
@@ -463,11 +471,6 @@
                                               <EmptySpace max="32767" attributes="0"/>
                                               <Component id="btnChangeDetailStatus" min="-2" pref="184" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" attributes="0">
-                                              <Component id="lblTitle3" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Component id="jScrollPane5" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -583,8 +586,9 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lblTitle2" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTitle3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkChooseAll" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane3" min="-2" pref="223" max="-2" attributes="0"/>
                           <Component id="jScrollPane5" min="-2" pref="223" max="-2" attributes="0"/>
@@ -599,8 +603,9 @@
                           <Component id="rdoInProcess" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdoIsDone" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdoCancelDetail" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -706,13 +711,13 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="0">
-                        <Column editable="true" title="M&#xe3; DV" type="java.lang.Object"/>
-                        <Column editable="true" title="Lo&#x1ea1;i DV" type="java.lang.Object"/>
-                        <Column editable="true" title="T&#xea;n DV" type="java.lang.Object"/>
-                        <Column editable="true" title="T&#xea;n th&#x1ee3; c&#x1eaf;t" type="java.lang.Object"/>
-                        <Column editable="true" title="Th&#x1edd;i gian DV" type="java.lang.Object"/>
-                        <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
-                        <Column editable="true" title="Gi&#xe1; d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
+                        <Column editable="false" title="M&#xe3; DV" type="java.lang.Object"/>
+                        <Column editable="false" title="Lo&#x1ea1;i DV" type="java.lang.Object"/>
+                        <Column editable="false" title="T&#xea;n DV" type="java.lang.Object"/>
+                        <Column editable="false" title="T&#xea;n th&#x1ee3; c&#x1eaf;t" type="java.lang.Object"/>
+                        <Column editable="false" title="Th&#x1edd;i gian DV" type="java.lang.Object"/>
+                        <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
+                        <Column editable="false" title="Gi&#xe1; d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -815,11 +820,11 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="5" rowCount="0">
-                        <Column editable="true" title="M&#xe3; l&#x1ecb;ch" type="java.lang.Object"/>
-                        <Column editable="true" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
-                        <Column editable="true" title="S&#x1ed1; kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
-                        <Column editable="true" title="Th&#x1edd;i gian h&#x1eb9;n" type="java.lang.Object"/>
-                        <Column editable="true" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
+                        <Column editable="false" title="M&#xe3; l&#x1ecb;ch" type="java.lang.Object"/>
+                        <Column editable="false" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
+                        <Column editable="false" title="S&#x1ed1; kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
+                        <Column editable="false" title="Th&#x1edd;i gian h&#x1eb9;n" type="java.lang.Object"/>
+                        <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -873,8 +878,8 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="2" rowCount="0">
-                        <Column editable="true" title="H&#x1ecd; v&#xe0; t&#xea;n" type="java.lang.Object"/>
-                        <Column editable="true" title="V&#x1ecb; tr&#xed;" type="java.lang.Object"/>
+                        <Column editable="false" title="H&#x1ecd; v&#xe0; t&#xea;n" type="java.lang.Object"/>
+                        <Column editable="false" title="V&#x1ecb; tr&#xed;" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -930,13 +935,13 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="7" rowCount="0">
-                        <Column editable="true" title="T&#xea;n d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
-                        <Column editable="true" title="M&#xe3; l&#x1ecb;ch h&#x1eb9;n" type="java.lang.Object"/>
-                        <Column editable="true" title="Th&#x1edd;i gian GV" type="java.lang.Object"/>
-                        <Column editable="true" title="Gi&#xe1;" type="java.lang.Object"/>
-                        <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
-                        <Column editable="true" title="T&#xea;n th&#x1ee3;" type="java.lang.Object"/>
-                        <Column editable="true" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
+                        <Column editable="false" title="T&#xea;n d&#x1ecb;ch v&#x1ee5;" type="java.lang.Object"/>
+                        <Column editable="false" title="M&#xe3; l&#x1ecb;ch h&#x1eb9;n" type="java.lang.Object"/>
+                        <Column editable="false" title="Th&#x1edd;i gian GV" type="java.lang.Object"/>
+                        <Column editable="false" title="Gi&#xe1;" type="java.lang.Object"/>
+                        <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Object"/>
+                        <Column editable="false" title="T&#xea;n th&#x1ee3;" type="java.lang.Object"/>
+                        <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -1004,6 +1009,19 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoCancelDetailActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkChooseAll">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ch&#x1ecd;n t&#x1ea5;t c&#x1ea3;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+              <Properties>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="btnGroupAppointment"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#xe3; xong"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
