@@ -27,10 +27,13 @@ C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barb
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\AppointmentRepositoryImpl.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\BarberRepositoryImpl.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\CustomerImpl.java
+C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\CustomerRepository.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\CustomerRepositoryImpl.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\EmployeeImpl.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\EmployeePositionImpl.java
+C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\InvoiceDetailRepository.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\InvoiceRepositoryImpl.java
+C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\PaymentMethodRepository.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\PaymentRepositoryImpl.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\ServiceCategoryRepository.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\repository\Impl\ServiceCategoryRepositoryImpl.java
@@ -59,5 +62,7 @@ C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barb
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\CustomerView.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\EmployeeView.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\HistoryJdialog.java
+C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\InvoiceJDialog.java
+C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\PaymentJDialog.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\ServiceJDialog.java
 C:\Users\DELL\Downloads\5AE_Barber-master\123\5AE_Barber\src\main\java\poly\barber\view\dialog\StatisticalJdialog.java
