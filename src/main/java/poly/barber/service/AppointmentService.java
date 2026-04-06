@@ -47,8 +47,8 @@ public class AppointmentService {
         return repo.getAll();
     }
 
-    public List<Appointment> getAllWhereStatusIsWaiting() {
-        return repo.getAllWhereStatusIsWaiting();
+    public List<Appointment> getAllWhereStatusIsWaiting(boolean today) {
+        return repo.getAllWhereStatusIsWaiting(today);
     }
 
     public List<Object[]> getUniversalCalendar(int weekIndex, int status, String barber, String customer) {
@@ -100,5 +100,9 @@ public class AppointmentService {
 
     public void updateStatus(int appointmentID, int status) {
         repo.updateStatus(appointmentID, status);
+    }
+    
+    public int updateStatusAutomatically() {
+        return repo.updateStatusAutomatically();
     }
 }

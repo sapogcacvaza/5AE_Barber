@@ -26,13 +26,22 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
     String createAndReturn = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)"
             + "SELECT * FROM Appointment WHERE AppointmentID = SCOPE_IDENTITY();";
     String updateStatus = "update Appointment set Status = ? where AppointmentID = ?";
+    String updateStatusAuto = "update Appointment set Status = 4 where Status = 1"
+            + "AND CAST(AppointmentDateTime AS DATE) = CAST(GETDATE() AS DATE) "
+            + "AND CAST(AppointmentDateTime AS TIME) <= CAST(GETDATE() AS TIME)";
 
     @Override
     public List<Appointment> getAll() {
         return XQuery.getBeanList(Appointment.class, getAll);
     }
 
-    public List<Appointment> getAllWhereStatusIsWaiting() {
+    public List<Appointment> getAllWhereStatusIsWaiting(boolean today) {
+        if (today) {
+            getAllWhereStatusIsWaiting = "select * from Appointment where cast(AppointmentDateTime as date) = cast(getdate() as date) and status !=5"
+                    + " and status != 3";
+        } else {
+            getAllWhereStatusIsWaiting = "select * from Appointment where Status = 1 or Status = 2 or Status = 4";
+        }
         return XQuery.getBeanList(Appointment.class, getAllWhereStatusIsWaiting);
     }
 
@@ -164,6 +173,15 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
         };
 
         XJdbc.executeUpdate(updateStatus, values);
+    }
+
+    public int updateStatusAutomatically() {
+        try (Connection con = XJdbc.openConnection()) {
+            return XJdbc.executeUpdate(updateStatusAuto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }
