@@ -4,7 +4,10 @@
  */
 package poly.barber.view;
 
+import poly.barber.entity.Account;
 import poly.barber.view.Dialog.ServiceJDialog;
+import poly.barber.view.dialog.DiscountJdialog;
+import poly.barber.view.dialog.SplashDialog;
 
 /**
  *
@@ -17,6 +20,39 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
      */
     public Barber5AEJFrame() {
         initComponents();
+        setLocationRelativeTo(null);
+        setLayout(null); // 👈 QUAN TRỌNG
+        
+        // mở login
+        SplashDialog splash = new SplashDialog(this, true);
+        splash.setVisible(true);
+    }
+    private Account currentUser;
+
+    public void setUser(Account user) {
+        this.currentUser = user; // 👈 lưu lại
+
+        lblUser.setText("Xin chào: " + user.getUsername());
+        phanQuyen(user);
+    }
+
+    private void phanQuyen(Account user) {
+        int role = user.getRole();
+
+        if (role == 1) { // ADMIN
+            btnNhanVien.setEnabled(true);
+            btnKhachHang.setEnabled(true);
+            btnHoaDon.setEnabled(true);
+            btnbarber.setEnabled(true);
+            btngiamgia.setEnabled(true); // 👈 thêm dòng này
+
+        } else { // STAFF
+            btnNhanVien.setEnabled(false);
+            btnKhachHang.setEnabled(true);
+            btnHoaDon.setEnabled(true);
+            btnbarber.setEnabled(false);
+            btngiamgia.setEnabled(false); // 👈 chặn luôn
+        }
     }
 
     /**
@@ -28,21 +64,103 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        lblUser = new javax.swing.JLabel();
+        btngiamgia = new javax.swing.JButton();
+        btnbarber = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        btnHoaDon = new javax.swing.JButton();
+        btnKhachHang = new javax.swing.JButton();
+        btnNhanVien = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(51, 204, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel2.setToolTipText("");
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblUser.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        lblUser.setForeground(new java.awt.Color(204, 0, 0));
+        lblUser.setText("USER");
+        jPanel2.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 240, -1));
+
+        btngiamgia.setBackground(new java.awt.Color(0, 102, 153));
+        btngiamgia.setForeground(new java.awt.Color(255, 255, 255));
+        btngiamgia.setText("QUẢN LÝ GIẢM GIÁ");
+        btngiamgia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngiamgiaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btngiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 250, 30));
+
+        btnbarber.setBackground(new java.awt.Color(0, 102, 153));
+        btnbarber.setForeground(new java.awt.Color(255, 255, 255));
+        btnbarber.setText("BARBER");
+        jPanel2.add(btnbarber, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 250, 30));
+
+        jButton3.setBackground(new java.awt.Color(0, 102, 153));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("ĐẶT LỊCH");
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 440, 250, 30));
+
+        btnHoaDon.setBackground(new java.awt.Color(0, 102, 153));
+        btnHoaDon.setForeground(new java.awt.Color(255, 255, 255));
+        btnHoaDon.setText("HOÁ ĐƠN");
+        jPanel2.add(btnHoaDon, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, 250, 30));
+
+        btnKhachHang.setBackground(new java.awt.Color(0, 102, 153));
+        btnKhachHang.setForeground(new java.awt.Color(255, 255, 255));
+        btnKhachHang.setText("QUẢN LÝ KHÁCH HÀNG");
+        jPanel2.add(btnKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 250, 30));
+
+        btnNhanVien.setBackground(new java.awt.Color(0, 102, 153));
+        btnNhanVien.setForeground(new java.awt.Color(255, 255, 255));
+        btnNhanVien.setText("QUẢN LÝ NHÂN VIÊN");
+        jPanel2.add(btnNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 320, 250, 30));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 310, 940));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1635, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btngiamgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngiamgiaActionPerformed
+        // TODO add your handling code here:
+            if (currentUser == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
+        return;
+    }
+        // ❌ nếu không có quyền
+        if (currentUser.getRole() != 1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
+            return;
+        }
+
+        // ✅ mở form
+        DiscountJdialog d = new DiscountJdialog(this, true);
+        d.setUser(currentUser); // 👈 QUAN TRỌNG
+        d.setLocationRelativeTo(null);
+        d.setVisible(true);
+    }//GEN-LAST:event_btngiamgiaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -80,5 +198,14 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHoaDon;
+    private javax.swing.JButton btnKhachHang;
+    private javax.swing.JButton btnNhanVien;
+    private javax.swing.JButton btnbarber;
+    private javax.swing.JButton btngiamgia;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblUser;
     // End of variables declaration//GEN-END:variables
 }
