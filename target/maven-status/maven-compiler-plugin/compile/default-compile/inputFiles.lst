@@ -33,10 +33,12 @@ D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\rep
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\repository\Impl\PaymentRepositoryImpl.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\repository\Impl\ServiceCategoryRepositoryImpl.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\repository\Impl\ServiceRepositoryImpl.java
+D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\repository\Impl\StatisticalRepositoryImpl.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\AppointmentDetailService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\AppointmentService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\BarberService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\CustomerService.java
+D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\InvoiceService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\ServiceCategoryService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\service\ServiceService.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\util\TimeRange.java
@@ -53,4 +55,4 @@ D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\vie
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\view\dialog\CustomerView.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\view\dialog\EmployeeView.java
 D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\view\dialog\HistoryJdialog.java
-D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\view\dialog\StatisticalJdialog.java
+D:\hocTap\DuAn1\5AE_FPoly_Project_Phan2\5AE_Barber\src\main\java\poly\barber\view\dialog\StatisticalJdialog2.java
