@@ -28,41 +28,41 @@ import poly.barber.util.CustomCalendar;
 import poly.barber.util.XDialog;
 
 public class AppointmentJDialog extends javax.swing.JDialog implements AppointmentController {
-    
+
     DefaultTableModel modelCalendar = new DefaultTableModel();
     DefaultTableModel modelService = new DefaultTableModel();
     DefaultTableModel modelBarber = new DefaultTableModel();
     DefaultTableModel modelAppointment = new DefaultTableModel();
     DefaultTableModel modelAppointmentDetail = new DefaultTableModel();
-    
+
     DefaultComboBoxModel<String> comboWeek = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> comboBarber = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> comboBarberName = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> comboCategory = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> comboService = new DefaultComboBoxModel<>();
     DefaultComboBoxModel<String> comboTimeRange = new DefaultComboBoxModel<>();
-    
+
     AppointmentService serAppointment = new AppointmentService();
     AppointmentDetailService serAppointmentDetail = new AppointmentDetailService();
     ServiceService serService = new ServiceService();
     BarberService serBarber = new BarberService();
     ServiceCategoryService serServiceCategory = new ServiceCategoryService();
     CustomerService serCustomer = new CustomerService();
-    
+
     JPopupMenu popCalendar = new JPopupMenu();
     CustomCalendar cal = new CustomCalendar();
-    
+
     List<Object[]> dichVu = new ArrayList<>();
-    
+
     public AppointmentJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         open();
-        
+
         tblCalendar.setRowHeight(110);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -80,6 +80,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         rdoCheckIned = new javax.swing.JRadioButton();
         rdoPending = new javax.swing.JRadioButton();
         rdoAll = new javax.swing.JRadioButton();
+        rdoDoneStatus = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblCalendar = new javax.swing.JTable();
         cboBarber = new javax.swing.JComboBox<>();
@@ -89,6 +90,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblFilterByWeek = new javax.swing.JLabel();
         lblFind = new javax.swing.JLabel();
         lblFilterByStatus = new javax.swing.JLabel();
+        btnReloadTablleCalendar = new javax.swing.JButton();
         panelCrud = new javax.swing.JPanel();
         btnChooseCustomer = new javax.swing.JButton();
         btnChooseDate = new javax.swing.JButton();
@@ -142,7 +144,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         rdoIsDone = new javax.swing.JRadioButton();
         rdoCancelDetail = new javax.swing.JRadioButton();
         chkChooseAll = new javax.swing.JCheckBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
+        rdoDone = new javax.swing.JRadioButton();
+        chkToday = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("LỊCH");
@@ -159,7 +162,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
-        btnAddAppoint.setText("Thêm lịch");
+        btnAddAppoint.setText("THÊM LỊCH");
         btnAddAppoint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddAppointActionPerformed(evt);
@@ -184,7 +187,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
-        rdoCheckIned.setBackground(new java.awt.Color(153, 255, 153));
+        rdoCheckIned.setBackground(new java.awt.Color(204, 255, 255));
         btnGroupFilterStatus.add(rdoCheckIned);
         rdoCheckIned.setText("Đã đến");
         rdoCheckIned.addActionListener(new java.awt.event.ActionListener() {
@@ -210,16 +213,25 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        rdoDoneStatus.setBackground(new java.awt.Color(153, 255, 153));
+        btnGroupFilterStatus.add(rdoDoneStatus);
+        rdoDoneStatus.setText("Đã xong");
+        rdoDoneStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoDoneStatusActionPerformed(evt);
+            }
+        });
+
         tblCalendar.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "", "", "", "", "", ""
+                "", "", "", "", "", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -262,49 +274,67 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         lblFilterByStatus.setText("LỌC THEO TÌNH TRẠNG");
 
+        btnReloadTablleCalendar.setText("CẬP NHẬP LẠI BẢNG");
+        btnReloadTablleCalendar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReloadTablleCalendarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelCalendarLayout = new javax.swing.GroupLayout(panelCalendar);
         panelCalendar.setLayout(panelCalendarLayout);
         panelCalendarLayout.setHorizontalGroup(
             panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCalendarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelCalendarLayout.createSequentialGroup()
-                        .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFind)
-                            .addComponent(lblFilterByStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelCalendarLayout.createSequentialGroup()
-                                .addComponent(rdoAll, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoWaiting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txtFind, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnReloadTablleCalendar))
+                    .addGroup(panelCalendarLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1)
                             .addGroup(panelCalendarLayout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblFilterByBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblFind)
+                                    .addComponent(lblFilterByStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(cboBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelCalendarLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoCheckIned, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoCanceled, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoPending)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancelFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblFilterByWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cboWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnAddAppoint, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelCalendarLayout.createSequentialGroup()
+                                        .addComponent(rdoAll, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoWaiting, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txtFind, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(panelCalendarLayout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblFilterByBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cboBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelCalendarLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoCheckIned, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoDoneStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoCanceled, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoPending)))
+                                .addGroup(panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelCalendarLayout.createSequentialGroup()
+                                        .addGap(66, 66, 66)
+                                        .addComponent(btnCancelFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 272, Short.MAX_VALUE))
+                                    .addGroup(panelCalendarLayout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblFilterByWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cboWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnAddAppoint, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addGap(11, 11, 11))
         );
         panelCalendarLayout.setVerticalGroup(
             panelCalendarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,7 +357,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(btnCancelFilter)
                     .addComponent(rdoAll)
                     .addComponent(lblFilterByStatus)
-                    .addComponent(rdoPending))
+                    .addComponent(rdoPending)
+                    .addComponent(rdoDoneStatus)
+                    .addComponent(btnReloadTablleCalendar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -506,7 +538,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblTitle2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitle2.setText("QUẢN LÝ TRẠNG THÁI LỊCH");
 
-        rdoCheckIn.setBackground(new java.awt.Color(153, 255, 153));
+        rdoCheckIn.setBackground(new java.awt.Color(153, 255, 204));
         btnGroupAppointment.add(rdoCheckIn);
         rdoCheckIn.setText("Đã đến");
 
@@ -556,7 +588,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
-        rdoInProcess.setBackground(new java.awt.Color(255, 204, 153));
+        rdoInProcess.setBackground(new java.awt.Color(204, 255, 255));
         btnGroupDetail.add(rdoInProcess);
         rdoInProcess.setText("Đang làm");
 
@@ -575,8 +607,16 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         chkChooseAll.setText("Chọn tất cả");
 
-        btnGroupAppointment.add(jRadioButton1);
-        jRadioButton1.setText("Đã xong");
+        rdoDone.setBackground(new java.awt.Color(153, 255, 153));
+        btnGroupAppointment.add(rdoDone);
+        rdoDone.setText("Đã xong");
+
+        chkToday.setText("Lịch hôm nay");
+        chkToday.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkTodayActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelCrudLayout = new javax.swing.GroupLayout(panelCrud);
         panelCrud.setLayout(panelCrudLayout);
@@ -666,19 +706,22 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                         .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1)
                             .addGroup(panelCrudLayout.createSequentialGroup()
-                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
                                         .addComponent(rdoCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(rdoCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(rdoDone, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(20, 20, 20)
                                         .addComponent(btnChangeAppointmentStatus)
                                         .addGap(20, 20, 20)
                                         .addComponent(btnUpdateDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblTitle2))
+                                    .addGroup(panelCrudLayout.createSequentialGroup()
+                                        .addComponent(lblTitle2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(chkToday)))
                                 .addGap(18, 18, 18)
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
@@ -779,8 +822,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTitle2)
                     .addComponent(lblTitle3)
-                    .addComponent(chkChooseAll))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(chkChooseAll)
+                    .addComponent(chkToday))
+                .addGap(18, 18, 18)
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -794,8 +838,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(rdoInProcess)
                     .addComponent(rdoIsDone)
                     .addComponent(rdoCancelDetail)
-                    .addComponent(jRadioButton1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(rdoDone))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         Tabbs.addTab("ĐẶT LỊCH", panelCrud);
@@ -808,9 +852,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(Tabbs, javax.swing.GroupLayout.PREFERRED_SIZE, 873, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+            .addComponent(Tabbs)
         );
 
         pack();
@@ -822,9 +864,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void cboWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboWeekActionPerformed
         int index = cboWeek.getSelectedIndex();
-        
+
         setCalendarHeaderTables(serAppointment.getCalendarHeaderTables(index));
-        
+
         fillToTable(serAppointment.getAll());
     }//GEN-LAST:event_cboWeekActionPerformed
 
@@ -862,48 +904,44 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private void tblCalendarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCalendarMouseClicked
         int row = tblCalendar.getSelectedRow();
         int col = tblCalendar.getSelectedColumn();
+        Object cell = tblCalendar.getValueAt(row, col);
 
-        // 1. Kiểm tra: Không làm gì nếu click vào cột Time (cột 0) hoặc vùng trống
         if (col <= 0 || row == -1) {
             return;
         }
 
-        // Thực hiện khi người dùng Double Click (nhấn 2 lần) để tránh bấm nhầm
+        if (cell == null || cell.equals("")) {
+            XDialog.alert("Ô ko có lịch!");
+            return;
+        }
+
         if (evt.getClickCount() == 2) {
             try {
-                // 2. Lấy Giờ từ cột đầu tiên (Ví dụ: "08:00")
-                // Thêm ":00" để đúng định dạng HH:mm:ss cho SQL Time
                 String timeStr = tblCalendar.getValueAt(row, 0).toString() + ":00";
                 java.sql.Time targetTime = java.sql.Time.valueOf(timeStr);
 
-                // 3. Lấy Ngày từ tiêu đề cột (Định dạng của bạn: "Th ... - dd/MM/yyyy")
                 String header = tblCalendar.getColumnName(col);
-                // Cắt chuỗi lấy phần sau dấu "-"
                 String dateStr = header.substring(header.lastIndexOf("-") + 1).trim();
 
-                // Chuyển chuỗi dd/MM/yyyy sang java.sql.Date
                 java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
                 java.util.Date parsedDate = sdf.parse(dateStr);
                 java.sql.Date targetDate = new java.sql.Date(parsedDate.getTime());
 
-                // 4. Gọi Service để lấy danh sách HTML chi tiết
-                // Lưu ý: Thay 'appointmentService' bằng tên biến service bạn đã khai báo
                 List<String> details = serAppointment.getAppointmentHtmlDetails(targetDate, targetTime);
 
-                // 5. Hiển thị thông báo
                 if (details != null && !details.isEmpty()) {
                     Object[] message = details.toArray();
-                    javax.swing.JOptionPane.showMessageDialog(this,
+                    JOptionPane.showMessageDialog(this,
                             message,
                             "Chi tiết lịch hẹn [" + dateStr + " " + timeStr.substring(0, 5) + "]",
-                            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Không có lịch hẹn trong khung giờ này.");
+                    JOptionPane.showMessageDialog(this, "Không có lịch hẹn trong khung giờ này.");
                 }
-                
+
             } catch (Exception ex) {
                 ex.printStackTrace();
-                javax.swing.JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi lấy chi tiết: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Có lỗi xảy ra khi lấy chi tiết: " + ex.getMessage());
             }
         }
     }//GEN-LAST:event_tblCalendarMouseClicked
@@ -927,25 +965,25 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 String selectedTime = cboTimeRange.getSelectedItem().toString();
                 String selectedDate = txtAppointmentDate.getText();
                 String selectedCategory = cboCategory.getSelectedItem().toString();
-                
+
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-                
+
                 LocalDate date = LocalDate.parse(selectedDate, dateFormatter);
                 LocalTime time = LocalTime.parse(selectedTime, timeFormatter);
-                
+
                 modelBarber = (DefaultTableModel) tblBarber.getModel();
                 modelBarber.setRowCount(0);
-                
+
                 List<Barber> lst = serBarber.getListAvailableBarber(date, time, selectedCategory);
-                
+
                 for (Barber b : lst) {
                     modelBarber.addRow(new Object[]{
                         b.getLastname() + " " + b.getFirstname(),
                         serBarber.getPositionNameByID(b.getPositionID())
                     });
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -959,7 +997,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 addAppAndAppDetails();
                 resetForm();
                 fillToTable(serAppointment.getAll());
-                fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting());
+                fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
             } catch (Exception e) {
                 XDialog.alert("Lỗi hệ thống: Không thể lưu lịch hẹn.");
                 e.printStackTrace();
@@ -977,15 +1015,15 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnChooseBarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseBarberActionPerformed
         int index = tblBarber.getSelectedRow();
-        
+
         if (index < 0) {
             XDialog.alert("Chưa chọn dòng trên bảng trên!");
             return;
         }
-        
+
         String barberName = tblBarber.getValueAt(index, 0) + "";
         String barberPositionName = tblBarber.getValueAt(index, 1) + "";
-        
+
         txtBarberName.setText(barberName);
         txtBarberPosition.setText(barberPositionName);
     }//GEN-LAST:event_btnChooseBarberActionPerformed
@@ -1016,7 +1054,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     int lastDuration = Integer.parseInt(lastRow[4].toString());
                     startTime = lastStartTime.plusMinutes(lastDuration);
                 }
-                
+
                 Object[] row = {
                     serviceID + "",
                     serviceCategoryName,
@@ -1027,7 +1065,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     servicePrice + "",
                     startTime.toString() // THÊM CỘT GIỜ BẮT ĐẦU VÀO ĐÂY
                 };
-                
+
                 dichVu.add(row);
                 fillToServiceTable(dichVu);
                 calculateTotalAmountAndDuration();
@@ -1047,7 +1085,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void cboCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoryActionPerformed
         Object selectedItem = cboCategory.getSelectedItem();
-        
+
         if (selectedItem != null || !selectedItem.toString().isEmpty()) {
             fillToComboService();
         } else {
@@ -1057,23 +1095,23 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnChooseDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseDateActionPerformed
         popCalendar.show(btnChooseDate, 0, btnChooseDate.getHeight());
-        
+
         cal.setOnDateSelected(date -> {
             txtAppointmentDate.setText(date);
-            
+
             fillToComboTimeRange();
-            
+
             popCalendar.setVisible(false);
         });
     }//GEN-LAST:event_btnChooseDateActionPerformed
 
     private void btnChooseCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseCustomerActionPerformed
         java.awt.Frame parentFrame = (java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this);
-        
+
         CustomerView cMJD = new CustomerView(parentFrame, true);
-        
+
         cMJD.setVisible(true);
-        
+
         Customer c = cMJD.getSelectedCustomer();
         if (c != null) {
             setCustomerToText(c);
@@ -1082,15 +1120,15 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnUpdateDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDetailsActionPerformed
         int index = tblAppointment.getSelectedRow();
-        
+
         if (index == -1) {
             XDialog.alert("Chưa chọn dòng ở bảng trên!");
             return;
         }
-        
+
         int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
         String status = tblAppointment.getValueAt(index, 4) + "";
-        
+
         if (status.trim().equalsIgnoreCase("Đã đến")) {
             fillToTableAppDetail(serAppointmentDetail.getAllByAppID(appointmentID));
         } else {
@@ -1104,32 +1142,43 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnChangeAppointmentStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeAppointmentStatusActionPerformed
         int index = tblAppointment.getSelectedRow();
-        
+
         if (index == -1) {
             XDialog.alert("Chưa chọn dòng ở bảng trên!");
             return;
         }
-        
-        if (!rdoCheckIn.isSelected() && !rdoCancel.isSelected()) {
+
+        if (!rdoCheckIn.isSelected() && !rdoCancel.isSelected() && !rdoDone.isSelected()) {
             XDialog.alert("Chưa chọn trạng thái!");
             return;
         }
-        
+
         try {
             if (rdoCheckIn.isSelected()) {
                 boolean answer = XDialog.confirm("Bạn có chắc thay đổi trạng thái lịch thành ĐÃ ĐẾN không?", "Thay đổi trạng thái lịch");
                 if (answer) {
                     int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
                     serAppointment.updateStatus(appointmentID, 2);
-                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting());
+                    // Đã đến
+                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
                 }
             } else if (rdoCancel.isSelected()) {
                 boolean answer = XDialog.confirm("Bạn có chắc thay đổi trạng thái lịch thành HỦY LỊCH không?", "Thay đổi trạng thái lịch");
                 if (answer) {
                     int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
                     serAppointment.updateStatus(appointmentID, 3);
+                    // Hủy lịch
                     serAppointmentDetail.updateStatusByAppID(4, appointmentID);
-                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting());
+                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+                }
+            } else if (rdoDone.isSelected()) {
+                boolean answer = XDialog.confirm("Bạn có chắc thay đổi trạng thái lịch thành ĐÃ XONG không?", "Thay đổi trạng thái lịch");
+                if (answer) {
+                    int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
+                    serAppointment.updateStatus(appointmentID, 5);
+                    // Đã xong
+                    serAppointmentDetail.updateStatusByAppID(2, appointmentID);
+                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
                 }
             }
         } catch (Exception e) {
@@ -1139,17 +1188,17 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnChangeDetailStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeDetailStatusActionPerformed
         int index = tblAppointmentDetail.getSelectedRow();
-        
-        if(tblAppointmentDetail.getRowCount() <= 0) {
+
+        if (tblAppointmentDetail.getRowCount() <= 0) {
             XDialog.alert("Chưa chọn lịch để sửa chi tiết!");
             return;
         }
-        
+
         if (index == -1 && !chkChooseAll.isSelected()) {
             XDialog.alert("Chưa chọn dòng ở bảng trên hoặc chưa tích 'Chọn tất cả'!");
             return;
         }
-        
+
         try {
             int[] rowsToProcess;
             if (chkChooseAll.isSelected()) {
@@ -1160,12 +1209,12 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             } else {
                 rowsToProcess = new int[]{index};
             }
-            
+
             if (!rdoInProcess.isSelected() && !rdoIsDone.isSelected() && !rdoCancelDetail.isSelected()) {
                 XDialog.alert("Chưa chọn trạng thái!");
                 return;
             }
-            
+
             String message = "";
             int status = 0;
             if (rdoInProcess.isSelected()) {
@@ -1178,27 +1227,48 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 message = "Bạn có chắc thay đổi trạng thái thành HỦY DỊCH VỤ?";
                 status = 4;
             }
-            
+
             if (XDialog.confirm(message, "Xác nhận thay đổi")) {
                 for (int row : rowsToProcess) {
                     String serviceName = tblAppointmentDetail.getValueAt(row, 0) + "";
                     int serviceID = serService.getOneByName(serviceName.trim()).getServiceID();
                     int appointmentID = Integer.parseInt(tblAppointmentDetail.getValueAt(row, 1) + "");
-                    
+
                     serAppointmentDetail.updateStatus(status, appointmentID, serviceID);
                 }
-                
+
                 int currentAppID = Integer.parseInt(tblAppointmentDetail.getValueAt(rowsToProcess[0], 1) + "");
                 fillToTableAppDetail(serAppointmentDetail.getAllByAppID(currentAppID));
                 XDialog.alert("Cập nhật thành công " + rowsToProcess.length + " dòng!");
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             XDialog.alert("Có lỗi xảy ra: " + e.getMessage());
         }
     }//GEN-LAST:event_btnChangeDetailStatusActionPerformed
-    
+
+    private void rdoDoneStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDoneStatusActionPerformed
+        fillToTable(serAppointment.getAll());
+    }//GEN-LAST:event_rdoDoneStatusActionPerformed
+
+    private void btnReloadTablleCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadTablleCalendarActionPerformed
+        cboWeek.setSelectedIndex(1);
+        System.out.println("Trước lệnh");
+        refreshCalendarOnTabChange();
+        System.out.println("Sau lệnh");
+        fillToTable(serAppointment.getAll());
+
+    }//GEN-LAST:event_btnReloadTablleCalendarActionPerformed
+
+    private void chkTodayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodayActionPerformed
+        if (chkToday.isSelected()) {
+            fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+        } else {
+            fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(false));
+        }
+    }//GEN-LAST:event_chkTodayActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -1213,36 +1283,36 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
     }
-    
+
     @Override
     public void open() {
         this.setLocationRelativeTo(null);
-        
+
         Font font = new Font("Segoe UI", Font.PLAIN, 14);
         txtNote.setFont(font);
-        
+
         comboWeek = (DefaultComboBoxModel<String>) cboWeek.getModel();
         comboBarber = (DefaultComboBoxModel<String>) cboBarber.getModel();
         comboCategory = (DefaultComboBoxModel<String>) cboCategory.getModel();
         comboService = (DefaultComboBoxModel<String>) cboService.getModel();
         comboTimeRange = (DefaultComboBoxModel<String>) cboTimeRange.getModel();
-        
+
         fillToComboWeek();
         fillToComboBarber();
         fillToComboCategory();
-        
+        // App lịch
         cal.setOnDateSelected(selectedDateStr -> {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate selectedDate = LocalDate.parse(selectedDateStr, formatter);
-                
+
                 LocalDate today = LocalDate.now();
                 LocalTime now = LocalTime.now();
                 LocalTime end = LocalTime.of(19, 30);
                 long daysBetween = ChronoUnit.DAYS.between(today, selectedDate);
-                
+
                 boolean isToday = selectedDate.isEqual(today);
-                
+
                 if (selectedDate.isBefore(today)) {
                     XDialog.alert("Ngày hẹn không được trước hôm nay!");
                     txtAppointmentDate.setText("");
@@ -1258,41 +1328,41 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             popCalendar.setVisible(false);   // Đóng lịch
         });
-        
+        // Phần đóng lịch
         popCalendar.add(cal);
-        
+        // Set tuần này
         cboWeek.setSelectedIndex(1);
-        
+        // set header của lịch
         this.setCalendarHeaderTables(serAppointment.getCalendarHeaderTables(1));
-        
+        // gán model cho bảng lịch hẹn
         modelAppointment = (DefaultTableModel) tblAppointment.getModel();
-        
-        fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting());
-        
+        // 
+        fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+
         fillToTable(serAppointment.getAll());
     }
-    
+
     public void setCalendarHeaderTables(List<String> lst) {
         String[] columns = lst.toArray(new String[0]);
-        
+
         modelCalendar = (DefaultTableModel) tblCalendar.getModel();
-        
+
         modelCalendar.setColumnIdentifiers(columns);
     }
-    
+
     @Override
     public void setForm(Appointment entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public Appointment getForm() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void fillToTable(List<Appointment> lst) {
         int week = cboWeek.getSelectedIndex();
@@ -1303,112 +1373,116 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             status = 2; // Đã đến
         } else if (rdoCanceled.isSelected()) {
             status = 3; // Đã hủy
+        } else if (rdoDoneStatus.isSelected()) {
+            status = 5; // Đã xong
+        } else if (rdoPending.isSelected()) {
+            status = 4; // Đã xong
         } else {
             status = 0; // Tất cả
         }
-        
+
         Object selectedBarber = cboBarber.getSelectedItem();
         String barber = (selectedBarber != null) ? selectedBarber.toString().trim() : "";
-        
+
         if (barber.equals(" ") || barber.isEmpty()) {
             barber = "";
         }
-        
+
         String customer = txtFind.getText().trim();
-        
+
         List<Object[]> data = serAppointment.getUniversalCalendar(week, status, barber, customer);
-        
+
         modelCalendar.setRowCount(0);
         for (Object[] rows : data) {
             modelCalendar.addRow(rows);
         }
-        
+
     }
-    
+
     public void fillToComboWeek() {
         comboWeek.removeAllElements();
-        
+
         String[] items = {"lịch tuần trước", "lịch tuần này", "lịch tuần sau"};
-        
+
         for (String i : items) {
             comboWeek.addElement(i);
         }
-        
+
     }
-    
+
     public void fillToComboBarber() {
         comboBarber.removeAllElements();
-        
+
         List<String> items = serBarber.fillToComboBarberName(serBarber.getAll());
-        
+
         for (String item : items) {
             comboBarber.addElement(item);
         }
     }
-    
+
     public void fillToComboBarberName() {
         comboBarberName.removeAllElements();
-        
+
         List<String> items = serBarber.fillToComboBarberName(serBarber.getAll());
-        
+
         for (String item : items) {
             comboBarberName.addElement(item);
         }
     }
-    
+
     public void fillToComboCategory() {
         comboCategory.removeAllElements();
-        
+
         List<String> items = serServiceCategory.fillToComboServiceCategoryName(serServiceCategory.getAll());
-        
+
         for (String i : items) {
             comboCategory.addElement(i);
         }
     }
-    
+
     public void fillToComboService() {
         comboService.removeAllElements();
-        
+
         String servciceCategoryName = cboCategory.getSelectedItem().toString();
-        
+
         int serviceCatID = serServiceCategory.getOneByName(servciceCategoryName).getServiceCategoryID();
-        
+
         List<String> items = serService.fillToComboServiceName(serService.getOneByCat(serviceCatID));
-        
+
         for (String i : items) {
             comboService.addElement(i);
         }
     }
-    
+
     public void fillToComboTimeRange() {
         comboTimeRange.removeAllElements();
         String dateText = txtAppointmentDate.getText();
-        
+
         if (dateText == null || dateText.trim().isEmpty()) {
             return;
         }
-        
+
         try {
             LocalDate today = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate selectedDate = LocalDate.parse(dateText, formatter);
-            
+
             boolean isToday = selectedDate.isEqual(today);
-            
+
             List<String> items = serAppointment.fillToComboTimeRange(isToday);
-            
+
             for (String i : items) {
                 comboTimeRange.addElement(i);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public void fillToBarberTable(List<Barber> lst) {
         modelBarber.setRowCount(0);
-        
+
         for (Barber b : lst) {
             modelBarber.addRow(new Object[]{
                 b.getFirstname() + " " + b.getLastname(),
@@ -1416,21 +1490,103 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             });
         }
     }
-    
+
     public void fillToServiceTable(List<Object[]> lst) {
         modelService.setRowCount(0);
         modelService = (DefaultTableModel) tblSercive.getModel();
-        
+
         for (Object[] o : dichVu) {
             modelService.addRow(o);
         }
     }
-    
+
+    private String getAppointmentStatusText(int status) {
+        switch (status) {
+            case 1:
+                return "Chưa đến";
+            case 2:
+                return "Đã đến";
+            case 3:
+                return "Đã hủy";
+            case 4:
+                return "Đang chờ";
+            case 5:
+                return "Đã xong";
+            default:
+                return "Khác";
+        }
+    }
+
+    private String getAppointmentDetailStatusText(int status) {
+        switch (status) {
+            case 0:
+                return "Chờ";
+            case 1:
+                return "Đang làm";
+            case 2:
+                return "Xong";
+            case 3:
+                return "Tạm dừng";
+            case 4:
+                return "Hủy";
+            default:
+                return "Khác";
+        }
+    }
+
+    private void fillToTableAppointment(List<Appointment> lst) {
+        modelAppointment.setRowCount(0);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        for (Appointment a : lst) {
+            LocalDateTime dateTime = a.getAppointmentDateTime();
+            LocalTime time = dateTime.toLocalTime();
+
+//            String formatterTime = time.format(formatter);
+            String status = getAppointmentStatusText(a.getStatus());
+
+            String customerName = serCustomer.getOne(a.getCustomerID()).getFullname();
+            String customerPhone = serCustomer.getOne(a.getCustomerID()).getPhone();
+
+            modelAppointment.addRow(new Object[]{
+                a.getAppointmentID(),
+                customerName,
+                customerPhone,
+                time,
+                status
+            });
+        }
+    }
+
+    private void fillToTableAppDetail(List<AppointmentDetail> lst) {
+        modelAppointmentDetail.setRowCount(0);
+
+        modelAppointmentDetail = (DefaultTableModel) tblAppointmentDetail.getModel();
+
+        for (AppointmentDetail ad : lst) {
+            String serviceName = serService.getOne(ad.getServiceID()).getServiceName();
+            BigDecimal price = new BigDecimal(ad.getPrice() + "");
+            String barberName = serBarber.getOne(ad.getBarberID()).getLastname() + " " + serBarber.getOne(ad.getBarberID()).getFirstname();
+            String status = getAppointmentDetailStatusText(ad.getStatus());
+
+            modelAppointmentDetail.addRow(new Object[]{
+                serviceName,
+                ad.getAppointmentID(),
+                ad.getDuration(),
+                price,
+                ad.getQuantity(),
+                barberName,
+                status,
+                false
+            });
+        }
+    }
+
     @Override
     public void edit() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void clear() {
         cboCategory.setSelectedIndex(0);
@@ -1439,9 +1595,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         txtBarberPosition.setText("");
         txtQuantity.setText("");
         modelBarber.setRowCount(0);
-        
+
     }
-    
+
     public void resetForm() {
         txtTotalDuration.setText("");
         txtTotalPrice.setText("");
@@ -1453,105 +1609,105 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         clear();
         dichVu.clear();
     }
-    
+
     @Override
     public void setEditable(boolean editable) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void checkAll() {
         this.setCheckedAll(true);
     }
-    
+
     @Override
     public void uncheckAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     private void setCheckedAll(boolean b) {
         for (int i = 0; i < tblAppointmentDetail.getRowCount(); i++) {
             tblAppointmentDetail.setValueAt(b, i, 7);
         }
     }
-    
+
     @Override
     public void deleteCheckedItems() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveFirst() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void movePrevious() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveNext() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveLast() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveTo(int rowIndex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     private void setCustomerToText(Customer c) {
         if (c == null) {
             return;
         }
-        
+
         txtCustomerName.setText(c.getFullname());
         txtCustomerPhone.setText(c.getPhone());
-        
+
         XDialog.alert("Đã chọn khách hàng: " + c.getFullname());
     }
-    
+
     public void calculateTotalAmountAndDuration() {
         int totalDuration = 0;
         BigDecimal totalPrice = BigDecimal.ZERO;
-        
+
         for (int i = 0; i < tblSercive.getRowCount(); i++) {
             try {
                 String durationStr = tblSercive.getValueAt(i, 4).toString();
                 String quantityStr = tblSercive.getValueAt(i, 5).toString();
                 String priceStr = tblSercive.getValueAt(i, 6).toString();
-                
+
                 int duration = Integer.parseInt(durationStr);
                 int quantity = Integer.parseInt(quantityStr);
                 BigDecimal price = new BigDecimal(priceStr);
-                
+
                 totalDuration += duration;
                 totalPrice = totalPrice.add(price.multiply(new BigDecimal(quantity)));
-                
+
             } catch (Exception e) {
                 System.out.println("Lỗi tại dòng: " + i + ":" + e.getMessage());
                 e.printStackTrace();
             }
         }
-        
+
         txtTotalDuration.setText(totalDuration + "");
         txtTotalPrice.setText(totalPrice.toString());
     }
-    
+
     public void addAppAndAppDetails() {
         try {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-            
+
             LocalDate appointmentDate = LocalDate.parse(txtAppointmentDate.getText(), dateFormatter);
             LocalTime appointmentTime = LocalTime.parse(cboTimeRange.getSelectedItem().toString(), timeFormatter);
             LocalDateTime dateTime = LocalDateTime.of(appointmentDate, appointmentTime);
-            
+
             var customer = serCustomer.getOneByNameAndPhone(txtCustomerName.getText(), txtCustomerPhone.getText());
             if (customer == null) {
                 XDialog.alert("Không tìm thấy khách hàng!");
@@ -1559,119 +1715,119 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
             int customerID = customer.getCustomerID();
             int totalDuration = Integer.parseInt(txtTotalDuration.getText());
-            
+
             if (serAppointment.isConflict(customerID, appointmentDate, appointmentTime, totalDuration)) {
                 XDialog.alert("Khách hàng này đã có một lịch hẹn khác trong khung giờ này!", "Cảnh báo trùng lịch");
                 return;
             }
-            
+
             Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 1, customerID);
             Appointment apReturn = serAppointment.addAndReturn(apNew);
-            
+
             List<AppointmentDetail> list = new ArrayList<>();
             for (int i = 0; i < tblSercive.getRowCount(); i++) {
                 int serviceID = serService.getOneByName(tblSercive.getValueAt(i, 2).toString()).getServiceID();
                 int appointmentID = apReturn.getAppointmentID();
                 int duration = Integer.parseInt(tblSercive.getValueAt(i, 4).toString());
-                
+
                 Object valPrice = tblSercive.getValueAt(i, 6);
                 BigDecimal price = (valPrice != null) ? new BigDecimal(valPrice.toString()) : BigDecimal.ZERO;
                 int quantity = Integer.parseInt(tblSercive.getValueAt(i, 5).toString());
-                
+
                 String barberName = tblSercive.getValueAt(i, 3).toString();
                 int barberID = serBarber.getOneByName(barberName).getBarberID();
-                
+
                 list.add(new AppointmentDetail(serviceID, appointmentID, duration, price, quantity, barberID));
             }
-            
+
             for (AppointmentDetail aD : list) {
                 serAppointmentDetail.add(aD);
             }
-            
+
             XDialog.alert("Lưu lịch hẹn thành công!");
-            
+
         } catch (Exception e) {
             XDialog.alert("Có lỗi xảy ra: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
+
     private boolean checkValidateGetListBarber() {
         if (txtAppointmentDate.getText().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn ngày!");
             txtAppointmentDate.requestFocus();
             return false;
         }
-        
+
         if (cboTimeRange.getSelectedItem() == null
                 || cboTimeRange.getSelectedItem().toString().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn giờ!");
             cboTimeRange.requestFocus();
             return false;
         }
-        
+
         if (cboCategory.getSelectedItem() == null
                 || cboCategory.getSelectedItem().toString().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn loại dịch vụ!");
             cboCategory.requestFocus();
             return false;
         }
-        
+
         return true;
-        
+
     }
-    
+
     private boolean checkValidateAddService() {
         if (txtAppointmentDate.getText().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn ngày!");
             txtAppointmentDate.requestFocus();
             return false;
         }
-        
+
         if (cboCategory.getSelectedItem() == null
                 || cboCategory.getSelectedItem().toString().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn loại dịch vụ!");
             cboCategory.requestFocus();
             return false;
         }
-        
+
         if (cboService.getSelectedItem() == null
                 || cboService.getSelectedItem().toString().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn dịch vụ!");
             cboService.requestFocus();
             return false;
         }
-        
+
         if (cboTimeRange.getSelectedItem() == null
                 || cboTimeRange.getSelectedItem().toString().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn giờ!");
             cboTimeRange.requestFocus();
             return false;
         }
-        
+
         if (txtBarberName.getText().trim().isEmpty() || txtBarberPosition.getText().trim().isEmpty()) {
             XDialog.alert("Vui lòng chọn barber!");
             btnChooseBarber.requestFocus();
             return false;
         }
-        
+
         if (txtQuantity.getText().trim().isEmpty()) {
             XDialog.alert("Vui lòng nhập số lượng!");
             txtQuantity.requestFocus();
             return false;
         }
-        
+
         return true;
     }
-    
+
     private boolean checkEcxitingService() {
         Object selected = cboService.getSelectedItem();
         if (selected == null) {
             return false;
         }
-        
+
         String serviceName = selected.toString();
-        
+
         for (Object[] o : dichVu) {
             if (o[2] == null || o[2].toString().equalsIgnoreCase(serviceName)) {
                 XDialog.alert("Đã có dịch vụ này!");
@@ -1683,6 +1839,31 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         }
         return true;
+    }
+
+    private void refreshCalendarOnTabChange() {
+        List<Appointment> lst = serAppointment.getAll();
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        int count = 0;
+
+        for (Appointment a : lst) {
+            LocalDate dateApp = a.getAppointmentDateTime().toLocalDate();
+            LocalTime timeApp = a.getAppointmentDateTime().toLocalTime();
+
+            if (a.getStatus() == 1 && dateApp.equals(today)) {
+                if (timeApp.isBefore(now)) {
+                    serAppointment.updateStatus(a.getAppointmentID(), 4);
+                    count++;
+                }
+            }
+        }
+
+        fillToTable(serAppointment.getAll());
+
+        if (count > 0) {
+            XDialog.alert("Đã tự động chuyển " + count + " lịch sang trạng thái 'Đang xử lý'!");
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1702,6 +1883,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.ButtonGroup btnGroupAppointment;
     private javax.swing.ButtonGroup btnGroupDetail;
     private javax.swing.ButtonGroup btnGroupFilterStatus;
+    private javax.swing.JButton btnReloadTablleCalendar;
     private javax.swing.JButton btnUpdateDetails;
     private javax.swing.JComboBox<String> cboBarber;
     private javax.swing.JComboBox<String> cboCategory;
@@ -1709,7 +1891,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.JComboBox<String> cboTimeRange;
     private javax.swing.JComboBox<String> cboWeek;
     private javax.swing.JCheckBox chkChooseAll;
-    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JCheckBox chkToday;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1743,6 +1925,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.JRadioButton rdoCanceled;
     private javax.swing.JRadioButton rdoCheckIn;
     private javax.swing.JRadioButton rdoCheckIned;
+    private javax.swing.JRadioButton rdoDone;
+    private javax.swing.JRadioButton rdoDoneStatus;
     private javax.swing.JRadioButton rdoInProcess;
     private javax.swing.JRadioButton rdoIsDone;
     private javax.swing.JRadioButton rdoPending;
@@ -1764,83 +1948,4 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private javax.swing.JTextField txtTotalPrice;
     // End of variables declaration//GEN-END:variables
 
-    private String getAppointmentStatusText(int status) {
-        switch (status) {
-            case 1:
-                return "Chưa đến";
-            case 2:
-                return "Đã đến";
-            case 3:
-                return "Đã hủy";
-            case 4:
-                return "Đang chờ";
-            default:
-                return "Khác";
-        }
-    }
-    
-    private String getAppointmentDetailStatusText(int status) {
-        switch (status) {
-            case 0:
-                return "Chờ";
-            case 1:
-                return "Đang làm";
-            case 2:
-                return "Xong";
-            case 3:
-                return "Tạm dừng";
-            case 4:
-                return "Hủy";
-            default:
-                return "Khác";
-        }
-    }
-    
-    private void fillToTableAppointment(List<Appointment> lst) {
-        modelAppointment.setRowCount(0);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        
-        for (Appointment a : lst) {
-            LocalDateTime dateTime = a.getAppointmentDateTime();
-            LocalTime time = dateTime.toLocalTime();
-            
-            String formatterTime = time.format(formatter);
-            String status = getAppointmentStatusText(a.getStatus());
-            
-            String customerName = serCustomer.getOne(a.getCustomerID()).getFullname();
-            String customerPhone = serCustomer.getOne(a.getCustomerID()).getPhone();
-            
-            modelAppointment.addRow(new Object[]{
-                a.getAppointmentID(),
-                customerName,
-                customerPhone,
-                time,
-                status
-            });
-        }
-    }
-    
-    private void fillToTableAppDetail(List<AppointmentDetail> lst) {
-        modelAppointmentDetail.setRowCount(0);
-        
-        modelAppointmentDetail = (DefaultTableModel) tblAppointmentDetail.getModel();
-        
-        for (AppointmentDetail ad : lst) {
-            String serviceName = serService.getOne(ad.getServiceID()).getServiceName();
-            BigDecimal price = new BigDecimal(ad.getPrice() + "");
-            String barberName = serBarber.getOne(ad.getBarberID()).getLastname() + " " + serBarber.getOne(ad.getBarberID()).getFirstname();
-            String status = getAppointmentDetailStatusText(ad.getStatus());
-            
-            modelAppointmentDetail.addRow(new Object[]{
-                serviceName,
-                ad.getAppointmentID(),
-                ad.getDuration(),
-                price,
-                ad.getQuantity(),
-                barberName,
-                status,
-                false
-            });
-        }
-    }
 }
