@@ -4,8 +4,12 @@
  */
 package poly.barber.view.dialog;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Appointment;
 import poly.barber.entity.Customer;
@@ -17,6 +21,7 @@ import poly.barber.repository.Impl.CustomerImpl;
 import poly.barber.repository.Impl.EmployeeImpl;
 import poly.barber.repository.Impl.InvoiceRepositoryImpl;
 import poly.barber.repository.Impl.PaymentRepositoryImpl;
+import poly.barber.service.InvoiceService;
 import poly.barber.util.XQuery;
 
 /**
@@ -25,6 +30,7 @@ import poly.barber.util.XQuery;
  */
 public class HistoryJdialog extends javax.swing.JDialog {
 
+    private InvoiceService invoiceSer = new InvoiceService();
     private PaymentRepositoryImpl paymentRepo = new PaymentRepositoryImpl();
     private EmployeeImpl employeeRepo = new EmployeeImpl();
     private InvoiceRepositoryImpl invoiceRepo = new InvoiceRepositoryImpl();
@@ -39,6 +45,16 @@ public class HistoryJdialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+
+        // Đổi ngôn ngữ JDateChooser sang tiếng Việt
+        Locale localeVN = new Locale("vi", "VN");
+        jdTuNgay.setLocale(localeVN);
+        jdDenNgay.setLocale(localeVN);
+
+        // Nếu muốn hiển thị định dạng ngày kiểu Việt Nam (dd/MM/yyyy)
+        jdTuNgay.setDateFormatString("dd/MM/yyyy");
+        jdDenNgay.setDateFormatString("dd/MM/yyyy");
+
         dtm = (DefaultTableModel) tblLichSu.getModel();
         loadToTable(invoiceRepo.getAll());
         loadToComboboxNhanVien(employeeRepo.getAll());
@@ -59,12 +75,13 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         cboNhanVien = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnLoc = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLichSu = new javax.swing.JTable();
+        jdTuNgay = new com.toedter.calendar.JDateChooser();
+        jdDenNgay = new com.toedter.calendar.JDateChooser();
+        btnBoLoc = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDanhSachDV = new javax.swing.JTable();
@@ -108,7 +125,12 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jLabel3.setText("Đến Ngày");
 
-        jButton1.setText("Tìm Kiếm");
+        btnLoc.setText("Tìm Kiếm");
+        btnLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocActionPerformed(evt);
+            }
+        });
 
         tblLichSu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -133,6 +155,13 @@ public class HistoryJdialog extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tblLichSu);
 
+        btnBoLoc.setText("Bỏ Lọc");
+        btnBoLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBoLocActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -145,30 +174,35 @@ public class HistoryJdialog extends javax.swing.JDialog {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(cboNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(164, 164, 164)
+                        .addGap(96, 96, 96)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jdTuNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jdDenNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnBoLoc)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnLoc)
+                        .addGap(0, 35, Short.MAX_VALUE)))
                 .addGap(32, 32, 32))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jdTuNgay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cboNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLoc)
+                        .addComponent(btnBoLoc))
+                    .addComponent(jdDenNgay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
                 .addContainerGap())
@@ -261,18 +295,16 @@ public class HistoryJdialog extends javax.swing.JDialog {
                                     .addComponent(txtMaHoaDon, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel7))
-                                        .addGap(24, 24, 24))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addGap(3, 3, 3)))
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel7))
+                                .addGap(24, 24, 24)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPhuongThucThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtTimeCheckIn, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPhuongThucThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -325,13 +357,13 @@ public class HistoryJdialog extends javax.swing.JDialog {
                     .addComponent(jLabel11)
                     .addComponent(txtNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(txtPhuongThucThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(78, 78, 78)
+                    .addComponent(txtPhuongThucThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(txtThanhTien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(106, 106, 106)
                 .addComponent(jLabel12)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -347,10 +379,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 993, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 998, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 454, Short.MAX_VALUE)
+                        .addGap(0, 459, Short.MAX_VALUE)
                         .addComponent(jLabel14)
                         .addGap(409, 409, 409))))
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -394,21 +426,35 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
     private void cboNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNhanVienActionPerformed
         Object selectedItem = cboNhanVien.getSelectedItem();
-    if (selectedItem == null) return;
+        if (selectedItem == null) {
+            return;
+        }
 
-    String selectedName = selectedItem.toString();
-    List<Invoice> list;
+        String selectedName = selectedItem.toString();
+        List<Invoice> list;
 
-    if (selectedName.equals("Tất Cả")) {
-        list = invoiceRepo.getAll(); // Giả sử invoiceRepo là thực thể của InvoiceRepositoryImpl
-    } else {
-        // Gọi hàm lọc theo tên đã sửa SQL ở Bước 1
-        list = invoiceRepo.getByEmployeeName(selectedName);
-    }
+        if (selectedName.equals("Tất Cả")) {
+            list = invoiceRepo.getAll(); // Giả sử invoiceRepo là thực thể của InvoiceRepositoryImpl
+        } else {
+            // Gọi hàm lọc theo tên đã sửa SQL ở Bước 1
+            list = invoiceRepo.getByEmployeeName(selectedName);
+        }
 
-    // Dùng hàm bạn đã viết để đổ dữ liệu lên bảng
-    loadToTable(list);
+        // Dùng hàm bạn đã viết để đổ dữ liệu lên bảng
+        loadToTable(list);
     }//GEN-LAST:event_cboNhanVienActionPerformed
+
+    private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
+        searchByDate();
+    }//GEN-LAST:event_btnLocActionPerformed
+
+    private void btnBoLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoLocActionPerformed
+        loadToTable(invoiceRepo.getAll());
+        cboNhanVien.setSelectedIndex(0);
+
+        ((JTextField) jdTuNgay.getDateEditor().getUiComponent()).setText("");
+        ((JTextField) jdDenNgay.getDateEditor().getUiComponent()).setText("");
+    }//GEN-LAST:event_btnBoLocActionPerformed
 
     /**
      * @param args the command line arguments
@@ -453,9 +499,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBoLoc;
+    private javax.swing.JButton btnLoc;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboNhanVien;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -476,8 +523,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private com.toedter.calendar.JDateChooser jdDenNgay;
+    private com.toedter.calendar.JDateChooser jdTuNgay;
     private javax.swing.JRadioButton rdoDaHuy;
     private javax.swing.JRadioButton rdoDaThanhToan;
     private javax.swing.JTabbedPane tabInvoiceDetail;
@@ -497,10 +544,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private void loadToTable(List<Invoice> all) {
         dtm.setRowCount(0);
         for (Invoice i : all) {
-            String customerName = "Khách không đặt lịch";
-            String customerPhone = "N/A";
+            String customerName = "Khách vãng lai"; // Mặc định
+            String customerPhone = "";
 
-            // Kiểm tra: Chỉ lấy Appointment nếu AppointmentID KHÔNG PHẢI là null
+            // CHỈ lấy thông tin nếu ID > 0 (Tránh lỗi SQL khi tìm ID 0)
             if (i.getAppointmentID() > 0) {
                 Appointment appointment = appointmentRepo.getOne(i.getAppointmentID());
                 if (appointment != null) {
@@ -512,10 +559,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 }
             }
 
-            // Đổ dữ liệu vào bảng (Vẫn add đủ 7 dòng)
             dtm.addRow(new Object[]{
                 i.getInvoiceID(),
                 i.getInvoiceCode(),
+                // Kiểm tra nhân viên tránh NullPointerException
                 employeeRepo.getOne(i.getCreatedByEmployeeID()) != null
                 ? employeeRepo.getOne(i.getCreatedByEmployeeID()).getFirstname() : "Admin",
                 customerName,
@@ -657,6 +704,38 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
     }
 
-    
+    private void searchByDate() {
+        DefaultTableModel model = (DefaultTableModel) tblLichSu.getModel();
+        model.setRowCount(0); // Xóa trắng bảng
+
+        Date start = jdTuNgay.getDate();
+        Date end = jdDenNgay.getDate();
+        String empName = cboNhanVien.getSelectedItem().toString();
+
+        if (start == null || end == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn đầy đủ ngày!");
+            return;
+        }
+        // 2. Validate: Ngày bắt đầu không được lớn hơn ngày kết thúc
+        if (start.after(end)) {
+            JOptionPane.showMessageDialog(this, "Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc!",
+                    "Lỗi chọn ngày", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Gọi service với 3 tham số
+        List<Object[]> data = invoiceSer.findHistory(start, end, empName);
+
+        for (Object[] row : data) {
+            // row[5] là Status (int), ta đổi sang chữ cho người dùng dễ đọc
+            row[5] = (int) row[5] == 1 ? "Đã thanh toán" : "Chưa thanh toán";
+
+            // row[6] là TotalAmount, định dạng lại tiền tệ
+            row[6] = String.format("%,.0f VNĐ", Double.parseDouble(row[6].toString()));
+
+            model.addRow(row);
+        }
+
+    }
 
 }
