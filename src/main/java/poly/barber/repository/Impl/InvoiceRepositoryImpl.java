@@ -16,8 +16,7 @@ import poly.barber.util.XQuery;
  */
 public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer> {
 
-    public String sqlGetAll = "select * from Invoice";
-
+    public String sqlGetAll = "SELECT InvoiceID AS InvoiceCode, * FROM Invoice";
     public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
 
     public String sqlGetDetailsByInvoiceId = "SELECT \n"
@@ -81,7 +80,10 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     @Override
     public void update(Invoice obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
+    String sql = "UPDATE Invoice SET Status = ?, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
+    XQuery.update(sql, obj.getStatus(), obj.getInvoiceID());
+    
     }
 
     @Override
@@ -92,4 +94,6 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
         return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
     }
+    
+    
 }

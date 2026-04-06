@@ -11,7 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Service;
 import poly.barber.entity.ServiceCategory;
-import poly.barber.repository.ServiceCategoryRepository;
+import poly.barber.repository.Impl.ServiceCategoryRepository;
 import poly.barber.repository.ServiceRepository;
 
 /**
