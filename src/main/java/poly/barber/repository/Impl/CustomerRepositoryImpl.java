@@ -9,6 +9,7 @@ public class CustomerRepositoryImpl implements ICommonRepository<Customer, Integ
 
     String getAll = "select * from Customer";
     String getOne = "select * from Customer where CustomerID = ?";
+    String getOneByNameAndPhone = "select * from Customer where Fullname like ? and Phone=?";
     String getOneByName = "select * from Customer where Fullname like ?";
 
     @Override
@@ -23,6 +24,14 @@ public class CustomerRepositoryImpl implements ICommonRepository<Customer, Integ
 
     public Customer getOneByName(String name) {
         return XQuery.getSingleBean(Customer.class, getOneByName, "%" + name + "%");
+    }
+
+    public Customer getOneByNameAndPhone(String name, String phone) {
+        Object[] values = {
+            "%" + name + "%",
+            phone.trim()
+        };
+        return XQuery.getSingleBean(Customer.class, getOneByNameAndPhone, values);
     }
 
     @Override

@@ -20,16 +20,13 @@ public class AppointmentService {
 
         LocalDate today = LocalDate.now();
 
-        // Lấy thứ 2 tuần hiện tại
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
 
-        // 🔥 Điều chỉnh theo combobox
         if (index == 0) {
             startOfWeek = startOfWeek.minusWeeks(1); // tuần trước
         } else if (index == 2) {
             startOfWeek = startOfWeek.plusWeeks(1); // tuần sau
         }
-        // index == 1 → giữ nguyên (tuần này)
 
         days.add("Time");
 
@@ -50,34 +47,62 @@ public class AppointmentService {
         return repo.getAll();
     }
 
+    public List<Appointment> getAllWhereStatusIsWaiting(boolean today) {
+        return repo.getAllWhereStatusIsWaiting(today);
+    }
+
     public List<Object[]> getUniversalCalendar(int weekIndex, int status, String barber, String customer) {
         return repo.getUniversalCalendar(weekIndex, status, barber, customer);
     }
 
     public List<String> getAppointmentHtmlDetails(java.sql.Date targetDate, java.util.Date targetTime) {
-        // Chuyển đổi từ java.util.Date sang java.sql.Time để khớp với Repository
         java.sql.Time sqlTime = new java.sql.Time(targetTime.getTime());
-
-        // Gọi sang Repository để lấy dữ liệu
         return repo.getAppointmentHtmlDetails(targetDate, sqlTime);
     }
 
-    public List<String> fillToComboTimeRange() {
-        List<String> times = new ArrayList<>();
+    public boolean isConflict(int customerID, LocalDate appointmentDate, LocalTime appointmentTime, int duration) {
+        return repo.isConflict(customerID, appointmentDate, appointmentTime, duration);
+    }
 
+    public List<String> fillToComboTimeRange(boolean isToday) {
+        List<String> times = new ArrayList<>();
         LocalTime start = LocalTime.of(8, 0);
+        LocalTime now = LocalTime.now();
         LocalTime end = LocalTime.of(21, 30);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-
         times.add("");
 
         while (!start.isAfter(end)) {
-            times.add(start.format(formatter));
+            if (isToday) {
+                LocalTime limitTime = now.plusMinutes(10);
+
+                if (!start.isBefore(limitTime)) {
+                    times.add(start.format(formatter));
+                }
+            } else {
+                times.add(start.format(formatter));
+            }
+
             start = start.plusMinutes(30);
         }
 
         return times;
     }
 
+    public void add(Appointment obj) {
+        repo.add(obj);
+    }
+
+    public Appointment addAndReturn(Appointment obj) {
+        return repo.addAndReturn(obj);
+    }
+
+    public void updateStatus(int appointmentID, int status) {
+        repo.updateStatus(appointmentID, status);
+    }
+    
+    public int updateStatusAutomatically() {
+        return repo.updateStatusAutomatically();
+    }
 }

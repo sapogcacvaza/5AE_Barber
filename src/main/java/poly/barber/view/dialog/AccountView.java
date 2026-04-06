@@ -25,6 +25,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbm2 = new DefaultComboBoxModel();
+    DefaultComboBoxModel dcbm3 = new DefaultComboBoxModel();
 
     public AccountView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -33,9 +34,11 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
         dtm = (DefaultTableModel) tblAccount.getModel();
         dcbm = (DefaultComboBoxModel) cboRole.getModel();
         dcbm2 = (DefaultComboBoxModel) cboEmployeeID.getModel();
+        dcbm3 = (DefaultComboBoxModel) cboFilter.getModel();
         fillToTable(acrepo.getAll());
         fillToEmployeeIDCombobox(nvrepo.getAll());
         fillToRoleCombobox(acrepo.getRoles());
+        fillToFilterRoleCombobox(acrepo.getRoles());
     }
 
     /**
@@ -493,10 +496,14 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
     }
 
     public int roleFilter() {
-        if (cboFilter.getSelectedItem().equals("Quản Lý")) {
+        if (cboFilter.getSelectedItem().equals("Nhân Viên")) {
             return 1;
         }
-        return 0;
+        if (cboFilter.getSelectedItem().equals("Quản Lý")) {
+            return 2;
+        }if (cboFilter.getSelectedItem().equals("Admin")) {
+            
+        }return 3;
     }
 
     public boolean checkNull() {
@@ -527,7 +534,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
         txtPassword.setText(tblAccount.getValueAt(index, 2) + "");
         cboRole.setSelectedItem(tblAccount.getValueAt(index, 3));
         Employee nv = nvrepo.getOne((Integer) tblAccount.getValueAt(index, 4));
-        cboEmployeeID.setSelectedItem(nv.getEmployeeID());
+        cboEmployeeID.setSelectedItem(nv.getEmail());
 
     }
 
@@ -537,11 +544,11 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
 
         ac.setUsername(txtUsername.getText());
         ac.setPassword(txtPassword.getText());
-        if(cboRole.getSelectedItem()=="Nhân Viên"){
+        if (cboRole.getSelectedItem() == "Nhân Viên") {
             ac.setRole(1);
-        }else if(cboRole.getSelectedItem()=="Quản Lý"){
+        } else if (cboRole.getSelectedItem() == "Quản Lý") {
             ac.setRole(2);
-        }else{
+        } else {
             ac.setRole(3);
         }
         ac.setAccountID(Integer.parseInt(txtAccountID.getText()));
@@ -555,7 +562,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
     public void fillToTable(List<Account> lst) {
         dtm.setRowCount(0);
         for (Account ac : lst) {
-            dtm.addRow(new Object[]{ac.getAccountID(), ac.getUsername(), ac.getPassword(), ac.getRole()==1?"Nhân Viên":ac.getRole()==2?"Quản Lý":"Admin", ac.getEmployeeID()});
+            dtm.addRow(new Object[]{ac.getAccountID(), ac.getUsername(), ac.getPassword(), ac.getRole() == 1 ? "Nhân Viên" : ac.getRole() == 2 ? "Quản Lý" : "Admin", ac.getEmployeeID()});
         }
     }
 
@@ -617,18 +624,30 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
     public void fillToEmployeeIDCombobox(List<Employee> lst) {
         dcbm2.removeAllElements();
         for (Employee nv : lst) {
-            dcbm2.addElement(nv.getEmployeeID());
+            dcbm2.addElement(nv.getEmail());
         }
     }
 
-    public void fillToRoleCombobox(List<Integer> lst) {
+    public void fillToFilterRoleCombobox(List<Integer> lst) {
+        dcbm3.removeAllElements();
+        for (Integer i : lst) {
+            if (i == 1) {
+                dcbm3.addElement("Nhân Viên");
+            } else if (i == 2) {
+                dcbm3.addElement("Quản Lý");
+            } else if(i==3){
+                dcbm3.addElement("Admin");
+            }
+        }
+
+    }    public void fillToRoleCombobox(List<Integer> lst) {
         dcbm.removeAllElements();
         for (Integer i : lst) {
             if (i == 1) {
                 dcbm.addElement("Nhân Viên");
-            }else if(i==2){
+            } else if (i == 2) {
                 dcbm.addElement("Quản Lý");
-            }else{
+            } else if(i==3){
                 dcbm.addElement("Admin");
             }
         }

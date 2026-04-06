@@ -32,4 +32,8 @@ public class ServiceService {
     public Service getOneByName(String name) {
         return repo.getOneByName(name);
     }
+
+    public List<Service> getOneByCat(int id) {
+        return repo.getOneByCat(id);
+    }
 }

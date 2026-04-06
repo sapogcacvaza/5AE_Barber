@@ -9,6 +9,7 @@ public class ServiceCategoryRepositoryImpl implements ICommonRepository<ServiceC
 
     String getAll = "select * from ServiceCategory";
     String getOne = "select * from ServiceCategory where ServiceCategoryID = ?";
+    String getOneByName = "select * from ServiceCategory where ServiceCategoryName like ?";
 
     @Override
     public List<ServiceCategory> getAll() {
@@ -18,6 +19,10 @@ public class ServiceCategoryRepositoryImpl implements ICommonRepository<ServiceC
     @Override
     public ServiceCategory getOne(Integer id) {
         return XQuery.getSingleBean(ServiceCategory.class, getOne, id);
+    }
+
+    public ServiceCategory getOneByName(String name) {
+        return XQuery.getSingleBean(ServiceCategory.class, getOneByName, "%" + name + "%");
     }
 
     @Override

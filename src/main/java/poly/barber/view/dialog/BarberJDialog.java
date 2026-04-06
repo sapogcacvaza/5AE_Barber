@@ -8,34 +8,35 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import poly.barber.controller.Impl.EmployeeController;
+import poly.barber.controller.Impl.BarberController;
+import poly.barber.entity.Account;
+import poly.barber.entity.Barber;
+import poly.barber.entity.BarberPosition;
 import poly.barber.entity.Employee;
-import poly.barber.entity.EmployeePosition;
-import poly.barber.repository.Impl.EmployeeImpl;
-import poly.barber.repository.Impl.EmployeePositionImpl;
+import poly.barber.repository.Impl.BarberPositionRepositoryImpl;
+import poly.barber.repository.Impl.BarberRepositoryImpl;
 
 /**
  *
  * @author Dell
  */
-public class EmployeeView extends javax.swing.JDialog implements EmployeeController {
+public class BarberJDialog extends javax.swing.JDialog implements BarberController {
 
-    EmployeeImpl nvrepo = new EmployeeImpl();
-    EmployeePositionImpl eprepo = new EmployeePositionImpl();
+    BarberPositionRepositoryImpl bprepo = new BarberPositionRepositoryImpl();
+    BarberRepositoryImpl brepo = new BarberRepositoryImpl();
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
-    DefaultComboBoxModel dcbm2 = new DefaultComboBoxModel();
+    DefaultComboBoxModel dcbmStatusFilter = new DefaultComboBoxModel();
 
-    public EmployeeView(java.awt.Frame parent, boolean modal) {
+    public BarberJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        dtm = (DefaultTableModel) tblNhanVien.getModel();
+        dtm = (DefaultTableModel) tblBarber.getModel();
         dcbm = (DefaultComboBoxModel) cboPosition.getModel();
-        dcbm2 = (DefaultComboBoxModel) cboPositionFilter.getModel();
-        fillToTable(nvrepo.getAll());
-        fillToCombobox(eprepo.getAll());
-        fillToPositionFilterCombobox(eprepo.getAll());
+        dcbmStatusFilter = (DefaultComboBoxModel) cboStatusFilter.getModel();
+        fillToTable(brepo.getAll());
+        fillToPositionCombobox(bprepo.getAll());
     }
 
     /**
@@ -48,6 +49,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -59,17 +62,17 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         jLabel3 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tblNhanVien = new javax.swing.JTable();
+        tblBarber = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        cboFilter = new javax.swing.JComboBox<>();
+        cboIsBusy = new javax.swing.JComboBox<>();
         btnFilter = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        cboPositionFilter = new javax.swing.JComboBox<>();
+        cboStatusFilter = new javax.swing.JComboBox<>();
         btnFilter1 = new javax.swing.JButton();
         btnUnFilter = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         cboPosition = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
+        rdoViTri = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtFirstname = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -77,17 +80,15 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         txtPhone = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        txtAddress = new javax.swing.JTextField();
+        rdoTrangThai = new javax.swing.JLabel();
         btnAdd = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
-        rdoNam = new javax.swing.JRadioButton();
-        rdoNu = new javax.swing.JRadioButton();
+        rdoDiLam = new javax.swing.JRadioButton();
+        rdoNghi = new javax.swing.JRadioButton();
         jLabel14 = new javax.swing.JLabel();
         txtLastname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtEmployeeID = new javax.swing.JTextField();
+        lblBarberId = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nhân Viên");
@@ -98,7 +99,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Quản lý nhân viên");
+        jLabel1.setText("Quản lý Barber");
 
         txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,16 +134,12 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
+        tblBarber.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "FirstName", "LastName", "Phone", "Email", "Gender", "Address", "PositionID"
+                "BarberID", "IsBusy", "Trạng Thái", "Họ", "Tên", "SĐT", "Email", "Vị Trí"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -153,19 +150,19 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 return canEdit [columnIndex];
             }
         });
-        tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblBarber.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblNhanVienMouseClicked(evt);
+                tblBarberMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tblNhanVien);
+        jScrollPane2.setViewportView(tblBarber);
 
-        jLabel4.setText("Lọc giới tính:");
+        jLabel4.setText("IsBusy");
 
-        cboFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
-        cboFilter.addActionListener(new java.awt.event.ActionListener() {
+        cboIsBusy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rảnh", "Bận" }));
+        cboIsBusy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboFilterActionPerformed(evt);
+                cboIsBusyActionPerformed(evt);
             }
         });
 
@@ -176,12 +173,12 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        jLabel5.setText("Lọc chức vụ:");
+        jLabel5.setText("Trạng Thái:");
 
-        cboPositionFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
-        cboPositionFilter.addActionListener(new java.awt.event.ActionListener() {
+        cboStatusFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Đi làm", "Nghỉ" }));
+        cboStatusFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboPositionFilterActionPerformed(evt);
+                cboStatusFilterActionPerformed(evt);
             }
         });
 
@@ -205,40 +202,39 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addGap(17, 17, 17)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtTimKiem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnTimKiem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboPositionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUnFilter)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(11, 11, 11)
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDelete)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel2)
+                            .addGap(17, 17, 17)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(txtTimKiem)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnTimKiem)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cboIsBusy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cboStatusFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnUnFilter))))
                 .addGap(0, 19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -249,10 +245,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboIsBusy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(btnFilter)
-                    .addComponent(cboPositionFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboStatusFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(btnFilter1)
                     .addComponent(btnUnFilter)
@@ -277,7 +273,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         cboPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel7.setText("Vị trí");
+        rdoViTri.setText("Vị trí");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("Thông tin cá nhân");
@@ -288,15 +284,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel11.setText("Email:");
 
-        txtEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmailActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setText("Gender:");
-
-        jLabel13.setText("Address:");
+        rdoTrangThai.setText("Trạng Thái");
 
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -312,21 +300,27 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        buttonGroup1.add(rdoNam);
-        rdoNam.setSelected(true);
-        rdoNam.setText("Nam");
-        rdoNam.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rdoDiLam);
+        rdoDiLam.setText("Đi làm");
+        rdoDiLam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoNamActionPerformed(evt);
+                rdoDiLamActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(rdoNu);
-        rdoNu.setText("Nữ");
+        buttonGroup1.add(rdoNghi);
+        rdoNghi.setText("Nghỉ");
+        rdoNghi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoNghiActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Lastname:");
 
-        jLabel15.setText("EmployeeID");
+        jLabel15.setText("BarberID:");
+
+        lblBarberId.setText("jLabel6");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -336,48 +330,53 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblBarberId, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel11)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)
                             .addComponent(jLabel9)
-                            .addComponent(txtEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rdoViTri)
+                            .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rdoNam)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoNu))
                             .addComponent(jLabel10)
-                            .addComponent(jLabel12)
+                            .addComponent(rdoTrangThai)
                             .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14)
-                            .addComponent(jLabel7)
-                            .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(rdoDiLam)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoNghi)))
+                        .addGap(22, 22, 22))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(25, 25, 25)))
-                .addGap(22, 22, 22))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cboPosition, txtAddress, txtEmail, txtEmployeeID, txtFirstname, txtLastname, txtPhone});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cboPosition, txtEmail, txtFirstname, txtLastname, txtPhone});
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnUpdate});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(lblBarberId))
+                .addGap(20, 20, 20)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -394,37 +393,29 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13)
+                        .addComponent(rdoViTri)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
+                        .addComponent(rdoTrangThai)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rdoNu)
-                            .addComponent(rdoNam))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25)
+                            .addComponent(rdoNghi)
+                            .addComponent(rdoDiLam))))
+                .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnUpdate))
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(128, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAdd, btnUpdate});
 
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cboPosition, txtAddress, txtEmail, txtEmployeeID, txtFirstname, txtLastname, txtPhone});
+        jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cboPosition, txtEmail, txtFirstname, txtLastname, txtPhone});
 
         jTabbedPane1.addTab("Thêm mới", jPanel2);
 
@@ -451,57 +442,66 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }//GEN-LAST:event_formMouseClicked
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        deleteCheckedItems();
+        int a = tblBarber.getSelectedRow();
+        if (a == -1) {
+            return;
+        }
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Barber này không?");
+        if (confirm == JOptionPane.YES_OPTION) {
+            brepo.delete(Integer.parseInt(lblBarberId.getText()));
+            fillToTable(brepo.getAll());
+        }
+
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNamActionPerformed
+    private void rdoDiLamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDiLamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNamActionPerformed
+    }//GEN-LAST:event_rdoDiLamActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         if (checkNull()) {
             if (checkDuplicateInsert()) {
-                nvrepo.add(getForm());
-                fillToTable(nvrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã thêm nhân viên thành công!");
+                brepo.add(getForm());
+                JOptionPane.showMessageDialog(this, "Đã thêm thành công!");
+                fillToTable(brepo.getAll());
             }
         }
 
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
-        int index = tblNhanVien.getSelectedRow();
+    private void tblBarberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBarberMouseClicked
+        int index = tblBarber.getSelectedRow();
         setForm(index);
-    }//GEN-LAST:event_tblNhanVienMouseClicked
+    }//GEN-LAST:event_tblBarberMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
-                nvrepo.update(getForm());
-                fillToTable(nvrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa nhân viên thành công!");
+                brepo.update(getForm());
+                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                fillToTable(brepo.getAll());
             }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cboFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFilterActionPerformed
+    private void cboIsBusyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboIsBusyActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboFilterActionPerformed
+    }//GEN-LAST:event_cboIsBusyActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-        fillToTable(nvrepo.getGender(genderFilter()));
+        fillToTable(brepo.isBusyFilter(isBusyFilter()));
     }//GEN-LAST:event_btnFilterActionPerformed
 
-    private void cboPositionFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPositionFilterActionPerformed
+    private void cboStatusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboStatusFilterActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboPositionFilterActionPerformed
+    }//GEN-LAST:event_cboStatusFilterActionPerformed
 
     private void btnFilter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilter1ActionPerformed
-        fillToTable(nvrepo.getPosition(positionFiter()));
+        fillToTable(brepo.statusFilter(statusFilter()));
     }//GEN-LAST:event_btnFilter1ActionPerformed
 
     private void btnUnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnFilterActionPerformed
-        fillToTable(nvrepo.getAll());
+        fillToTable(brepo.getAll());
     }//GEN-LAST:event_btnUnFilterActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
@@ -509,32 +509,12 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-        List<Employee> lst = nvrepo.searchByPhone(txtTimKiem.getText());
-        if (!lst.isEmpty()) {
-            fillToTable(lst);
-            return;
-        }
 
-        List<Employee> lst2 = nvrepo.searchByEmail(txtTimKiem.getText());
-        if (!lst2.isEmpty()) {
-            fillToTable(lst2);
-            return;
-        }
-
-        List<Employee> lst3 = nvrepo.searchByName(txtTimKiem.getText());
-        if (!lst3.isEmpty()) {
-            fillToTable(lst3);
-            return;
-        }
-
-        JOptionPane.showMessageDialog(this,
-                "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
-        fillToTable(nvrepo.getAll());
      }//GEN-LAST:event_btnTimKiemActionPerformed
 
-    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+    private void rdoNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNghiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailActionPerformed
+    }//GEN-LAST:event_rdoNghiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -553,14 +533,18 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarberJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarberJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarberJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BarberJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -569,7 +553,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                EmployeeView dialog = new EmployeeView(new javax.swing.JFrame(), true);
+                BarberJDialog dialog = new BarberJDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -590,50 +574,49 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> cboFilter;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
+    private javax.swing.JComboBox<String> cboIsBusy;
     private javax.swing.JComboBox<String> cboPosition;
-    private javax.swing.JComboBox<String> cboPositionFilter;
+    private javax.swing.JComboBox<String> cboStatusFilter;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JRadioButton rdoNam;
-    private javax.swing.JRadioButton rdoNu;
-    private javax.swing.JTable tblNhanVien;
-    private javax.swing.JTextField txtAddress;
+    private javax.swing.JLabel lblBarberId;
+    private javax.swing.JRadioButton rdoDiLam;
+    private javax.swing.JRadioButton rdoNghi;
+    private javax.swing.JLabel rdoTrangThai;
+    private javax.swing.JLabel rdoViTri;
+    private javax.swing.JTable tblBarber;
     private javax.swing.JTextField txtEmail;
-    private javax.swing.JTextField txtEmployeeID;
     private javax.swing.JTextField txtFirstname;
     private javax.swing.JTextField txtLastname;
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
-
-    public int positionFiter() {
-        List<Employee> lst = nvrepo.getAll();
-        Employee nv = lst.get(cboPositionFilter.getSelectedIndex());
-
-        return nv.getPositionID();
+    public int statusFilter() {
+        if (cboStatusFilter.getSelectedItem().equals("Đi làm")) {
+            return 1;
+        }
+        return 0;
     }
 
-    public int genderFilter() {
-        if (cboFilter.getSelectedItem().equals("Nam")) {
+    public int isBusyFilter() {
+        if (cboIsBusy.getSelectedItem().equals("Rảnh")) {
             return 1;
         }
         return 0;
@@ -648,28 +631,24 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Lastname");
             return false;
         }
-        if (txtFirstname.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Firstname");
+        if (txtEmail.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Email");
             return false;
         }
         if (txtPhone.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Phone");
             return false;
         }
-        if (txtEmail.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng không để trống Email");
-            return false;
-        }
         return true;
     }
 
     public boolean checkDuplicateInsert() {
-        for (Employee nv : nvrepo.getAll()) {
-            if (txtEmail.getText().equals(nv.getEmail())) {
+        for (Barber b : brepo.getAll()) {
+            if (txtEmail.getText().equals(b.getEmail())) {
                 JOptionPane.showMessageDialog(this, "Email đã tồn tại. Vui lòng điền email khác!");
                 return false;
             }
-            if (txtPhone.getText().equals(nv.getPhone())) {
+            if (txtPhone.getText().equals(b.getPhone())) {
                 JOptionPane.showMessageDialog(this, "Phone đã tồn tại. Vui lòng điền Phone khác!");
                 return false;
             }
@@ -678,36 +657,22 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     public boolean checkDuplicateUpdate() {
-        int currentID = Integer.parseInt(txtEmployeeID.getText());
-        for (Employee nv : nvrepo.getAll()) {
+        int currentID = Integer.parseInt(lblBarberId.getText());
+        for (Barber b : brepo.getAll()) {
 
-            if (nv.getEmployeeID() == currentID) {
+            if (b.getBarberID() == currentID) {
                 continue;
             }
-            if (txtEmail.getText().equalsIgnoreCase(nv.getEmail())) {
+            if (txtEmail.getText().equalsIgnoreCase(b.getEmail())) {
                 JOptionPane.showMessageDialog(this, "Email đã tồn tại. Vui lòng điền email khác!");
                 return false;
             }
-            if (txtPhone.getText().equals(nv.getPhone())) {
+            if (txtPhone.getText().equals(b.getPhone())) {
                 JOptionPane.showMessageDialog(this, "Phone đã tồn tại. Vui lòng điền Phone khác!");
                 return false;
             }
         }
         return true;
-    }
-
-    public void fillToCombobox(List<EmployeePosition> lst) {
-        dcbm.removeAllElements();
-        for (EmployeePosition ep : lst) {
-            dcbm.addElement(ep.getPositionName());
-        }
-    }
-
-    public void fillToPositionFilterCombobox(List<EmployeePosition> lst) {
-        dcbm2.removeAllElements();
-        for (EmployeePosition ep : lst) {
-            dcbm2.addElement(ep.getPositionName());
-        }
     }
 
     @Override
@@ -716,48 +681,51 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     @Override
-    public void setForm(Employee entity) {
+    public void setForm(Barber entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public void setForm(int index) {
-        txtEmployeeID.setText(tblNhanVien.getValueAt(index, 0) + "");
-        txtFirstname.setText(tblNhanVien.getValueAt(index, 1) + "");
-        txtLastname.setText(tblNhanVien.getValueAt(index, 2) + "");
-        txtPhone.setText(tblNhanVien.getValueAt(index, 3) + "");
-        txtEmail.setText(tblNhanVien.getValueAt(index, 4) + "");
-        if (tblNhanVien.getValueAt(index, 5).equals("Nam")) {
-            rdoNam.setSelected(true);
+        lblBarberId.setText(tblBarber.getValueAt(index, 0) + "");
+        if (tblBarber.getValueAt(index, 2) == "Đi làm") {
+            rdoDiLam.setSelected(true);
         } else {
-            rdoNu.setSelected(true);
+            rdoNghi.setSelected(true);
         }
-        txtAddress.setText(tblNhanVien.getValueAt(index, 6) + "");
-
-        EmployeePosition ep = eprepo.getOne((Integer) tblNhanVien.getValueAt(index, 7));
-        cboPosition.setSelectedItem(ep.getPositionName());
+        txtFirstname.setText(tblBarber.getValueAt(index, 3) + "");
+        txtLastname.setText(tblBarber.getValueAt(index, 4) + "");
+        txtPhone.setText(tblBarber.getValueAt(index, 5) + "");
+        txtEmail.setText(tblBarber.getValueAt(index, 6) + "");
+        BarberPosition b = bprepo.getOne((int) tblBarber.getValueAt(index, 7));
+        cboPosition.setSelectedItem(b.getPositionName());
     }
 
     @Override
-    public Employee getForm() {
-        Employee nv = new Employee();
-        nv.setFirstname(txtFirstname.getText());
-        nv.setLastname(txtLastname.getText());
-        nv.setPhone(txtPhone.getText());
-        nv.setEmail(txtEmail.getText());
-        nv.setGender(rdoNam.isSelected());
-        nv.setAddress(txtAddress.getText());
-        nv.setEmployeeID(Integer.parseInt(txtEmployeeID.getText()));
-        EmployeePosition ep = eprepo.getAll().get(cboPosition.getSelectedIndex());
-        nv.setPositionID(ep.getPositionID());
-        return nv;
+    public Barber getForm() {
+        Barber b = new Barber();
+        b.setBarberID(Integer.parseInt(lblBarberId.getText()));
+        b.setEmail(txtEmail.getText());
+        b.setFirstname(txtFirstname.getText());
+        b.setLastname(txtLastname.getText());
+        b.setPhone(txtPhone.getText());
+        b.setStatus(rdoDiLam.isSelected());
+        BarberPosition bp = bprepo.getAll().get(cboPosition.getSelectedIndex());
+        b.setPositionID(bp.getPositionID());
+        return b;
     }
 
     @Override
-    public void fillToTable(List<Employee> lst
-    ) {
+    public void fillToTable(List<Barber> lst) {
         dtm.setRowCount(0);
-        for (Employee nv : lst) {
-            dtm.addRow(new Object[]{nv.getEmployeeID(), nv.getFirstname(), nv.getLastname(), nv.getPhone(), nv.getEmail(), nv.isGender() ? "Nam" : "Nữ", nv.getAddress(), nv.getPositionID()});
+        for (Barber b : lst) {
+            dtm.addRow(new Object[]{b.getBarberID(), b.isBusy() ? "Rảnh" : "Bận", b.isStatus() ? "Đi làm" : "Nghỉ", b.getFirstname(), b.getLastname(), b.getPhone(), b.getEmail(), b.getPositionID()});
+        }
+    }
+
+    public void fillToPositionCombobox(List<BarberPosition> lst) {
+        dcbm.removeAllElements();
+        for (BarberPosition bp : lst) {
+            dcbm.addElement(bp.getPositionName());
         }
     }
 
@@ -772,8 +740,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     @Override
-    public void setEditable(boolean editable
-    ) {
+    public void setEditable(boolean editable) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -789,9 +756,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
     @Override
     public void deleteCheckedItems() {
-        Employee nv = nvrepo.getAll().get(tblNhanVien.getSelectedRow());
-        nvrepo.delete(nv.getEmployeeID());
-        fillToTable(nvrepo.getAll());
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -815,8 +780,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     @Override
-    public void moveTo(int rowIndex
-    ) {
+    public void moveTo(int rowIndex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }
