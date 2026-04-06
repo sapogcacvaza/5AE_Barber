@@ -361,8 +361,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(rdoDoneStatus)
                     .addComponent(btnReloadTablleCalendar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         Tabbs.addTab("LỊCH", panelCalendar);
@@ -1255,11 +1255,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnReloadTablleCalendarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReloadTablleCalendarActionPerformed
         cboWeek.setSelectedIndex(1);
-        System.out.println("Trước lệnh");
         refreshCalendarOnTabChange();
-        System.out.println("Sau lệnh");
         fillToTable(serAppointment.getAll());
-
     }//GEN-LAST:event_btnReloadTablleCalendarActionPerformed
 
     private void chkTodayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkTodayActionPerformed
