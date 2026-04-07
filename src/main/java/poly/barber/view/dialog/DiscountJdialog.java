@@ -6,11 +6,13 @@ package poly.barber.view.dialog;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import poly.barber.entity.Account;
 import poly.barber.entity.Discount;
 import poly.barber.repository.Impl.DiscountRepository;
+import poly.barber.service.AccountService;
 import poly.barber.service.DiscountService;
 
 /**
@@ -34,39 +36,44 @@ public class DiscountJdialog extends javax.swing.JDialog {
         loadTable();
         cbbdc.addActionListener(e -> loadTable());
 
-txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
-    public void keyReleased(java.awt.event.KeyEvent evt) {
-        loadTable();
-    }
-});
-    }
-
-  void loadTable() {
-    var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
-    model.setRowCount(0);
-
-    String keyword = txtfind.getText();
-    int typeIndex = cbbdc.getSelectedIndex();
-
-    int type = 0;
-    if (typeIndex == 1) type = 1;
-    if (typeIndex == 2) type = 2;
-
-    for (var d : service.filter(keyword, type)) {
-        model.addRow(new Object[]{
-            d.getDiscountID(),
-            d.getDiscountName(),
-            d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
-            d.getDiscountValue(),
-            d.getDescription(),
-            d.getStartDateTime(),
-            d.getEndDateTime(),
-            d.getStatus(),
-            d.getMaxUsage(),
-            d.getUsedCount()
+        txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                loadTable();
+            }
         });
     }
-}
+
+    void loadTable() {
+        var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
+        model.setRowCount(0);
+
+        String keyword = txtfind.getText();
+        int typeIndex = cbbdc.getSelectedIndex();
+
+        int type = 0;
+        if (typeIndex == 1) {
+            type = 1;
+        }
+        if (typeIndex == 2) {
+            type = 2;
+        }
+
+        for (var d : service.filter(keyword, type)) {
+            model.addRow(new Object[]{
+                d.getDiscountID(),
+                d.getDiscountCode(), // ✅ thêm
+                d.getDiscountName(),
+                d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
+                d.getDiscountValue(),
+                d.getDescription(),
+                d.getStartDateTime(),
+                d.getEndDateTime(),
+                d.getStatus(),
+                d.getMaxUsage(),
+                d.getUsedCount()
+            });
+        }
+    }
 
     void initCombo() {
         model.removeAllElements();
@@ -77,69 +84,47 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
     }
 
     Discount getForm() {
-
-        if (txtten.getText().trim().isEmpty()) {
-            throw new RuntimeException("Tên không được trống");
-        }
-
         try {
-            int type = cbbdc.getSelectedIndex() == 0 ? 1 : 2;
-            BigDecimal value = new BigDecimal(txtgiatri.getText());
+            int type = cbbdc.getSelectedIndex() == 1 ? 1 : 2;
 
-            // ✅ check giá trị
-            if (value.compareTo(BigDecimal.ZERO) <= 0) {
-                throw new RuntimeException("Giá trị phải > 0");
-            }
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-            // ✅ nếu là % thì <= 100
-            if (type == 1 && value.compareTo(new BigDecimal("100")) > 0) {
-                throw new RuntimeException("Giảm % không được > 100");
-            }
-
-            // ✅ số lượng
-            int max = Integer.parseInt(txtsoluong.getText());
-            int used = Integer.parseInt(txtdasudung.getText());
-
-            if (max < 0 || used < 0) {
-                throw new RuntimeException("Số lượng không hợp lệ");
-            }
-
-            if (used > max) {
-                throw new RuntimeException("Đã dùng không được > số lượng");
-            }
-
-            // ✅ thời gian
-            LocalDateTime start = LocalDateTime.parse(txtstart.getText());
-            LocalDateTime end = LocalDateTime.parse(txtend.getText());
-
-            if (end.isBefore(start)) {
-                throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
-            }
+            LocalDateTime start = LocalDateTime.parse(txtstart.getText(), formatter);
+            LocalDateTime end = LocalDateTime.parse(txtend.getText(), formatter);
 
             return Discount.builder()
+                    .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
+                    .discountCode(txtmagiamgia.getText())
                     .discountName(txtten.getText())
                     .discountType(type)
-                    .discountValue(value)
+                    .discountValue(new BigDecimal(txtgiatri.getText()))
                     .description(txtmota.getText())
                     .startDateTime(start)
                     .endDateTime(end)
                     .status(Integer.parseInt(txttrangthai.getText()))
-                    .maxUsage(max)
-                    .usedCount(used)
+                    .maxUsage(Integer.parseInt(txtsoluong.getText()))
+                    .usedCount(Integer.parseInt(txtdasudung.getText()))
                     .build();
 
-        } catch (NumberFormatException e) {
-            throw new RuntimeException("Sai định dạng số!");
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Sai định dạng! Ví dụ đúng: 2026-04-07 14:30");
         }
     }
+
     public void setUser(Account user) {
-    if (user.getRole() != 1) { // không phải admin
-        txtthem.setEnabled(false);
-        txtsua.setEnabled(false);
+        AccountService service = new AccountService();
+
+        // Nhân viên không được sửa
+        if (service.isStaff(user)) {
+            txtthem.setEnabled(false);
+            txtsua.setEnabled(false);
+        }
+
+        // Quản lý được sửa nhưng không xoá (ví dụ)
+        if (service.isManager(user)) {
+            // ok
+        }
     }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -234,7 +219,7 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 930, 500));
 
-        jTabbedPane1.addTab("1", jPanel2);
+        jTabbedPane1.addTab("Danh sách", jPanel2);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -302,7 +287,7 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
         jPanel1.add(txtmagiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 160, -1));
 
-        jTabbedPane1.addTab("2", jPanel1);
+        jTabbedPane1.addTab("Thêm mới", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -326,8 +311,7 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
         // TODO add your handling code here:
         try {
             Discount d = getForm();
-            d.setDiscountID(Integer.parseInt(txtid.getText()));
-            service.update(d); // ✅ dùng service
+            service.add(d); // ✅ đúng
             loadTable();
 
             JOptionPane.showMessageDialog(this, "Thêm thành công!");
@@ -340,9 +324,7 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
         // TODO add your handling code here:
         try {
             Discount d = getForm();
-            d.setDiscountID(Integer.parseInt(txtid.getText()));
-
-            service.update(d); // ✅ dùng service
+            service.update(d);
             loadTable();
 
             JOptionPane.showMessageDialog(this, "Sửa thành công!");
@@ -353,29 +335,29 @@ txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
 
     private void tbldcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbldcMouseClicked
         // TODO add your handling code here:
-int i = tbldc.getSelectedRow();
+        int i = tbldc.getSelectedRow();
 
-    txtid.setText(tbldc.getValueAt(i, 0).toString());
-    txtten.setText(tbldc.getValueAt(i, 1).toString());
+        txtid.setText(tbldc.getValueAt(i, 0).toString());
+        txtmagiamgia.setText(tbldc.getValueAt(i, 1).toString());
+        txtten.setText(tbldc.getValueAt(i, 2).toString());
+        String type = tbldc.getValueAt(i, 2).toString();
 
-    String type = tbldc.getValueAt(i, 2).toString();
+        if (type.equals("Giảm %")) {
+            cbbdc.setSelectedIndex(1);
+        } else {
+            cbbdc.setSelectedIndex(2);
+        }
 
-    if (type.equals("Giảm %")) {
-        cbbdc.setSelectedIndex(1);
-    } else {
-        cbbdc.setSelectedIndex(2);
-    }
+        txtgiatri.setText(tbldc.getValueAt(i, 3).toString());
+        txtmota.setText(tbldc.getValueAt(i, 4).toString());
+        txtstart.setText(tbldc.getValueAt(i, 5).toString());
+        txtend.setText(tbldc.getValueAt(i, 6).toString());
+        txttrangthai.setText(tbldc.getValueAt(i, 7).toString());
+        txtsoluong.setText(tbldc.getValueAt(i, 8).toString());
+        txtdasudung.setText(tbldc.getValueAt(i, 9).toString());
 
-    txtgiatri.setText(tbldc.getValueAt(i, 3).toString());
-    txtmota.setText(tbldc.getValueAt(i, 4).toString());
-    txtstart.setText(tbldc.getValueAt(i, 5).toString());
-    txtend.setText(tbldc.getValueAt(i, 6).toString());
-    txttrangthai.setText(tbldc.getValueAt(i, 7).toString());
-    txtsoluong.setText(tbldc.getValueAt(i, 8).toString());
-    txtdasudung.setText(tbldc.getValueAt(i, 9).toString());
-
-    // 🔥 chuyển tab sang form
-    jTabbedPane1.setSelectedIndex(1);
+        // 🔥 chuyển tab sang form
+        jTabbedPane1.setSelectedIndex(1);
     }//GEN-LAST:event_tbldcMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
