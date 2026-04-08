@@ -6,21 +6,24 @@ package poly.barber.repository.Impl;
 
 import java.util.List;
 import poly.barber.entity.Invoice;
+import poly.barber.entity.InvoiceDetail;
 import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XJdbc;
 import poly.barber.util.XQuery;
 
 /**
  *
  * @author DELL
  */
-public class InvoiceDetailRepository implements ICommonRepository<Invoice, Integer>{
+public class InvoiceDetailRepository implements ICommonRepository<InvoiceDetail, Integer> {
 
     // Câu lệnh SQL lấy chi tiết dịch vụ của 1 hóa đơn
     String sqlGetDetails = "SELECT s.ServiceName, id.Quantity, id.Price, (id.Quantity * id.Price) AS Total "
-                         + "FROM InvoiceDetail id "
-                         + "JOIN Service s ON id.ServiceID = s.ServiceID "
-                         + "WHERE id.InvoiceID = ?";
-    
+            + "FROM InvoiceDetail id "
+            + "JOIN Service s ON id.ServiceID = s.ServiceID "
+            + "WHERE id.InvoiceID = ?";
+
+    String createSQl = "insert into InvoiceDetail (ServiceID, InvoiceID, Quantity, Price) values (?,?,?,?)";
 
     // Hàm lấy danh sách mảng đối tượng để đổ trực tiếp lên Table
     public List<Object[]> getServiceDetails(Integer invoiceId) {
@@ -28,23 +31,35 @@ public class InvoiceDetailRepository implements ICommonRepository<Invoice, Integ
     }
 
     @Override
-    public List<Invoice> getAll() {
-        throw new UnsupportedOperationException("Not supported."); 
+    public List<InvoiceDetail> getAll() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public Invoice getOne(Integer id) {
-        throw new UnsupportedOperationException("Not supported.");
+    public InvoiceDetail getOne(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
-    public void add(Invoice obj) {
-        // Code thêm chi tiết hóa đơn nếu cần
+    public void add(InvoiceDetail obj) {
+        Object[] values = {
+            obj.getServiceID(),
+            obj.getInvoiceID(),
+            obj.getQuantity(),
+            obj.getPrice()
+        };
+
+        XJdbc.executeUpdate(createSQl, values);
     }
 
     @Override
-    public void delete(Integer id) {}
+    public void delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
     @Override
-    public void update(Invoice obj) {}
+    public void update(InvoiceDetail obj) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

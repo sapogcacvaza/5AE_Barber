@@ -8,6 +8,7 @@ import java.util.List;
 import poly.barber.entity.Employee;
 import poly.barber.entity.Invoice;
 import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XJdbc;
 import poly.barber.util.XQuery;
 
 /**
@@ -18,6 +19,9 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     public String sqlGetAll = "SELECT InvoiceID AS InvoiceCode, * FROM Invoice";
     public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
+    public String createSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)";
+    public String createAndReturnSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)"
+            + " SELECT * FROM Invoice WHERE InvoiceID = SCOPE_IDENTITY();";
 
     public String sqlGetDetailsByInvoiceId = "SELECT \n"
             + "    s.ServiceName, \n"
@@ -70,7 +74,23 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     @Override
     public void add(Invoice obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getTotalAmount(),
+            obj.getCreatedByEmployeeID(),
+            obj.getAppointmentID()
+        };
+
+        XJdbc.executeUpdate(createSql, values);
+    }
+
+    public Invoice addAndReturn(Invoice obj) {
+        Object[] values = {
+            obj.getTotalAmount(),
+            obj.getCreatedByEmployeeID(),
+            obj.getAppointmentID()
+        };
+
+        return XQuery.getSingleBean(Invoice.class, createAndReturnSql, values);
     }
 
     @Override
@@ -80,10 +100,10 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     @Override
     public void update(Invoice obj) {
-       // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
-    String sql = "UPDATE Invoice SET Status = ?, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
-    XQuery.update(sql, obj.getStatus(), obj.getInvoiceID());
-    
+        // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
+        String sql = "UPDATE Invoice SET Status = ?, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
+        XQuery.update(sql, obj.getStatus(), obj.getInvoiceID());
+
     }
 
     @Override
@@ -94,6 +114,5 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
         return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
     }
-    
-    
+
 }

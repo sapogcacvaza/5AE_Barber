@@ -18,10 +18,14 @@ import poly.barber.entity.Appointment;
 import poly.barber.entity.AppointmentDetail;
 import poly.barber.entity.Barber;
 import poly.barber.entity.Customer;
+import poly.barber.entity.Invoice;
+import poly.barber.entity.InvoiceDetail;
 import poly.barber.service.AppointmentDetailService;
 import poly.barber.service.AppointmentService;
 import poly.barber.service.BarberService;
 import poly.barber.service.CustomerService;
+import poly.barber.service.InvoiceDetailService;
+import poly.barber.service.InvoiceService;
 import poly.barber.service.ServiceCategoryService;
 import poly.barber.service.ServiceService;
 import poly.barber.util.CustomCalendar;
@@ -48,6 +52,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     BarberService serBarber = new BarberService();
     ServiceCategoryService serServiceCategory = new ServiceCategoryService();
     CustomerService serCustomer = new CustomerService();
+    InvoiceDetailService serInvoiceDetail = new InvoiceDetailService();
+    InvoiceService serInvoice = new InvoiceService();
+            
 
     JPopupMenu popCalendar = new JPopupMenu();
     CustomCalendar cal = new CustomCalendar();
@@ -766,8 +773,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                             .addComponent(cboService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblService))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGetListBarber)
-                        .addGap(12, 12, 12)
+                        .addComponent(btnGetListBarber, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -963,9 +970,12 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     private void btnGetListBarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGetListBarberActionPerformed
         if (checkValidateGetListBarber()) {
             try {
+                // 1. Lấy dữ liệu từ các Control trên Form
                 String selectedTime = cboTimeRange.getSelectedItem().toString();
                 String selectedDate = txtAppointmentDate.getText();
                 String selectedCategory = cboCategory.getSelectedItem().toString();
+
+                int status = 1;
 
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -976,7 +986,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 modelBarber = (DefaultTableModel) tblBarber.getModel();
                 modelBarber.setRowCount(0);
 
-                List<Barber> lst = serBarber.getListAvailableBarber(date, time, selectedCategory);
+                List<Barber> lst = serBarber.getListAvailableBarber(status, date, time, selectedCategory);
 
                 for (Barber b : lst) {
                     modelBarber.addRow(new Object[]{
@@ -986,6 +996,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 }
 
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Lỗi định dạng ngày giờ hoặc dữ liệu!");
                 e.printStackTrace();
             }
         }
@@ -1234,8 +1245,24 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     String serviceName = tblAppointmentDetail.getValueAt(row, 0) + "";
                     int serviceID = serService.getOneByName(serviceName.trim()).getServiceID();
                     int appointmentID = Integer.parseInt(tblAppointmentDetail.getValueAt(row, 1) + "");
+                    String barberName = String.valueOf(tblAppointmentDetail.getValueAt(row, 5));
 
-                    serAppointmentDetail.updateStatus(status, appointmentID, serviceID);
+                    var service = serService.getOneByName(serviceName.trim());
+                    var barber = serBarber.getOneByName(barberName.trim());
+
+                    if (service != null && barber != null) {
+                        int barberID = barber.getBarberID();
+                        serAppointmentDetail.updateStatus(status, appointmentID, serviceID);
+
+                        if (status == 2 || status == 4) {
+                            boolean isBarberFinishAll = serBarber.isBarberFinishedAll(appointmentID, barber.getBarberID());
+
+                            if (isBarberFinishAll) {
+                                serBarber.updateIsBusy(false, barber.getBarberID());
+                            }
+                        }
+
+                    }
                 }
 
                 int currentAppID = Integer.parseInt(tblAppointmentDetail.getValueAt(rowsToProcess[0], 1) + "");
@@ -1722,7 +1749,13 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 1, customerID);
             Appointment apReturn = serAppointment.addAndReturn(apNew);
 
+            BigDecimal finalTotal = new BigDecimal(txtTotalPrice.getText());
+            Invoice invoiceNew = new Invoice(finalTotal, 1, apReturn.getAppointmentID());
+            Invoice invoiceReturn = serInvoice.addAndReturn(invoiceNew);
+
+            List<InvoiceDetail> listID = new ArrayList<>();
             List<AppointmentDetail> list = new ArrayList<>();
+            
             for (int i = 0; i < tblSercive.getRowCount(); i++) {
                 int serviceID = serService.getOneByName(tblSercive.getValueAt(i, 2).toString()).getServiceID();
                 int appointmentID = apReturn.getAppointmentID();
@@ -1736,10 +1769,15 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 int barberID = serBarber.getOneByName(barberName).getBarberID();
 
                 list.add(new AppointmentDetail(serviceID, appointmentID, duration, price, quantity, barberID));
+                listID.add(new InvoiceDetail(serviceID, invoiceReturn.getInvoiceID(), quantity, price));
             }
 
             for (AppointmentDetail aD : list) {
                 serAppointmentDetail.add(aD);
+            }
+            
+            for (InvoiceDetail iD : listID) {
+                serInvoiceDetail.add(iD);
             }
 
             XDialog.alert("Lưu lịch hẹn thành công!");
@@ -1772,6 +1810,20 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         }
 
         return true;
+
+    }
+
+    public void getListAppointmentFromTableApp(LocalTime time) {
+        List<Integer> appIDList = new ArrayList<>();
+        int rowCount = tblAppointment.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            int appointmentID = Integer.parseInt(tblAppointment.getValueAt(i, 0) + "");
+            LocalTime appointmentTime = LocalTime.parse(tblAppointment.getValueAt(i, 3) + "");
+            String status = tblAppointment.getValueAt(i, 4) + "";
+            if (appointmentTime.equals(time)) {
+                appIDList.add(appointmentID);
+            }
+        }
 
     }
 
@@ -1863,6 +1915,23 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             XDialog.alert("Đã tự động chuyển " + count + " lịch sang trạng thái 'Đang xử lý'!");
         }
     }
+
+//    public void changeAllisBusy(boolean isBusy) {
+//        int index = tblAppointment.getSelectedRow();
+//
+//        int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
+//        List<AppointmentDetail> lstAD = serAppointmentDetail.getAllByAppID(appointmentID);
+//        List<Barber> lstB = new ArrayList<Barber>();
+//
+//        for (AppointmentDetail aD : lstAD) {
+//            int barberID = aD.getBarberID();
+//            lstB.add(serBarber.getOne(barberID));
+//        }
+//
+//        for (Barber b : lstB) {
+//            serBarber.updateIsBusy(isBusy, b.getBarberID());
+//        }
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Tabbs;
