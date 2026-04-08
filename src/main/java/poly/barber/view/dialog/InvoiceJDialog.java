@@ -18,10 +18,12 @@ import poly.barber.repository.Impl.InvoiceRepositoryImpl;
  * @author DELL
  */
 public class InvoiceJDialog extends javax.swing.JDialog {
+
     private InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
     private DefaultTableModel dtm = new DefaultTableModel();
     private InvoiceDetailRepository idr = new InvoiceDetailRepository();
     private CustomerRepository cr = new CustomerRepository();
+
     /**
      * Creates new form InvoiceJDialog
      */
@@ -29,7 +31,7 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(this);
-        
+
         dtm = (DefaultTableModel) tblHoaDon.getModel();
         showTable(ir.getAll());
     }
@@ -209,68 +211,75 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
-     int row = tblHoaDon.getSelectedRow();
-    if (row < 0) return;
+        int row = tblHoaDon.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
 
-    // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ)
-    String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
-    int maHD = Integer.parseInt(maHDStr);
+        // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ)
+        String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
+        int maHD = Integer.parseInt(maHDStr);
 
-    // 2. Hiển thị thông tin cơ bản lên các Label
-    lblMaHD.setText(maHDStr);
-    lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString()); // Time in
+        // 2. Hiển thị thông tin cơ bản lên các Label
+        lblMaHD.setText(maHDStr);
+        Object valueObj = tblHoaDon.getValueAt(row, 2);
+        if (valueObj != null) {
+            lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString()); // Time in
+        } else {
+            lblNgay.setText("");
+        }
 
-    // 3. Lấy Tên và SĐT khách hàng từ CustomerRepository bằng JOIN
-    // customerRepo đã được khai báo: private CustomerRepository customerRepo = new CustomerRepository();
-    String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+        // 3. Lấy Tên và SĐT khách hàng từ CustomerRepository bằng JOIN
+        // customerRepo đã được khai báo: private CustomerRepository customerRepo = new CustomerRepository();
+        String[] info = cr.getCustomerInfoByInvoiceId(maHD);
 
-    if (info != null) {
-        lblTenKhach.setText(info[0]); // Fullname từ mảng trả về
-        lblSDT.setText(info[1]);      // Phone từ mảng trả về
-    } else {
-        // Trường hợp không tìm thấy (thường là khách vãng lai không có Appointment)
-        lblTenKhach.setText("Khách vãng lai");
-        lblSDT.setText("Không có");
-    }
+        if (info != null) {
+            lblTenKhach.setText(info[0]); // Fullname từ mảng trả về
+            lblSDT.setText(info[1]);      // Phone từ mảng trả về
+        } else {
+            // Trường hợp không tìm thấy (thường là khách vãng lai không có Appointment)
+            lblTenKhach.setText("Khách vãng lai");
+            lblSDT.setText("Không có");
+        }
 
-    // 4. Load chi tiết dịch vụ vào bảng bên phải
-    loadServiceTable(maHD);
+        // 4. Load chi tiết dịch vụ vào bảng bên phải
+        loadServiceTable(maHD);
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // 1. Kiểm tra xem người dùng đã chọn dòng nào trên table chưa
-        
-    int row = tblHoaDon.getSelectedRow();
-    
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
-        return;
-    }
 
-    // 2. Kiểm tra trạng thái hóa đơn (Tránh thanh toán lại hóa đơn đã xong)
-    // Giả sử cột Trạng thái là cột số 6
-    String trangThai = tblHoaDon.getValueAt(row, 6).toString();
-    if (trangThai.equals("Đã thanh toán")) {
-        JOptionPane.showMessageDialog(this, "Hóa đơn này đã được thanh toán trước đó.");
-        return;
-    }
+        int row = tblHoaDon.getSelectedRow();
 
-    // 3. Lấy các thông tin cần thiết từ dòng đã chọn
-    String maHD = tblHoaDon.getValueAt(row, 1).toString();
-    String tongTien = tblHoaDon.getValueAt(row, 4).toString();
-    
-    // 4. Khởi tạo PaymentJDialog và truyền dữ liệu
-    // 'this' là Frame/Dialog cha, 'true' để khóa màn hình cũ cho đến khi xong việc
-    PaymentJDialog paymentWin = new PaymentJDialog(null, true);
-    
-    // Gọi phương thức nhận dữ liệu bên PaymentJDialog (Xem bước 2)
-    paymentWin.setPaymentData(maHD, tongTien);
-    
-    // Hiển thị Dialog
-    paymentWin.setVisible(true);
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
+            return;
+        }
 
-    // 5. SAU KHI THANH TOÁN XONG (Dialog đóng) -> Cập nhật lại bảng
-    showTable(ir.getAll());
+        // 2. Kiểm tra trạng thái hóa đơn (Tránh thanh toán lại hóa đơn đã xong)
+        // Giả sử cột Trạng thái là cột số 6
+        String trangThai = tblHoaDon.getValueAt(row, 6).toString();
+        if (trangThai.equals("Đã thanh toán")) {
+            JOptionPane.showMessageDialog(this, "Hóa đơn này đã được thanh toán trước đó.");
+            return;
+        }
+
+        // 3. Lấy các thông tin cần thiết từ dòng đã chọn
+        String maHD = tblHoaDon.getValueAt(row, 1).toString();
+        String tongTien = tblHoaDon.getValueAt(row, 4).toString();
+
+        // 4. Khởi tạo PaymentJDialog và truyền dữ liệu
+        // 'this' là Frame/Dialog cha, 'true' để khóa màn hình cũ cho đến khi xong việc
+        PaymentJDialog paymentWin = new PaymentJDialog(null, true);
+
+        // Gọi phương thức nhận dữ liệu bên PaymentJDialog (Xem bước 2)
+        paymentWin.setPaymentData(maHD, tongTien);
+
+        // Hiển thị Dialog
+        paymentWin.setVisible(true);
+
+        // 5. SAU KHI THANH TOÁN XONG (Dialog đóng) -> Cập nhật lại bảng
+        showTable(ir.getAll());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -335,42 +344,43 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
     private void showTable(List<Invoice> all) {
         dtm.setRowCount(0);
-    for (Invoice i : all) {
-        // Chuyển đổi số 1, 2 thành chữ để hiển thị
-        String trangThaiTxt = (i.getStatus() == 2) ? "Đã thanh toán" : "Chưa thanh toán";
-        
-        dtm.addRow(new Object[]{
-            i.getAppointmentID(),
-            i.getInvoiceID(),
-            i.getCheckInDateTime(),
-            i.getCheckOutDateTime(),
-            i.getTotalAmount(),
-            i.getTotalDiscount(),
-            trangThaiTxt, // Hiển thị biến đã xử lý ở trên
-            i.getCreatedByEmployeeID()
-        });
-    }
+        for (Invoice i : all) {
+            // Chuyển đổi số 1, 2 thành chữ để hiển thị
+            String trangThaiTxt = (i.getStatus() == 2) ? "Đã thanh toán" : "Chưa thanh toán";
+
+            dtm.addRow(new Object[]{
+                i.getAppointmentID(),
+                i.getInvoiceID(),
+                i.getCheckInDateTime(),
+                i.getCheckOutDateTime(),
+                i.getTotalAmount(),
+                i.getTotalDiscount(),
+                trangThaiTxt, // Hiển thị biến đã xử lý ở trên
+                i.getCreatedByEmployeeID()
+            });
+        }
     }
 
     private void loadServiceTable(int parseInt) {
-        
+
         DefaultTableModel dtmServices = (DefaultTableModel) tblServiceDetails.getModel();
-    dtmServices.setRowCount(0); 
+        dtmServices.setRowCount(0);
 
-    try {
-        // Sử dụng tham số invoiceID truyền vào thay vì maHD
-        List<Object[]> details = idr.getServiceDetails(parseInt); 
+        try {
+            // Sử dụng tham số invoiceID truyền vào thay vì maHD
+            List<Object[]> details = idr.getServiceDetails(parseInt);
 
-        if (details != null) {
-            for (Object[] row : details) {
-                dtmServices.addRow(new Object[]{
-                    row[0], // Tên dịch vụ (ServiceName)
-                    row[1], // Số lượng (Quantity)
-                    String.format("%,.0f", row[3]) // Tổng tiền (Total)
-                });
+            if (details != null) {
+                for (Object[] row : details) {
+                    dtmServices.addRow(new Object[]{
+                        row[0], // Tên dịch vụ (ServiceName)
+                        row[1], // Số lượng (Quantity)
+                        String.format("%,.0f", row[3]) // Tổng tiền (Total)
+                    });
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
-    }}
+    }
 }

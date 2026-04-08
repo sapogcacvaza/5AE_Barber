@@ -12,6 +12,7 @@ public class DiscountRepository {
     private Discount mapRow(ResultSet rs) throws Exception {
         return Discount.builder()
                 .discountID(rs.getInt("DiscountID"))
+                .discountCode(rs.getString("DiscountCode"))
                 .discountName(rs.getString("DiscountName"))
                 .discountType(rs.getInt("DiscountType"))
                 .discountValue(rs.getBigDecimal("DiscountValue"))
@@ -94,6 +95,7 @@ public class DiscountRepository {
         """;
 
         XJdbc.executeUpdate(sql,
+                d.getDiscountCode(),
                 d.getDiscountName(),
                 d.getDiscountType(),
                 d.getDiscountValue(),

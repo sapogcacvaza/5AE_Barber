@@ -7,12 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Data
 public class Discount {
     private int discountID;
+    private String discountCode; // ✅ thêm
     private String discountName;
     private int discountType;
     private BigDecimal discountValue;
@@ -20,6 +21,6 @@ public class Discount {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private int status;
-    private int maxUsage; // Số lượng tối đa
-    private int usedCount; // Số lượng đã dùng. mặc định là 0
+    private int maxUsage;
+    private int usedCount;
 }

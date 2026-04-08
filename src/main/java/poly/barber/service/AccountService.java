@@ -9,7 +9,6 @@ public class AccountService {
 
     public Account login(String username, String password) {
 
-        // 1. validate input
         if (username == null || username.trim().isEmpty()) {
             throw new RuntimeException("Username không được để trống");
         }
@@ -18,28 +17,25 @@ public class AccountService {
             throw new RuntimeException("Password không được để trống");
         }
 
-        // 2. tìm account
         Account acc = repo.findByUsername(username);
 
-        // ❗ bảo mật: gộp lỗi
         if (acc == null || !password.equals(acc.getPassword())) {
             throw new RuntimeException("Sai tài khoản hoặc mật khẩu");
         }
 
-        // 3. check status (nếu có cột Status)
-        // if(acc.getStatus() == 0){
-        //     throw new RuntimeException("Tài khoản đã bị khóa");
-        // }
-
         return acc;
     }
 
-    // 🔥 check quyền
+    // 🔥 ROLE CHECK
     public boolean isAdmin(Account acc) {
         return acc.getRole() == 1;
     }
 
-    public boolean isStaff(Account acc) {
+    public boolean isManager(Account acc) {
         return acc.getRole() == 2;
+    }
+
+    public boolean isStaff(Account acc) {
+        return acc.getRole() == 3;
     }
 }
