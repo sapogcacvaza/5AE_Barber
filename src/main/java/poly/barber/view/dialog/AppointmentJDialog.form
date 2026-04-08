@@ -37,7 +37,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="Tabbs" alignment="0" max="32767" attributes="0"/>
+          <Component id="Tabbs" alignment="0" pref="855" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -152,8 +152,8 @@
                           <Component id="btnReloadTablleCalendar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="761" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="732" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -677,21 +677,23 @@
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane3" min="-2" pref="223" max="-2" attributes="0"/>
-                          <Component id="jScrollPane5" min="-2" pref="223" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jScrollPane3" pref="188" max="32767" attributes="0"/>
+                          <Component id="jScrollPane5" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="rdoCheckIn" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="rdoCancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnUpdateDetails" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnChangeAppointmentStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnChangeDetailStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdoInProcess" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdoIsDone" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rdoCancelDetail" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="rdoDone" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="rdoCheckIn" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="rdoCancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnUpdateDetails" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnChangeAppointmentStatus" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="rdoDone" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="11" max="32767" attributes="0"/>
                   </Group>

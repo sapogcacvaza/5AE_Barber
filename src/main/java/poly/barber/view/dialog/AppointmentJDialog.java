@@ -54,7 +54,6 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     CustomerService serCustomer = new CustomerService();
     InvoiceDetailService serInvoiceDetail = new InvoiceDetailService();
     InvoiceService serInvoice = new InvoiceService();
-            
 
     JPopupMenu popCalendar = new JPopupMenu();
     CustomCalendar cal = new CustomCalendar();
@@ -368,8 +367,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(rdoDoneStatus)
                     .addComponent(btnReloadTablleCalendar))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Tabbs.addTab("LỊCH", panelCalendar);
@@ -833,20 +832,21 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                         .addComponent(lblTitle3)
                         .addComponent(chkChooseAll)))
                 .addGap(18, 18, 18)
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoCheckIn)
-                    .addComponent(rdoCancel)
-                    .addComponent(btnUpdateDetails)
-                    .addComponent(btnChangeAppointmentStatus)
                     .addComponent(btnChangeDetailStatus)
                     .addComponent(rdoInProcess)
                     .addComponent(rdoIsDone)
                     .addComponent(rdoCancelDetail)
-                    .addComponent(rdoDone))
+                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rdoCheckIn)
+                        .addComponent(rdoCancel)
+                        .addComponent(btnUpdateDetails)
+                        .addComponent(btnChangeAppointmentStatus)
+                        .addComponent(rdoDone)))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
@@ -860,7 +860,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tabbs)
+            .addComponent(Tabbs, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
         );
 
         pack();
@@ -1006,10 +1006,11 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         boolean answer = XDialog.confirm("Bạn có chắc chắn muốn xác nhận đặt lịch này không?", "Xác nhân đặt lịch.");
         if (answer) {
             try {
-                addAppAndAppDetails();
-                resetForm();
-                fillToTable(serAppointment.getAll());
-                fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+                if (addAppAndAppDetails()) {
+                    resetForm();
+                    fillToTable(serAppointment.getAll());
+                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+                }
             } catch (Exception e) {
                 XDialog.alert("Lỗi hệ thống: Không thể lưu lịch hẹn.");
                 e.printStackTrace();
@@ -1724,7 +1725,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         txtTotalPrice.setText(totalPrice.toString());
     }
 
-    public void addAppAndAppDetails() {
+    public boolean addAppAndAppDetails() {
         try {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -1736,14 +1737,18 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             var customer = serCustomer.getOneByNameAndPhone(txtCustomerName.getText(), txtCustomerPhone.getText());
             if (customer == null) {
                 XDialog.alert("Không tìm thấy khách hàng!");
-                return;
+                txtCustomerName.setText("");
+                txtCustomerPhone.setText("");
+                return false;
             }
             int customerID = customer.getCustomerID();
             int totalDuration = Integer.parseInt(txtTotalDuration.getText());
 
             if (serAppointment.isConflict(customerID, appointmentDate, appointmentTime, totalDuration)) {
                 XDialog.alert("Khách hàng này đã có một lịch hẹn khác trong khung giờ này!", "Cảnh báo trùng lịch");
-                return;
+                txtCustomerName.setText("");
+                txtCustomerPhone.setText("");
+                return false;
             }
 
             Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 1, customerID);
@@ -1755,7 +1760,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
             List<InvoiceDetail> listID = new ArrayList<>();
             List<AppointmentDetail> list = new ArrayList<>();
-            
+
             for (int i = 0; i < tblSercive.getRowCount(); i++) {
                 int serviceID = serService.getOneByName(tblSercive.getValueAt(i, 2).toString()).getServiceID();
                 int appointmentID = apReturn.getAppointmentID();
@@ -1775,16 +1780,17 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             for (AppointmentDetail aD : list) {
                 serAppointmentDetail.add(aD);
             }
-            
+
             for (InvoiceDetail iD : listID) {
                 serInvoiceDetail.add(iD);
             }
 
             XDialog.alert("Lưu lịch hẹn thành công!");
-
+            return true;
         } catch (Exception e) {
             XDialog.alert("Có lỗi xảy ra: " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
     }
 
