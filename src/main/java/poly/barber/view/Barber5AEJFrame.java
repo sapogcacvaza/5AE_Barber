@@ -8,6 +8,7 @@ import poly.barber.entity.Account;
 import poly.barber.service.AccountService;
 import poly.barber.view.Dialog.ServiceJDialog;
 import poly.barber.view.dialog.AppointmentJDialog;
+import poly.barber.view.dialog.BarberJDialog;
 import poly.barber.view.dialog.CustomerView;
 import poly.barber.view.dialog.DiscountJdialog;
 import poly.barber.view.dialog.EmployeeView;
@@ -23,11 +24,13 @@ import poly.barber.view.dialog.StatisticalJdialog2;
  * @author Admin
  */
 public class Barber5AEJFrame extends javax.swing.JFrame {
- private Account currentUser;
+
+    private Account currentUser;
+
     /**
      * Creates new form Barber5AEJFrame
      */
-public Barber5AEJFrame() {
+    public Barber5AEJFrame() {
         initComponents();
         setLocationRelativeTo(null);
 
@@ -278,7 +281,9 @@ public Barber5AEJFrame() {
 
     private void btngiamgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngiamgiaActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) return;
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+        }
         DiscountJdialog d = new DiscountJdialog(this, true);
         d.setUser(currentUser);
         openDialog(d);
@@ -286,21 +291,27 @@ public Barber5AEJFrame() {
 
     private void btnbarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbarberActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) return;
-        ServiceJDialog d = new ServiceJDialog(this, true);
-        openDialog(d);
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+        }
+        BarberJDialog b = new BarberJDialog(this, true);
+        openDialog(b);
     }//GEN-LAST:event_btnbarberActionPerformed
 
     private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) return;
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+        }
         EmployeeView d = new EmployeeView(this, true);
         openDialog(d);
     }//GEN-LAST:event_btnNhanVienActionPerformed
 
     private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         CustomerView d = new CustomerView(this, true);
         openDialog(d);
 
@@ -308,42 +319,52 @@ public Barber5AEJFrame() {
 
     private void btninvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninvoiceActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         InvoiceJDialog d = new InvoiceJDialog(this, true);
         openDialog(d);
     }//GEN-LAST:event_btninvoiceActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         AppointmentJDialog d = new AppointmentJDialog(this, true);
         openDialog(d);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnserviceActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) return;
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+        }
         ServiceJDialog d = new ServiceJDialog(this, true);
         openDialog(d);
     }//GEN-LAST:event_btnserviceActionPerformed
 
     private void btnhistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhistoryActionPerformed
         // TODO add your handling code here:
-           if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         HistoryJdialog d = new HistoryJdialog(this, true);
         openDialog(d);
     }//GEN-LAST:event_btnhistoryActionPerformed
 
     private void btnstaticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstaticalActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) return;
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+        }
         StatisticalJdialog2 d = new StatisticalJdialog2(this, true);
         openDialog(d);
     }//GEN-LAST:event_btnstaticalActionPerformed
 
     private void btnoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoutActionPerformed
         // TODO add your handling code here:
-          int confirm = javax.swing.JOptionPane.showConfirmDialog(
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
                 this,
                 "Bạn có chắc muốn đăng xuất?",
                 "Đăng xuất",
@@ -367,7 +388,9 @@ public Barber5AEJFrame() {
 
     private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) return;
+        if (!checkLogin()) {
+            return;
+        }
         PaymentJDialog d = new PaymentJDialog(this, true);
         // demo dữ liệu
         d.setPaymentData("1", "500000");
@@ -403,7 +426,7 @@ public Barber5AEJFrame() {
 
         /* Create and display the form */
         // 🌟 Splash
-      java.awt.EventQueue.invokeLater(() -> new Barber5AEJFrame().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Barber5AEJFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
