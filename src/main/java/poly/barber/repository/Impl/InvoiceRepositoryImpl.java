@@ -16,7 +16,14 @@ import poly.barber.util.XQuery;
  */
 public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer> {
 
-    public String sqlGetAll = "SELECT InvoiceID AS InvoiceCode, * FROM Invoice";
+    public String sqlGetAll = "SELECT i.*, "
+        + "(e.FirstName + ' ' + e.LastName) AS employeeName, "
+        + "(SELECT TOP 1 (b.FirstName + ' ' + b.LastName) "
+        + " FROM AppointmentDetail ad "
+        + " JOIN Barber b ON ad.BarberID = b.BarberID "
+        + " WHERE ad.AppointmentID = i.AppointmentID) AS barberName "
+        + "FROM Invoice i "
+        + "JOIN Employee e ON i.CreatedByEmployeeID = e.EmployeeID";
     public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
     public String sqlGetDetailsByInvoiceId = "SELECT \n"
             + "    s.ServiceName, \n"
@@ -52,8 +59,20 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     @Override
     public void update(Invoice obj) {
        // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
-    String sql = "UPDATE Invoice SET Status = ?, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
-    XQuery.update(sql, obj.getStatus(), obj.getInvoiceID());
+    String sql = "UPDATE Invoice SET "
+               + "Status = ?, "
+               + "TotalAmount = ?, "
+               + "TotalDiscount = ?, "
+               + "CheckOutDateTime = GETDATE() "
+               + "WHERE InvoiceID = ?";
+    
+    // Truyền tham số theo đúng thứ tự của dấu hỏi chấm (?)
+    XQuery.update(sql, 
+        obj.getStatus(), 
+        obj.getTotalAmount(), 
+        obj.getTotalDiscount(), 
+        obj.getInvoiceID()
+    );
     
     }
 

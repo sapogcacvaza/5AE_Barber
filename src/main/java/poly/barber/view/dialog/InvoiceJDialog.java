@@ -18,10 +18,14 @@ import poly.barber.repository.Impl.InvoiceRepositoryImpl;
  * @author DELL
  */
 public class InvoiceJDialog extends javax.swing.JDialog {
+
     private InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
     private DefaultTableModel dtm = new DefaultTableModel();
     private InvoiceDetailRepository idr = new InvoiceDetailRepository();
     private CustomerRepository cr = new CustomerRepository();
+    
+    private List<Invoice> listInvoice;
+
     /**
      * Creates new form InvoiceJDialog
      */
@@ -29,8 +33,9 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(this);
-        
+
         dtm = (DefaultTableModel) tblHoaDon.getModel();
+        tblHoaDon.setAutoCreateRowSorter(true);
         showTable(ir.getAll());
     }
 
@@ -56,6 +61,10 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         lblNgay = new javax.swing.JLabel();
         lblTenKhach = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        lblBarber = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lblnguoitao = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblServiceDetails = new javax.swing.JTable();
 
@@ -115,23 +124,39 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         jLabel9.setText("SĐT");
 
+        jLabel10.setText("Thợ");
+
+        lblBarber.setText("  ");
+
+        jLabel11.setText("Người tạo");
+
+        lblnguoitao.setText("  ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblNgay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSDT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblMaHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTenKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblBarber, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblNgay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblSDT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblMaHD, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblTenKhach, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblnguoitao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
@@ -153,7 +178,15 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblSDT))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblBarber)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(lblnguoitao))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DỊCH VỤ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -185,7 +218,7 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 782, Short.MAX_VALUE))
                 .addContainerGap())
@@ -195,82 +228,96 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
-     int row = tblHoaDon.getSelectedRow();
-    if (row < 0) return;
+        int row = tblHoaDon.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
 
-    // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ)
-    String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
-    int maHD = Integer.parseInt(maHDStr);
+        // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ) - CÁCH NÀY LUÔN ĐÚNG
+        String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
+        int maHD = Integer.parseInt(maHDStr);
 
-    // 2. Hiển thị thông tin cơ bản lên các Label
-    lblMaHD.setText(maHDStr);
-    lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString()); // Time in
+        // 2. SỬA LẠI ĐOẠN NÀY: Chuyển chỉ số dòng từ View sang Model
+        int modelRow = tblHoaDon.convertRowIndexToModel(row);
 
-    // 3. Lấy Tên và SĐT khách hàng từ CustomerRepository bằng JOIN
-    // customerRepo đã được khai báo: private CustomerRepository customerRepo = new CustomerRepository();
-    String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+        // Lấy selectedInv từ list đã lưu (listInvoice) thay vì gọi ir.getAll() liên tục
+        Invoice selectedInv = listInvoice.get(modelRow);
 
-    if (info != null) {
-        lblTenKhach.setText(info[0]); // Fullname từ mảng trả về
-        lblSDT.setText(info[1]);      // Phone từ mảng trả về
-    } else {
-        // Trường hợp không tìm thấy (thường là khách vãng lai không có Appointment)
-        lblTenKhach.setText("Khách vãng lai");
-        lblSDT.setText("Không có");
-    }
+        // 3. Đổ dữ liệu lên các Label (Giữ nguyên)
+        lblMaHD.setText(maHDStr);
+        lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString());
+        lblnguoitao.setText(selectedInv.getEmployeeName());
+        lblBarber.setText(selectedInv.getBarberName() != null ? selectedInv.getBarberName() : "N/A");
 
-    // 4. Load chi tiết dịch vụ vào bảng bên phải
-    loadServiceTable(maHD);
+        // 4. Lấy thông tin khách và load bảng dịch vụ (Giữ nguyên)
+        String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+        if (info != null) {
+            lblTenKhach.setText(info[0]);
+            lblSDT.setText(info[1]);
+        } else {
+            lblTenKhach.setText("Khách vãng lai");
+            lblSDT.setText("Không có");
+        }
+
+        loadServiceTable(maHD);
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // 1. Kiểm tra xem người dùng đã chọn dòng nào trên table chưa
-        
-    int row = tblHoaDon.getSelectedRow();
-    
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
-        return;
-    }
 
-    // 2. Kiểm tra trạng thái hóa đơn (Tránh thanh toán lại hóa đơn đã xong)
-    // Giả sử cột Trạng thái là cột số 6
-    String trangThai = tblHoaDon.getValueAt(row, 6).toString();
-    if (trangThai.equals("Đã thanh toán")) {
-        JOptionPane.showMessageDialog(this, "Hóa đơn này đã được thanh toán trước đó.");
-        return;
-    }
+        int row = tblHoaDon.getSelectedRow();
 
-    // 3. Lấy các thông tin cần thiết từ dòng đã chọn
-    String maHD = tblHoaDon.getValueAt(row, 1).toString();
-    String tongTien = tblHoaDon.getValueAt(row, 4).toString();
-    
-    // 4. Khởi tạo PaymentJDialog và truyền dữ liệu
-    // 'this' là Frame/Dialog cha, 'true' để khóa màn hình cũ cho đến khi xong việc
-    PaymentJDialog paymentWin = new PaymentJDialog(null, true);
-    
-    // Gọi phương thức nhận dữ liệu bên PaymentJDialog (Xem bước 2)
-    paymentWin.setPaymentData(maHD, tongTien);
-    
-    // Hiển thị Dialog
-    paymentWin.setVisible(true);
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
+            return;
+        }
 
-    // 5. SAU KHI THANH TOÁN XONG (Dialog đóng) -> Cập nhật lại bảng
-    showTable(ir.getAll());
+        // 2. Kiểm tra trạng thái hóa đơn (Tránh thanh toán lại hóa đơn đã xong)
+        // Giả sử cột Trạng thái là cột số 6
+        String trangThai = tblHoaDon.getValueAt(row, 6).toString();
+        if (trangThai.equals("Đã thanh toán")) {
+            JOptionPane.showMessageDialog(this, "Hóa đơn này đã được thanh toán trước đó.");
+            return;
+        }
+
+        // 3. Lấy các thông tin cần thiết từ dòng đã chọn
+        String maHD = tblHoaDon.getValueAt(row, 1).toString();
+        String tongTien = tblHoaDon.getValueAt(row, 4).toString();
+
+        // 4. Khởi tạo PaymentJDialog và truyền dữ liệu
+        // 'this' là Frame/Dialog cha, 'true' để khóa màn hình cũ cho đến khi xong việc
+        PaymentJDialog paymentWin = new PaymentJDialog(null, true);
+
+        // Gọi phương thức nhận dữ liệu bên PaymentJDialog (Xem bước 2)
+        paymentWin.setPaymentData(maHD, tongTien);
+
+        // Hiển thị Dialog
+        paymentWin.setVisible(true);
+
+        // 5. SAU KHI THANH TOÁN XONG (Dialog đóng) -> Cập nhật lại bảng
+        showTable(ir.getAll());
+
+        lblMaHD.setText(" ");
+        lblNgay.setText(" ");
+        lblTenKhach.setText(" ");
+        lblSDT.setText(" ");
+        lblBarber.setText(" ");
+        lblnguoitao.setText(" ");
+        ((DefaultTableModel) tblServiceDetails.getModel()).setRowCount(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -318,6 +365,8 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -325,52 +374,56 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblBarber;
     private javax.swing.JLabel lblMaHD;
     private javax.swing.JLabel lblNgay;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTenKhach;
+    private javax.swing.JLabel lblnguoitao;
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTable tblServiceDetails;
     // End of variables declaration//GEN-END:variables
 
     private void showTable(List<Invoice> all) {
-        dtm.setRowCount(0);
+        this.listInvoice = all; 
+    
+    dtm.setRowCount(0);
     for (Invoice i : all) {
-        // Chuyển đổi số 1, 2 thành chữ để hiển thị
         String trangThaiTxt = (i.getStatus() == 2) ? "Đã thanh toán" : "Chưa thanh toán";
-        
+
         dtm.addRow(new Object[]{
             i.getAppointmentID(),
             i.getInvoiceID(),
             i.getCheckInDateTime(),
             i.getCheckOutDateTime(),
-            i.getTotalAmount(),
-            i.getTotalDiscount(),
-            trangThaiTxt, // Hiển thị biến đã xử lý ở trên
-            i.getCreatedByEmployeeID()
+            String.format("%,.0f", i.getTotalAmount()),
+            String.format("%,.0f", i.getTotalDiscount()),
+            trangThaiTxt,
+            i.getEmployeeName()
         });
     }
     }
 
     private void loadServiceTable(int parseInt) {
-        
+
         DefaultTableModel dtmServices = (DefaultTableModel) tblServiceDetails.getModel();
-    dtmServices.setRowCount(0); 
+        dtmServices.setRowCount(0);
 
-    try {
-        // Sử dụng tham số invoiceID truyền vào thay vì maHD
-        List<Object[]> details = idr.getServiceDetails(parseInt); 
+        try {
+            // Sử dụng tham số invoiceID truyền vào thay vì maHD
+            List<Object[]> details = idr.getServiceDetails(parseInt);
 
-        if (details != null) {
-            for (Object[] row : details) {
-                dtmServices.addRow(new Object[]{
-                    row[0], // Tên dịch vụ (ServiceName)
-                    row[1], // Số lượng (Quantity)
-                    String.format("%,.0f", row[3]) // Tổng tiền (Total)
-                });
+            if (details != null) {
+                for (Object[] row : details) {
+                    dtmServices.addRow(new Object[]{
+                        row[0], // Tên dịch vụ (ServiceName)
+                        row[1], // Số lượng (Quantity)
+                        String.format("%,.0f", row[3]) // Tổng tiền (Total)
+                    });
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
-    }}
+    }
 }

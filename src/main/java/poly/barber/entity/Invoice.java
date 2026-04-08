@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 //@Builder
 //@Data
 public class Invoice {
+
     private int invoiceID;
     private String invoiceCode; // Mã Hóa Đơn
     private LocalDateTime checkInDateTime;
@@ -21,6 +22,26 @@ public class Invoice {
     private int status;
     private int createdByEmployeeID;
     private int appointmentID;
+
+    private String employeeName;
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    private String barberName;
+
+    public String getBarberName() {
+        return barberName;
+    }
+
+    public void setBarberName(String barberName) {
+        this.barberName = barberName;
+    }
 
     public Invoice() {
     }
@@ -108,5 +129,5 @@ public class Invoice {
     public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
     }
-    
+
 }

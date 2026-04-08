@@ -26,40 +26,41 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     private DefaultTableModel dtm = new DefaultTableModel();
     private InvoiceDetailRepository idr = new InvoiceDetailRepository();
+
     public void setPaymentData(String maHD, String tongTien) {
-    // 1. Hiển thị thông tin lên các ô nhập
-    txtMaHD.setText(maHD);
-    lblTongTien1.setText(tongTien);
-    lblThanhTien.setText(tongTien);
-    
-    // 2. Lấy Model của bảng và xóa trắng dữ liệu cũ (nếu có)
-    DefaultTableModel dtmServices = (DefaultTableModel) tblServiceDetails.getModel();
-    dtmServices.setRowCount(0); 
+        // 1. Hiển thị thông tin lên các ô nhập
+        txtMaHD.setText(maHD);
+        lblTongTien1.setText(tongTien);
+        lblThanhTien.setText(tongTien);
 
-    try {
-        // 3. Gọi Repository để lấy danh sách dịch vụ theo Mã HĐ
-        // Lưu ý: Đảm bảo idr đã được khai báo ở đầu Class
-        List<Object[]> details = idr.getServiceDetails(Integer.parseInt(maHD)); 
+        // 2. Lấy Model của bảng và xóa trắng dữ liệu cũ (nếu có)
+        DefaultTableModel dtmServices = (DefaultTableModel) tblServiceDetails.getModel();
+        dtmServices.setRowCount(0);
 
-        if (details != null) {
-            for (Object[] row : details) {
-                // Thêm từng dòng vào bảng: Tên dịch vụ, Số lượng, Thành tiền
-                dtmServices.addRow(new Object[]{
-                    row[0], // ServiceName
-                    row[1], // Quantity
-                    String.format("%,.0f", row[3]) // Total (Thành tiền)
-                });
+        try {
+            // 3. Gọi Repository để lấy danh sách dịch vụ theo Mã HĐ
+            // Lưu ý: Đảm bảo idr đã được khai báo ở đầu Class
+            List<Object[]> details = idr.getServiceDetails(Integer.parseInt(maHD));
+
+            if (details != null) {
+                for (Object[] row : details) {
+                    // Thêm từng dòng vào bảng: Tên dịch vụ, Số lượng, Thành tiền
+                    dtmServices.addRow(new Object[]{
+                        row[0], // ServiceName
+                        row[1], // Quantity
+                        String.format("%,.0f", row[3]) // Total (Thành tiền)
+                    });
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
-    }
 
-    // 4. Reset các ô tính tiền
-    txtGiamGia.setText("0");
-    txtTienKhachDua.setText("");
-    lblTienTraLai.setText("0");
-}
+        // 4. Reset các ô tính tiền
+        txtGiamGia.setText("0");
+        txtTienKhachDua.setText("");
+        lblTienTraLai.setText("0");
+    }
 
     /**
      * Creates new form PaymentJDialog
@@ -72,7 +73,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
         btnThanhToanIn.setEnabled(false);
         dcbm = (DefaultComboBoxModel) cboPaymentMethods.getModel();
         showComboBox(pmr.getAll());
-        
+
     }
 
     /**
@@ -318,56 +319,60 @@ public class PaymentJDialog extends javax.swing.JDialog {
 
     private void txtTienKhachDuaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyReleased
         try {
-        if (lblThanhTien.getText().isEmpty()) return;
+            if (lblThanhTien.getText().isEmpty()) {
+                return;
+            }
 
-        double tongTien = Double.parseDouble(lblThanhTien.getText().replace(",", ""));
-        double khachDua = Double.parseDouble(txtTienKhachDua.getText());
-        double conThieu = tongTien - khachDua;
+            double tongTien = Double.parseDouble(lblThanhTien.getText().replace(",", ""));
+            double khachDua = Double.parseDouble(txtTienKhachDua.getText());
+            double conThieu = tongTien - khachDua;
 
-        if (conThieu > 0) {
-            // Trường hợp thiếu tiền
-            lblTienTraLai.setForeground(java.awt.Color.RED);
-            lblTra.setForeground(java.awt.Color.RED);
-            lblTra.setText("Con Thiếu: ");
-            lblTienTraLai.setText(String.format("%,.0f", conThieu));
-            btnThanhToanIn.setEnabled(false); // Khóa nút thanh toán
-        } else {
-            // Trường hợp đủ hoặc dư
-            lblTienTraLai.setForeground(new java.awt.Color(0, 153, 51)); // Màu xanh
-            lblTra.setForeground(new java.awt.Color(0, 153, 51));
-            lblTra.setText("Tiền trả lại: ");
-            lblTienTraLai.setText(String.format("%,.0f", Math.abs(conThieu)));
-            btnThanhToanIn.setEnabled(true); // Mở khóa nút thanh toán
+            if (conThieu > 0) {
+                lblTienTraLai.setForeground(java.awt.Color.RED);
+                lblTra.setForeground(java.awt.Color.RED);
+                lblTra.setText("Con Thiếu: ");
+                lblTienTraLai.setText(String.format("%,.0f", conThieu));
+                btnThanhToanIn.setEnabled(false); // Khóa nút thanh toán
+            } else {
+                lblTienTraLai.setForeground(new java.awt.Color(0, 153, 51)); // Màu xanh
+                lblTra.setForeground(new java.awt.Color(0, 153, 51));
+                lblTra.setText("Tiền trả lại: ");
+                lblTienTraLai.setText(String.format("%,.0f", Math.abs(conThieu)));
+                btnThanhToanIn.setEnabled(true); // Mở khóa nút thanh toán
+            }
+        } catch (NumberFormatException e) {
+            lblTienTraLai.setText("0");
+            btnThanhToanIn.setEnabled(false);
         }
-    } catch (NumberFormatException e) {
-        lblTienTraLai.setText("0");
-        btnThanhToanIn.setEnabled(false);
-    }
     }//GEN-LAST:event_txtTienKhachDuaKeyReleased
 
     private void btnThanhToanInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanInActionPerformed
-       try {
-        String maHD = txtMaHD.getText();
-        if (maHD.isEmpty()) return;
+        try {
+            String maHD = txtMaHD.getText();
+            if (maHD.isEmpty()) {
+                return;
+            }
 
-        // 1. Cập nhật Database
-        Invoice inv = new Invoice();
-        inv.setInvoiceID(Integer.parseInt(maHD));
-        inv.setStatus(2); // Giả định 2 là "Đã thanh toán"
-        
-        InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
-        ir.update(inv);
+            double tongGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
+            double thanhTien = Double.parseDouble(lblThanhTien.getText().replace(",", ""));
+            double tienGiam = tongGoc - thanhTien;
 
-        // 2. Thông báo
-        JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
-        
-        // 3. Quan trọng: Đóng cửa sổ thanh toán
-        this.dispose(); 
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Lỗi thanh toán: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btnThanhToanInActionPerformed
+            Invoice inv = new Invoice();
+            inv.setInvoiceID(Integer.parseInt(maHD));
+            inv.setTotalAmount(BigDecimal.valueOf(thanhTien)); // Cập nhật tiền sau giảm
+            inv.setTotalDiscount(BigDecimal.valueOf(tienGiam)); // Cập nhật số tiền được giảm
+            inv.setStatus(2); // Đã thanh toán
+
+            InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
+            ir.update(inv);
+
+            JOptionPane.showMessageDialog(this, "Thanh toán thành công!");
+            this.dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi thanh toán: " + e.getMessage());
+            e.printStackTrace();
+        }    }//GEN-LAST:event_btnThanhToanInActionPerformed
 
     private void cboPaymentMethodsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPaymentMethodsActionPerformed
         // TODO add your handling code here:
@@ -375,34 +380,38 @@ public class PaymentJDialog extends javax.swing.JDialog {
 
     private void txtGiamGiaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGiamGiaKeyReleased
         try {
-        // 1. Lấy tổng tiền gốc từ label (loại bỏ dấu phẩy nếu có)
-        double tongTienGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
-        
-        // 2. Lấy % giảm giá từ ô nhập (nếu trống thì coi như 0%)
-        String rGiamGia = txtGiamGia.getText().trim();
-        double phanTram = rGiamGia.isEmpty() ? 0 : Double.parseDouble(rGiamGia);
-        
-        // Giới hạn không cho giảm quá 100%
-        if (phanTram > 100) phanTram = 100;
-        if (phanTram < 0) phanTram = 0;
+            // 1. Lấy tổng tiền gốc từ label (loại bỏ dấu phẩy nếu có)
+            double tongTienGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
 
-        // 3. Tính toán: Thành tiền = Tổng gốc - (Tổng gốc * % / 100)
-        double tienGiam = tongTienGoc * (phanTram / 100);
-        double thanhTien = tongTienGoc - tienGiam;
+            // 2. Lấy % giảm giá từ ô nhập (nếu trống thì coi như 0%)
+            String rGiamGia = txtGiamGia.getText().trim();
+            double phanTram = rGiamGia.isEmpty() ? 0 : Double.parseDouble(rGiamGia);
 
-        // 4. Hiển thị kết quả lên Label Thành tiền (định dạng số nguyên)
-        lblThanhTien.setText(String.format("%.0f", thanhTien));
-        
-    } catch (NumberFormatException e) {
-        // Nếu người dùng nhập chữ, mặc định Thành tiền = Tổng tiền gốc
-        lblThanhTien.setText(lblTongTien1.getText());
-    }
+            // Giới hạn không cho giảm quá 100%
+            if (phanTram > 100) {
+                phanTram = 100;
+            }
+            if (phanTram < 0) {
+                phanTram = 0;
+            }
+
+            // 3. Tính toán: Thành tiền = Tổng gốc - (Tổng gốc * % / 100)
+            double tienGiam = tongTienGoc * (phanTram / 100);
+            double thanhTien = tongTienGoc - tienGiam;
+
+            // 4. Hiển thị kết quả lên Label Thành tiền (định dạng số nguyên)
+            lblThanhTien.setText(String.format("%.0f", thanhTien));
+
+        } catch (NumberFormatException e) {
+            // Nếu người dùng nhập chữ, mặc định Thành tiền = Tổng tiền gốc
+            lblThanhTien.setText(lblTongTien1.getText());
+        }
     }//GEN-LAST:event_txtGiamGiaKeyReleased
 
     private void txtTienKhachDuaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyTyped
         if (txtTienKhachDua.getText().length() >= 12 || !Character.isDigit(evt.getKeyChar())) {
-    evt.consume(); // Hủy sự kiện phím, không cho hiện chữ lên ô text
-}
+            evt.consume(); // Hủy sự kiện phím, không cho hiện chữ lên ô text
+        }
     }//GEN-LAST:event_txtTienKhachDuaKeyTyped
 
     /**
