@@ -26,7 +26,8 @@ public class DiscountService {
     // 🔥 FILTER luôn trong service
     public List<Discount> filter(String keyword, int type) {
         return repo.findAll().stream()
-                .filter(d -> d.getDiscountName().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(d -> d.getDiscountName() != null
+                && d.getDiscountName().toLowerCase().contains(keyword.toLowerCase()))
                 .filter(d -> type == 0 || d.getDiscountType() == type)
                 .toList();
     }
@@ -66,6 +67,10 @@ public class DiscountService {
 
         if (d.getEndDateTime().isBefore(d.getStartDateTime())) {
             throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
+        }
+
+        if (repo.existsCode(d.getDiscountCode(), d.getDiscountID())) {
+            throw new RuntimeException("Mã giảm giá đã tồn tại");
         }
     }
 
