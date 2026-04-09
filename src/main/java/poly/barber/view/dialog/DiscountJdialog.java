@@ -4,9 +4,12 @@
  */
 package poly.barber.view.dialog;
 
+import java.awt.Color;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import poly.barber.entity.Account;
@@ -24,6 +27,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DiscountJdialog.class.getName());
     DiscountService service = new DiscountService();
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+    List<Discount> list = new ArrayList<>();
 
     /**
      * Creates new form DiscountJFrame
@@ -32,8 +36,10 @@ public class DiscountJdialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        initCombo();
+        initComboForm();
+        initComboFilter();
         loadTable();
+
         cbbdc.addActionListener(e -> loadTable());
 
         txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -41,6 +47,16 @@ public class DiscountJdialog extends javax.swing.JDialog {
                 loadTable();
             }
         });
+
+        // ✅ FIX ở đây
+        cbLoai.addActionListener(e -> txtmagiamgia.setText(generateCode()));
+    }
+
+    void initComboFilter() {
+        cbbdc.removeAllItems();
+        cbbdc.addItem("Tất cả");
+        cbbdc.addItem("Giảm %");
+        cbbdc.addItem("Giảm tiền");
     }
 
     void loadTable() {
@@ -57,58 +73,102 @@ public class DiscountJdialog extends javax.swing.JDialog {
         if (typeIndex == 2) {
             type = 2;
         }
+        list = service.filter(keyword, type);
 
-        for (var d : service.filter(keyword, type)) {
+        for (var d : list) {
             model.addRow(new Object[]{
                 d.getDiscountID(),
-                d.getDiscountCode(), // ✅ thêm
+                d.getDiscountCode(),
                 d.getDiscountName(),
                 d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
                 d.getDiscountValue(),
                 d.getDescription(),
                 d.getStartDateTime(),
                 d.getEndDateTime(),
-                d.getStatus(),
+                d.getStatus() == 1 ? "Hoạt động" : "Ngưng",
                 d.getMaxUsage(),
                 d.getUsedCount()
             });
         }
     }
 
-    void initCombo() {
-        model.removeAllElements();
-        model.addElement("Tất cả");
-        model.addElement("Giảm %");
-        model.addElement("Giảm tiền");
-        cbbdc.setModel(model);
+    void initComboForm() {
+        cbLoai.removeAllItems();
+        cbLoai.addItem("Giảm %");     // 1
+        cbLoai.addItem("Giảm tiền");  // 2
+
+        cbTrangThai.removeAllItems();
+        cbTrangThai.addItem("Hoạt động"); // 1
+        cbTrangThai.addItem("Ngưng");     // 0
     }
 
     Discount getForm() {
-        try {
-            int type = cbbdc.getSelectedIndex() == 1 ? 1 : 2;
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-            LocalDateTime start = LocalDateTime.parse(txtstart.getText(), formatter);
-            LocalDateTime end = LocalDateTime.parse(txtend.getText(), formatter);
-
-            return Discount.builder()
-                    .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
-                    .discountCode(txtmagiamgia.getText())
-                    .discountName(txtten.getText())
-                    .discountType(type)
-                    .discountValue(new BigDecimal(txtgiatri.getText()))
-                    .description(txtmota.getText())
-                    .startDateTime(start)
-                    .endDateTime(end)
-                    .status(Integer.parseInt(txttrangthai.getText()))
-                    .maxUsage(Integer.parseInt(txtsoluong.getText()))
-                    .usedCount(Integer.parseInt(txtdasudung.getText()))
-                    .build();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Sai định dạng! Ví dụ đúng: 2026-04-07 14:30");
+        txtten.setBackground(Color.white);
+        txtgiatri.setBackground(Color.white);
+        txtsoluong.setBackground(Color.white);
+        txtmagiamgia.setBackground(Color.white);
+        if (txtmagiamgia.getText().trim().isEmpty()) {
+            throw new RuntimeException("Mã giảm giá không được trống");
         }
+
+        if (txtten.getText().trim().isEmpty()) {
+            txtten.setBackground(Color.pink);
+            throw new RuntimeException("Tên không được trống");
+        }
+
+        if (txtgiatri.getText().trim().isEmpty()) {
+            txtgiatri.setBackground(Color.pink);
+            throw new RuntimeException("Giá trị không được trống");
+        }
+
+        if (txtsoluong.getText().trim().isEmpty()) {
+            throw new RuntimeException("Số lượng không được trống");
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime start;
+        LocalDateTime end;
+
+        try {
+            start = LocalDateTime.parse(txtstart.getText(), formatter);
+            end = LocalDateTime.parse(txtend.getText(), formatter);
+        } catch (Exception e) {
+            throw new RuntimeException("Sai định dạng ngày! Ví dụ: 2026-04-07 14:30");
+        }
+
+        if (end.isBefore(start)) {
+            throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
+        }
+
+        int type = cbLoai.getSelectedIndex() == 0 ? 1 : 2;
+        int status = cbTrangThai.getSelectedIndex() == 0 ? 1 : 0;
+
+        BigDecimal value;
+        try {
+            value = new BigDecimal(txtgiatri.getText());
+        } catch (Exception e) {
+            throw new RuntimeException("Giá trị phải là số");
+        }
+
+        return Discount.builder()
+                .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
+                .discountCode(txtmagiamgia.getText())
+                .discountName(txtten.getText())
+                .discountType(type)
+                .discountValue(value)
+                .description(txtmota.getText())
+                .startDateTime(start)
+                .endDateTime(end)
+                .status(status)
+                .maxUsage(Integer.parseInt(txtsoluong.getText()))
+                .usedCount(Integer.parseInt(txtdasudung.getText()))
+                .build();
+    }
+
+    String generateCode() {
+        String prefix = cbLoai.getSelectedIndex() == 0 ? "PT" : "TM";
+        return prefix + System.currentTimeMillis();
     }
 
     public void setUser(Account user) {
@@ -124,6 +184,28 @@ public class DiscountJdialog extends javax.swing.JDialog {
         if (service.isManager(user)) {
             // ok
         }
+    }
+
+    void showDetail(int index) {
+        Discount d = list.get(index);
+
+        txtid.setText(String.valueOf(d.getDiscountID()));
+        txtmagiamgia.setText(d.getDiscountCode());
+        txtten.setText(d.getDiscountName());
+
+        cbLoai.setSelectedIndex(d.getDiscountType() == 1 ? 0 : 1);
+
+        txtgiatri.setText(d.getDiscountValue().toString());
+        txtmota.setText(d.getDescription());
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        txtstart.setText(d.getStartDateTime().format(f));
+        txtend.setText(d.getEndDateTime().format(f));
+
+        cbTrangThai.setSelectedIndex(d.getStatus() == 1 ? 0 : 1);
+
+        txtsoluong.setText(String.valueOf(d.getMaxUsage()));
+        txtdasudung.setText(String.valueOf(d.getUsedCount()));
     }
 
     /**
@@ -157,17 +239,17 @@ public class DiscountJdialog extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         txtend = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txttrangthai = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtsoluong = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtdasudung = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtloai = new javax.swing.JTextField();
         txtthem = new javax.swing.JButton();
         txtsua = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         txtmagiamgia = new javax.swing.JTextField();
+        cbTrangThai = new javax.swing.JComboBox<>();
+        cbLoai = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -217,7 +299,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(tbldc);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 930, 500));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 930, 580));
 
         jTabbedPane1.addTab("Danh sách", jPanel2);
 
@@ -249,7 +331,6 @@ public class DiscountJdialog extends javax.swing.JDialog {
 
         jLabel8.setText("TRẠNG THÁI");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
-        jPanel1.add(txttrangthai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 160, -1));
 
         jLabel9.setText("SỐ LƯỢNG");
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
@@ -261,7 +342,6 @@ public class DiscountJdialog extends javax.swing.JDialog {
 
         jLabel11.setText("LOẠI");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
-        jPanel1.add(txtloai, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 160, -1));
 
         txtthem.setBackground(new java.awt.Color(0, 102, 153));
         txtthem.setForeground(new java.awt.Color(255, 255, 255));
@@ -287,6 +367,12 @@ public class DiscountJdialog extends javax.swing.JDialog {
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
         jPanel1.add(txtmagiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 160, -1));
 
+        cbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(cbTrangThai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 160, -1));
+
+        cbLoai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel1.add(cbLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 160, -1));
+
         jTabbedPane1.addTab("Thêm mới", jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -311,8 +397,8 @@ public class DiscountJdialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             Discount d = getForm();
-            service.add(d); // ✅ đúng
-            loadTable();
+            d.setDiscountCode(generateCode());
+            service.add(d);
 
             JOptionPane.showMessageDialog(this, "Thêm thành công!");
         } catch (Exception ex) {
@@ -324,9 +410,13 @@ public class DiscountJdialog extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             Discount d = getForm();
+            if (txtid.getText().isEmpty()) {
+                d.setDiscountCode(generateCode()); // thêm mới
+            } else {
+                // nếu sửa thì chỉ update khi đổi loại
+                d.setDiscountCode(generateCode());
+            }
             service.update(d);
-            loadTable();
-
             JOptionPane.showMessageDialog(this, "Sửa thành công!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -335,29 +425,11 @@ public class DiscountJdialog extends javax.swing.JDialog {
 
     private void tbldcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbldcMouseClicked
         // TODO add your handling code here:
+
         int i = tbldc.getSelectedRow();
-
-        txtid.setText(tbldc.getValueAt(i, 0).toString());
-        txtmagiamgia.setText(tbldc.getValueAt(i, 1).toString());
-        txtten.setText(tbldc.getValueAt(i, 2).toString());
-        String type = tbldc.getValueAt(i, 2).toString();
-
-        if (type.equals("Giảm %")) {
-            cbbdc.setSelectedIndex(1);
-        } else {
-            cbbdc.setSelectedIndex(2);
-        }
-
-        txtgiatri.setText(tbldc.getValueAt(i, 3).toString());
-        txtmota.setText(tbldc.getValueAt(i, 4).toString());
-        txtstart.setText(tbldc.getValueAt(i, 5).toString());
-        txtend.setText(tbldc.getValueAt(i, 6).toString());
-        txttrangthai.setText(tbldc.getValueAt(i, 7).toString());
-        txtsoluong.setText(tbldc.getValueAt(i, 8).toString());
-        txtdasudung.setText(tbldc.getValueAt(i, 9).toString());
-
-        // 🔥 chuyển tab sang form
+        showDetail(i);
         jTabbedPane1.setSelectedIndex(1);
+
     }//GEN-LAST:event_tbldcMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -403,6 +475,8 @@ public class DiscountJdialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbLoai;
+    private javax.swing.JComboBox<String> cbTrangThai;
     private javax.swing.JComboBox<String> cbbdc;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -427,7 +501,6 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtfind;
     private javax.swing.JTextField txtgiatri;
     private javax.swing.JTextField txtid;
-    private javax.swing.JTextField txtloai;
     private javax.swing.JTextField txtmagiamgia;
     private javax.swing.JTextField txtmota;
     private javax.swing.JTextField txtsoluong;
@@ -435,6 +508,5 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private javax.swing.JButton txtsua;
     private javax.swing.JTextField txtten;
     private javax.swing.JButton txtthem;
-    private javax.swing.JTextField txttrangthai;
     // End of variables declaration//GEN-END:variables
 }
