@@ -18,6 +18,12 @@ import poly.barber.util.XQuery;
 public class InvoiceDetailRepository implements ICommonRepository<InvoiceDetail, Integer> {
 
     // Câu lệnh SQL lấy chi tiết dịch vụ của 1 hóa đơn
+    public String sqlGetBarbersByInvoice = 
+     "SELECT (b.FirstName + ' ' + b.LastName) AS BarberName, s.ServiceName "
+    + "FROM AppointmentDetail ad "
+    + "JOIN Barber b ON ad.BarberID = b.BarberID "
+    + "JOIN Service s ON ad.ServiceID = s.ServiceID "
+    + "WHERE ad.AppointmentID = (SELECT AppointmentID FROM Invoice WHERE InvoiceID = ?)";
     String sqlGetDetails = "SELECT s.ServiceName, id.Quantity, id.Price, (id.Quantity * id.Price) AS Total "
             + "FROM InvoiceDetail id "
             + "JOIN Service s ON id.ServiceID = s.ServiceID "
@@ -29,7 +35,7 @@ public class InvoiceDetailRepository implements ICommonRepository<InvoiceDetail,
     public List<Object[]> getServiceDetails(Integer invoiceId) {
         return XQuery.getRawList(sqlGetDetails, invoiceId);
     }
-
+    
     @Override
     public List<InvoiceDetail> getAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -60,6 +66,10 @@ public class InvoiceDetailRepository implements ICommonRepository<InvoiceDetail,
     @Override
     public void update(InvoiceDetail obj) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Object[]> getBarbersByInvoice(int invoiceId) {
+        return XQuery.getRawList(sqlGetBarbersByInvoice, invoiceId);
     }
 
 }
