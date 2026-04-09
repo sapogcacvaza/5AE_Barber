@@ -1,5 +1,6 @@
 package poly.barber.view.dialog;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -66,7 +67,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         open();
 
-        tblCalendar.setRowHeight(110);
+        initColor();
     }
 
     @SuppressWarnings("unchecked")
@@ -836,17 +837,18 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnChangeDetailStatus)
-                    .addComponent(rdoInProcess)
-                    .addComponent(rdoIsDone)
-                    .addComponent(rdoCancelDetail)
+                .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(rdoCheckIn)
                         .addComponent(rdoCancel)
                         .addComponent(btnUpdateDetails)
                         .addComponent(btnChangeAppointmentStatus)
-                        .addComponent(rdoDone)))
+                        .addComponent(rdoDone))
+                    .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnChangeDetailStatus)
+                        .addComponent(rdoInProcess)
+                        .addComponent(rdoIsDone)
+                        .addComponent(rdoCancelDetail)))
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
@@ -860,7 +862,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Tabbs, javax.swing.GroupLayout.DEFAULT_SIZE, 855, Short.MAX_VALUE)
+            .addComponent(Tabbs)
         );
 
         pack();
@@ -1920,6 +1922,67 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         if (count > 0) {
             XDialog.alert("Đã tự động chuyển " + count + " lịch sang trạng thái 'Đang xử lý'!");
         }
+    }
+
+    public void initColor() {
+        tblCalendar.setRowHeight(110);
+        tblCalendar.setShowGrid(true);
+        tblCalendar.setGridColor(Color.LIGHT_GRAY);
+
+        tblAppointment.setShowGrid(true);
+        tblAppointment.setGridColor(Color.LIGHT_GRAY);
+
+        tblAppointmentDetail.setShowGrid(true);
+        tblAppointmentDetail.setGridColor(Color.LIGHT_GRAY);
+
+        tblBarber.setShowGrid(true);
+        tblBarber.setGridColor(Color.LIGHT_GRAY);
+
+        tblSercive.setShowGrid(true);
+        tblSercive.setGridColor(Color.LIGHT_GRAY);
+
+        // Đảm bảo các RadioButton hiển thị được màu nền
+        rdoWaiting.setOpaque(true);
+        rdoCheckIned.setOpaque(true);
+        rdoDoneStatus.setOpaque(true);
+        rdoCanceled.setOpaque(true);
+        rdoPending.setOpaque(true);
+
+        rdoCheckIn.setOpaque(true);
+        rdoCancel.setOpaque(true);
+        rdoDone.setOpaque(true);
+
+        rdoInProcess.setOpaque(true);
+        rdoIsDone.setOpaque(true);
+        rdoCancelDetail.setOpaque(true);
+
+// Set màu nền (Background) dựa theo ảnh mẫu
+        rdoWaiting.setBackground(new Color(204, 204, 204)); // Xám
+        rdoCheckIned.setBackground(new Color(204, 255, 255));   // Xanh lơ nhạt
+        rdoDoneStatus.setBackground(new Color(153, 255, 153));  // Xanh lá nhạt
+        rdoCanceled.setBackground(new Color(255, 204, 204));   // Đỏ hồng nhạt
+        rdoPending.setBackground(new Color(255, 204, 102));
+
+        rdoCheckIn.setBackground(new Color(204, 255, 255)); // Cam vàng
+        rdoCancel.setBackground(new Color(255, 204, 204));   // Đỏ hồng nhạt
+        rdoDone.setBackground(new Color(153, 255, 153));  // Xanh lá nhạt
+
+        rdoInProcess.setBackground(new Color(204, 255, 255));   // Xanh lơ nhạt
+        rdoIsDone.setBackground(new Color(153, 255, 153));  // Xanh lá nhạt
+        rdoCancelDetail.setBackground(new Color(255, 204, 204));   // Đỏ hồng nhạt
+// (Tùy chọn) Nếu bạn muốn bỏ đường viền xanh khi click vào (focus)
+        rdoWaiting.setFocusPainted(false);
+        rdoCheckIned.setFocusPainted(false);
+        rdoDoneStatus.setFocusPainted(false);
+        rdoCanceled.setFocusPainted(false);
+        rdoPending.setFocusPainted(false);
+
+        rdoCheckIn.setFocusPainted(false);
+        rdoCancel.setFocusPainted(false);
+        rdoDone.setFocusPainted(false);
+        rdoInProcess.setFocusPainted(false);
+        rdoIsDone.setFocusPainted(false);
+        rdoCancelDetail.setFocusPainted(false);
     }
 
 //    public void changeAllisBusy(boolean isBusy) {
