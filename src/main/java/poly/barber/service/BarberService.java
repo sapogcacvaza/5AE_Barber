@@ -39,13 +39,7 @@ public class BarberService {
         return barberName;
     }
 
-    public List<Barber> getListAvailableBarber(int status, LocalDate date, LocalTime time, String categoryName) {
-        // Nếu là khách đã đến (Status = 2)
-        if (status == 2) {
-            return repo.getBarbersByBusyStatus(0); // Lọc thợ có isBusy = 0
-        }
-
-        // Mặc định (Status 1, 4 hoặc đặt mới): Lọc theo lịch trình trống
+    public List<Barber> getListAvailableBarber(LocalDate date, LocalTime time, String categoryName) {
         return repo.getBarbersBySchedule(date, time, categoryName);
     }
 
