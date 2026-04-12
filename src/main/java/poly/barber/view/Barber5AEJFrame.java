@@ -7,6 +7,7 @@ package poly.barber.view;
 import poly.barber.entity.Account;
 import poly.barber.service.AccountService;
 import poly.barber.view.Dialog.ServiceJDialog;
+import poly.barber.view.dialog.AccountView;
 import poly.barber.view.dialog.AppointmentJDialog;
 import poly.barber.view.dialog.BarberJDialog;
 import poly.barber.view.dialog.CustomerView;
@@ -63,29 +64,37 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
 
         lblUser.setText(acc.getUsername()); // Hiển thị tên user
 
-        boolean isAdmin = acc.getRole() == 1;
+        boolean isEmployee = acc.getRole() == 1;
         boolean isManager = acc.getRole() == 2;
+        boolean isAdmin = acc.getRole() == 3;
 
-        // Admin có quyền tất cả
-        btnNhanVien.setEnabled(isAdmin);
-        btnbarber.setEnabled(isAdmin);
-        btngiamgia.setEnabled(isAdmin);
-        btnservice.setEnabled(isAdmin);
-        btnstatical.setEnabled(isAdmin);
+        if (isAdmin) {
+            btnNhanVien.setEnabled(true);
+            btnbarber.setEnabled(true);
+            btngiamgia.setEnabled(true);
+            btnservice.setEnabled(true);
+            btnstatical.setEnabled(true);
+            btntaikhoan.setEnabled(true);
+        } // Manager
+        else if (isManager) {
+            btnNhanVien.setEnabled(true);
+            btnbarber.setEnabled(true);
+            btnservice.setEnabled(true);
 
-        // Manager: disable một số chức năng
-        if (isManager) {
             btngiamgia.setEnabled(false);
+            btntaikhoan.setEnabled(false);
+            btnstatical.setEnabled(false);
+        } // Nhân viên
+        else {
+            btnNhanVien.setEnabled(false);
+            btnbarber.setEnabled(false);
+            btngiamgia.setEnabled(false);
+            btnservice.setEnabled(false);
+            btnstatical.setEnabled(false);
+            btntaikhoan.setEnabled(false);
         }
-
-        // Các nút luôn enable cho tất cả
-        btnKhachHang.setEnabled(true);
-        btninvoice.setEnabled(true);
-        jButton3.setEnabled(true);
-        btnhistory.setEnabled(true);
     }
-
-    // Kiểm tra login
+        // Kiểm tra login
     private boolean checkLogin() {
         if (currentUser == null) {
             javax.swing.JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
@@ -121,7 +130,8 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblUser = new javax.swing.JLabel();
-        btnout = new javax.swing.JButton();
+        btntaikhoan = new javax.swing.JButton();
+        btnout1 = new javax.swing.JButton();
         btnbarber = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         btninvoice = new javax.swing.JButton();
@@ -149,15 +159,25 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         lblUser.setText("USER");
         jPanel2.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 240, -1));
 
-        btnout.setBackground(new java.awt.Color(0, 102, 153));
-        btnout.setForeground(new java.awt.Color(255, 255, 255));
-        btnout.setText("ĐĂNG XUẤT");
-        btnout.addActionListener(new java.awt.event.ActionListener() {
+        btntaikhoan.setBackground(new java.awt.Color(0, 102, 153));
+        btntaikhoan.setForeground(new java.awt.Color(255, 255, 255));
+        btntaikhoan.setText("QUẢN LÝ TÀI KHOẢN");
+        btntaikhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnoutActionPerformed(evt);
+                btntaikhoanActionPerformed(evt);
             }
         });
-        jPanel2.add(btnout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 250, 40));
+        jPanel2.add(btntaikhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 250, 40));
+
+        btnout1.setBackground(new java.awt.Color(0, 102, 153));
+        btnout1.setForeground(new java.awt.Color(255, 255, 255));
+        btnout1.setText("ĐĂNG XUẤT");
+        btnout1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnout1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 250, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 940));
 
@@ -294,8 +314,13 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         if (!checkLogin() || !checkAdmin()) {
             return;
         }
+
         BarberJDialog b = new BarberJDialog(this, true);
         openDialog(b);
+
+        ServiceJDialog d = new ServiceJDialog(this, true);
+        openDialog(d);
+
     }//GEN-LAST:event_btnbarberActionPerformed
 
     private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
@@ -362,8 +387,9 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         openDialog(d);
     }//GEN-LAST:event_btnstaticalActionPerformed
 
-    private void btnoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoutActionPerformed
+    private void btntaikhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntaikhoanActionPerformed
         // TODO add your handling code here:
+
         int confirm = javax.swing.JOptionPane.showConfirmDialog(
                 this,
                 "Bạn có chắc muốn đăng xuất?",
@@ -383,9 +409,15 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
             } else {
                 System.exit(0);
             }
-        }
-    }//GEN-LAST:event_btnoutActionPerformed
 
+        if (!checkLogin() || !checkAdmin()) {
+            return;
+
+        }
+        AccountView a = new AccountView(this, true);
+        openDialog(a);
+    }//GEN-LAST:event_btntaikhoanActionPerformed
+    }
     private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
         // TODO add your handling code here:
         if (!checkLogin()) {
@@ -396,6 +428,40 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         d.setPaymentData("1", "500000");
         openDialog(d);
     }//GEN-LAST:event_btnpaymentActionPerformed
+
+    private void btnout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnout1ActionPerformed
+        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "Bạn có chắc muốn đăng xuất?",
+                "Xác nhận",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+
+            // ❌ Xóa user hiện tại
+            currentUser = null;
+
+            // ❌ Ẩn main
+            this.setVisible(false);
+
+            // 🔐 Mở lại login
+            LoginDialog login = new LoginDialog(this);
+            login.setVisible(true);
+
+            // ❌ Nếu không login lại → thoát
+            if (!login.isLoginSuccess()) {
+                System.exit(0);
+            }
+
+            // ✅ Nếu login lại thành công
+            setUser(login.getAccount());
+
+            // 👉 Hiện lại main
+            this.setVisible(true);
+        }
+    }//GEN-LAST:event_btnout1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -437,10 +503,11 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btngiamgia;
     private javax.swing.JButton btnhistory;
     private javax.swing.JButton btninvoice;
-    private javax.swing.JButton btnout;
+    private javax.swing.JButton btnout1;
     private javax.swing.JButton btnpayment;
     private javax.swing.JButton btnservice;
     private javax.swing.JButton btnstatical;
+    private javax.swing.JButton btntaikhoan;
     private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
