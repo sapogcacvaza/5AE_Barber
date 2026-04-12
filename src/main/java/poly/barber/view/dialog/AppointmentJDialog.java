@@ -62,6 +62,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     CustomCalendar cal = new CustomCalendar();
 
     List<Object[]> dichVu = new ArrayList<>();
+//    int appIDUpdating = 0;
 
     public AppointmentJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -751,8 +752,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                                 .addGroup(panelCrudLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
                                         .addComponent(lblTitle3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(chkChooseAll))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(chkChooseAll)
+                                        .addGap(0, 0, Short.MAX_VALUE))
                                     .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(panelCrudLayout.createSequentialGroup()
                                         .addComponent(rdoInProcess, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1075,19 +1077,18 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 BigDecimal servicePrice = serService.getOneByName(serviceName).getPrice();
 
                 // Logic tính giờ nối tiếp:
-                LocalTime startTime;
-                if (dichVu.isEmpty()) {
-                    // Nếu là dịch vụ đầu tiên, lấy từ giờ khách chọn ban đầu (ví dụ: cboTime)
-                    startTime = LocalTime.parse(cboTimeRange.getSelectedItem().toString());
-                } else {
-                    // Nếu đã có dịch vụ trước đó, lấy giờ kết thúc của dịch vụ cuối cùng
-                    Object[] lastRow = dichVu.get(dichVu.size() - 1);
-                    // Giả sử giờ bắt đầu nằm ở cột 7 và duration ở cột 4
-                    LocalTime lastStartTime = LocalTime.parse(lastRow[7].toString());
-                    int lastDuration = Integer.parseInt(lastRow[4].toString());
-                    startTime = lastStartTime.plusMinutes(lastDuration);
-                }
-
+//                LocalTime startTime;
+//                if (dichVu.isEmpty()) {
+//                    // Nếu là dịch vụ đầu tiên, lấy từ giờ khách chọn ban đầu (ví dụ: cboTime)
+//                    startTime = LocalTime.parse(cboTimeRange.getSelectedItem().toString());
+//                } else {
+//                    // Nếu đã có dịch vụ trước đó, lấy giờ kết thúc của dịch vụ cuối cùng
+//                    Object[] lastRow = dichVu.get(dichVu.size() - 1);
+//                    // Giả sử giờ bắt đầu nằm ở cột 7 và duration ở cột 4
+//                    LocalTime lastStartTime = LocalTime.parse(lastRow[7].toString());
+//                    int lastDuration = Integer.parseInt(lastRow[4].toString());
+//                    startTime = lastStartTime.plusMinutes(lastDuration);
+//                }
                 Object[] row = {
                     serviceID + "",
                     serviceCategoryName,
@@ -1095,8 +1096,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     txtBarberName.getText(),
                     duration,
                     txtQuantity.getText(),
-                    servicePrice + "",
-                    startTime.toString() // THÊM CỘT GIỜ BẮT ĐẦU VÀO ĐÂY
+                    servicePrice + "", //                    startTime.toString() // THÊM CỘT GIỜ BẮT ĐẦU VÀO ĐÂY
                 };
 
                 dichVu.add(row);
@@ -1150,27 +1150,6 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             setCustomerToText(c);
         }
     }//GEN-LAST:event_btnChooseCustomerActionPerformed
-
-    private void btnUpdateDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDetailsActionPerformed
-        int index = tblAppointment.getSelectedRow();
-
-        if (index == -1) {
-            XDialog.alert("Chưa chọn dòng ở bảng trên!");
-            return;
-        }
-
-        int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
-        String status = tblAppointment.getValueAt(index, 4) + "";
-
-        if (!status.trim().equalsIgnoreCase("Đã hủy")) {
-//            fillToTableAppDetail(serAppointmentDetail.getAllByAppID(appointmentID));
-            int appID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
-            Appointment app = serAppointment.getOne(appID);
-            setForm(app);
-        } else {
-            XDialog.alert("Phải cập nhật trạng thái thành đã đến mới được sửa!");
-        }
-    }//GEN-LAST:event_btnUpdateDetailsActionPerformed
 
     private void rdoCancelDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCancelDetailActionPerformed
         // TODO add your handling code here:
@@ -1345,6 +1324,27 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         }
     }//GEN-LAST:event_tblAppointmentMouseClicked
 
+    private void btnUpdateDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateDetailsActionPerformed
+        int index = tblAppointment.getSelectedRow();
+
+        if (index == -1) {
+            XDialog.alert("Chưa chọn dòng ở bảng trên!");
+            return;
+        }
+
+        int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
+        String status = tblAppointment.getValueAt(index, 4) + "";
+
+        if (status.trim().equalsIgnoreCase("Đã đến")) {
+            fillToTableAppDetail(serAppointmentDetail.getAllByAppID(appointmentID));
+//            int appID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
+//            Appointment app = serAppointment.getOne(appID);
+//            setForm(app);
+        } else {
+            XDialog.alert("Phải cập nhật trạng thái thành đã đến mới được sửa!");
+        }
+    }//GEN-LAST:event_btnUpdateDetailsActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -1431,54 +1431,57 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     @Override
     public void setForm(Appointment entity) {
-        int index = tblAppointment.getSelectedRow();
+//        int index = tblAppointment.getSelectedRow();
+//
+//        int appID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
+//
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+//
+//        LocalDateTime dateTime = entity.getAppointmentDateTime();
+//        String appointmentDate = dateTime.format(dateFormatter);
+    
 
-        int appID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        LocalDateTime dateTime = entity.getAppointmentDateTime();
-        String appointmentDate = dateTime.format(dateFormatter);
-//        String appointmentTime = dateTime.format(timeFormatter);
-
-        String note = entity.getNote();
-        int totalDuration = entity.getTotalDuration();
-        int customerID = entity.getCustomerID();
-        String customerName = serCustomer.getOne(customerID).getFullname();
-        String customerPhone = serCustomer.getOne(customerID).getPhone();
-        List<AppointmentDetail> lst = serAppointmentDetail.getAllByAppID(appID);
-
-        dichVu.clear();
-
-        for (AppointmentDetail aD : lst) {
-            Service sercive = serService.getOne(aD.getServiceID());
-            ServiceCategory serviceCategory = serServiceCategory.getOne(sercive.getServiceCategoryID());
-
-            Object[] row = {
-                aD.getServiceID() + "",
-                serviceCategory.getServiceCategoryName() + "",
-                sercive.getServiceCategoryID(),
-                serBarber.getOne(aD.getBarberID()).getLastname() + " " + serBarber.getOne(aD.getBarberID()).getFirstname(),
-                aD.getDuration(),
-                aD.getQuantity(),
-                aD.getPrice() + ""
-            };
-
-            dichVu.add(row);
-        }
-
-        modelService.setRowCount(0);
-
-        fillToServiceTable(dichVu);
-
-        if (entity != null) {
-            txtAppointmentDate.setText(appointmentDate);
-            txtNote.setText(note);
-            txtTotalDuration.setText(totalDuration + "");
-            txtCustomerName.setText(customerName);
-            txtCustomerPhone.setText(customerPhone);
-        }
+    ////        String appointmentTime = dateTime.format(timeFormatter);
+//
+//        String note = entity.getNote();
+//        int totalDuration = entity.getTotalDuration();
+//        int customerID = entity.getCustomerID();
+//        String customerName = serCustomer.getOne(customerID).getFullname();
+//        String customerPhone = serCustomer.getOne(customerID).getPhone();
+//        List<AppointmentDetail> lst = serAppointmentDetail.getAllByAppID(appID);
+//
+//        int appIDUpdating = appID;
+//        dichVu.clear();
+//
+//        for (AppointmentDetail aD : lst) {
+//            Service sercive = serService.getOne(aD.getServiceID());
+//            ServiceCategory serviceCategory = serServiceCategory.getOne(sercive.getServiceCategoryID());
+//
+//            Object[] row = {
+//                aD.getServiceID() + "",
+//                serviceCategory.getServiceCategoryName() + "",
+//                sercive.getServiceCategoryID(),
+//                serBarber.getOne(aD.getBarberID()).getLastname() + " " + serBarber.getOne(aD.getBarberID()).getFirstname(),
+//                aD.getDuration(),
+//                aD.getQuantity(),
+//                aD.getPrice() + ""
+//            };
+//
+//            dichVu.add(row);
+//        }
+//
+//        modelService.setRowCount(0);
+//
+//        fillToServiceTable(dichVu);
+//
+//        if (entity != null) {
+//            txtAppointmentDate.setText(appointmentDate);
+//            txtNote.setText(note);
+//            txtTotalDuration.setText(totalDuration + "");
+//            txtCustomerName.setText(customerName);
+//            txtCustomerPhone.setText(customerPhone);
+//        }
     }
 
     @Override
