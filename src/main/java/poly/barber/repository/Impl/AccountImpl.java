@@ -75,6 +75,15 @@ public class AccountImpl implements ICommonRepository<Account, Integer> {
         }
         return list;
     }
+    public Account findByUsername(String username) {
+    String sql = """
+        SELECT * FROM Account 
+        WHERE Username = ?
+    """;
+
+    List<Account> list = XQuery.getBeanList(Account.class, sql, username);
+    return list.isEmpty() ? null : list.get(0);
+}
 
     public static void main(String[] args) {
         System.out.println(new AccountImpl().getRoles());

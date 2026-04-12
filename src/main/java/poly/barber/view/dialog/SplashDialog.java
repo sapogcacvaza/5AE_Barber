@@ -33,9 +33,7 @@ void runLoading() {
             jProgressBar1.setString("Đang tải... " + newValue + "%");
         } else {
             ((javax.swing.Timer) e.getSource()).stop();
-            dispose();
-
-           new LoginDialog((poly.barber.view.Barber5AEJFrame) parentFrame).setVisible(true);
+            dispose(); // 👉 CHỈ ĐÓNG SPLASH, KHÔNG MỞ LOGIN
         }
     }).start();
 }

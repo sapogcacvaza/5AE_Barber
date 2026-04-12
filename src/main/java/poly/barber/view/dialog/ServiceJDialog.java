@@ -11,7 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Service;
 import poly.barber.entity.ServiceCategory;
-import poly.barber.repository.ServiceCategoryRepository;
+import poly.barber.repository.Impl.ServiceCategoryRepository;
 import poly.barber.repository.ServiceRepository;
 
 /**
@@ -136,7 +136,7 @@ public class ServiceJDialog extends javax.swing.JDialog {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(229, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,13 +276,13 @@ public class ServiceJDialog extends javax.swing.JDialog {
                         .addComponent(btnSua)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnClear)
-                        .addGap(169, 169, 169)
+                        .addGap(138, 138, 138)
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
-                        .addComponent(cboLocLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboLocLoai, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
                         .addComponent(btnLoc)
-                        .addGap(0, 188, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
@@ -800,7 +800,7 @@ public class ServiceJDialog extends javax.swing.JDialog {
     private void showComBoBox(List<ServiceCategory> all) {
         dcbm.removeAllElements();
         for (ServiceCategory sc : all) {
-            dcbm.addElement(sc);
+            dcbm.addElement(sc.getServiceCategoryName());
         }
     }
 
@@ -937,7 +937,7 @@ public class ServiceJDialog extends javax.swing.JDialog {
         model.addElement("Tất cả");
 
         for (ServiceCategory sc : list) {
-            model.addElement(sc);
+            model.addElement(sc.getServiceCategoryName());
         }
 
         cboLocLoai.setSelectedIndex(0);

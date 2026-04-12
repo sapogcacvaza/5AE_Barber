@@ -40,14 +40,18 @@ public class BarberService {
     }
 
     public List<Barber> getListAvailableBarber(LocalDate date, LocalTime time, String categoryName) {
-        return repo.getListAvailableBarber(date, time, categoryName);
+        return repo.getBarbersBySchedule(date, time, categoryName);
     }
 
     public void updateStatus(int status, int barberID) {
         repo.updateStatus(status, barberID);
     }
 
-    public void updateIsBusy(int status, int barberID) {
-        repo.updateIsBusy(status, barberID);
+    public void updateIsBusy(boolean isBusy, int barberID) {
+        repo.updateIsBusy(isBusy, barberID);
+    }
+
+    public boolean isBarberFinishedAll(int appointmentID, int barberID) {
+        return repo.isBarberFinishedAll(appointmentID, barberID);
     }
 }

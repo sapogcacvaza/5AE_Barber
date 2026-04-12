@@ -5,9 +5,9 @@
 package poly.barber.repository.Impl;
 
 import java.util.List;
-import poly.barber.entity.Employee;
 import poly.barber.entity.Invoice;
 import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XJdbc;
 import poly.barber.util.XQuery;
 
 /**
@@ -16,9 +16,17 @@ import poly.barber.util.XQuery;
  */
 public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer> {
 
-    public String sqlGetAll = "select * from Invoice";
-
+    public String sqlGetAll = "SELECT i.*, "
+    + "(SELECT (e.FirstName + ' ' + e.LastName) "
+    + " FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
+    + "(SELECT TOP 1 (b.FirstName + ' ' + b.LastName) "
+    + " FROM Barber b "
+    + " WHERE b.BarberID IN (SELECT ad.BarberID FROM AppointmentDetail ad WHERE ad.AppointmentID = i.AppointmentID)) AS barberName "
+    + "FROM Invoice i WHERE i.Status = 1";
     public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
+    public String createSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)";
+    public String createAndReturnSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)"
+            + " SELECT * FROM Invoice WHERE InvoiceID = SCOPE_IDENTITY();";
 
     public String sqlGetDetailsByInvoiceId = "SELECT \n"
             + "    s.ServiceName, \n"
@@ -32,7 +40,27 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     public String sqlGetByEmployeeName = "SELECT Invoice.* FROM Invoice "
             + "JOIN Employee ON Invoice.CreatedByEmployeeID = Employee.EmployeeID "
             + "WHERE (Employee.FirstName + ' ' + Employee.LastName) LIKE ?";
+    public String sqlGetBarbersByInvoice = 
+      "SELECT b.BarberID, (b.FirstName + ' ' + b.LastName) AS BarberName, s.ServiceName "
+    + "FROM AppointmentDetail ad "
+    + "JOIN Barber b ON ad.BarberID = b.BarberID "
+    + "JOIN Service s ON ad.ServiceID = s.ServiceID "
+    + "WHERE ad.AppointmentID = (SELECT AppointmentID FROM Invoice WHERE InvoiceID = ?)";
 
+public List<Object[]> getBarbersByInvoice(int invoiceId) {
+    return XQuery.getRawList(sqlGetBarbersByInvoice, invoiceId);
+}
+public List<Invoice> searchByCustomerName(String name) {
+       String sql = "SELECT i.*, "
+        + "(SELECT (e.FirstName + ' ' + e.LastName) FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
+        + "c.Fullname AS customerName "
+        + "FROM Invoice i "
+        + "LEFT JOIN Appointment a ON i.AppointmentID = a.AppointmentID "
+        + "LEFT JOIN Customer c ON a.CustomerID = c.CustomerID "
+        + "WHERE c.Fullname LIKE ? AND i.Status = 1";
+    
+    return XQuery.getBeanList(Invoice.class, sql, "%" + name + "%");
+    }
     public List<Object[]> getHistoryByDate(String start, String end, String employeeName) {
         // 1. Khai báo câu SQL gốc (luôn lọc theo ngày)
         String sql = "SELECT i.InvoiceID, i.InvoiceCode, e.FirstName + ' ' + e.LastName, "
@@ -71,7 +99,23 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     @Override
     public void add(Invoice obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getTotalAmount(),
+            obj.getCreatedByEmployeeID(),
+            obj.getAppointmentID()
+        };
+
+        XJdbc.executeUpdate(createSql, values);
+    }
+
+    public Invoice addAndReturn(Invoice obj) {
+        Object[] values = {
+            obj.getTotalAmount(),
+            obj.getCreatedByEmployeeID(),
+            obj.getAppointmentID()
+        };
+
+        return XQuery.getSingleBean(Invoice.class, createAndReturnSql, values);
     }
 
     @Override
@@ -81,7 +125,23 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
 
     @Override
     public void update(Invoice obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
+    String sql = "UPDATE Invoice SET "
+               + "Status = ?, "
+               + "TotalAmount = ?, "
+               + "TotalDiscount = ?, "
+               + "CheckOutDateTime = GETDATE() "
+               + "WHERE InvoiceID = ?";
+    
+    // Truyền tham số theo đúng thứ tự của dấu hỏi chấm (?)
+    XQuery.update(sql, 
+        obj.getStatus(), 
+        obj.getTotalAmount(), 
+        obj.getTotalDiscount(), 
+        obj.getInvoiceID()
+    );
+    
+//
     }
 
     @Override
@@ -92,4 +152,5 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
         return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
     }
+
 }

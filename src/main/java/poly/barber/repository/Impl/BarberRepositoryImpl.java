@@ -2,7 +2,9 @@ package poly.barber.repository.Impl;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     String sqlStatusFilter = "select *from Barber where Status = ?";
     String sqlIsBusyFilter = "select *from Barber where isBusy = ?";
     String updateStatus = "update Barber set Status = ? where BarberID = ?";
-    String updateIsBusy = "update Barber set updateIsBusy = ? where BarberID = ?";
+    String updateIsBusy = "update Barber set IsBusy = ? where BarberID = ?";
 
     public List<Barber> statusFilter(int id) {
         return XQuery.getBeanList(Barber.class, sqlStatusFilter, id);
@@ -67,45 +69,54 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
         return positionName;
     }
 
-    public List<Barber> getListAvailableBarber(LocalDate date, LocalTime time, String categoryName) {
+    public List<Barber> getBarbersBySchedule(LocalDate date, LocalTime time, String categoryName) {
         List<Barber> list = new ArrayList<>();
-
-        // Câu lệnh gọi Store Procedure trong SQL Server
         String sql = "{CALL getListAvailableBarber(?, ?, ?)}";
 
         try (Connection con = XJdbc.openConnection(); CallableStatement cs = con.prepareCall(sql)) {
 
-            // 1. Set tham số ngày (DATE)
             cs.setDate(1, java.sql.Date.valueOf(date));
-
-            // 2. Set tham số giờ (TIME)
             cs.setTime(2, java.sql.Time.valueOf(time));
-
-            // 3. Set tham số tên loại dịch vụ (NVARCHAR) -> Sửa từ int sang String
             cs.setNString(3, categoryName);
 
             try (ResultSet rs = cs.executeQuery()) {
                 while (rs.next()) {
-                    Barber b = new Barber();
-                    b.setBarberID(rs.getInt("BarberID"));
-
-                    // Lưu ý: Trong SQL mình dùng CONCAT hoặc đặt Alias là FullName 
-                    // Nếu bạn muốn lấy riêng lẻ thì SQL phải SELECT riêng Firstname, Lastname
-                    b.setFirstname(rs.getNString("FirstName"));
-                    b.setLastname(rs.getNString("LastName"));
-                    b.setPositionID(rs.getInt("PositionID"));
-
-                    // Nếu trong model Barber có trường PositionName thì set luôn:
-                    // b.setPositionName(rs.getNString("PositionName"));
-                    list.add(b);
+                    list.add(readBarberFromResultSet(rs));
                 }
             }
         } catch (Exception e) {
-            System.err.println("Lỗi khi lấy danh sách thợ trống: " + e.getMessage());
             e.printStackTrace();
         }
-
         return list;
+    }
+
+    // Hàm lọc thợ dựa trên isBusy (Dùng khi khách đã đến - Status 2)
+//    public List<Barber> getBarbersByBusyStatus(int status) {
+//        List<Barber> list = new ArrayList<>();
+//        String sql = "SELECT * FROM Barber WHERE isBusy = ?";
+//
+//        try (Connection con = XJdbc.openConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+//
+//            ps.setInt(1, status);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                while (rs.next()) {
+//                    list.add(readBarberFromResultSet(rs));
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
+//
+//    // Hàm bổ trợ đọc dữ liệu
+    private Barber readBarberFromResultSet(ResultSet rs) throws SQLException {
+        Barber b = new Barber();
+        b.setBarberID(rs.getInt("BarberID"));
+        b.setFirstname(rs.getNString("FirstName"));
+        b.setLastname(rs.getNString("LastName"));
+        b.setPositionID(rs.getInt("PositionID"));
+        return b;
     }
 
     @Override
@@ -137,12 +148,25 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
         XJdbc.executeUpdate(updateStatus, values);
     }
 
-    public void updateIsBusy(int status, int barberID) {
+    public void updateIsBusy(boolean isBusy, int barberID) {
         Object[] values = {
-            status,
+            isBusy ? 1 : 0,
             barberID
         };
         XJdbc.executeUpdate(updateIsBusy, values);
+    }
+
+    public boolean isBarberFinishedAll(int appointmentID, int barberID) {
+        String sql = "select count(*) from AppointmentDetail "
+                + "where AppointmentID = ? and BarberID = ? and Status in (0,1)";
+        try {
+            Object res = XJdbc.getValue(sql, appointmentID, barberID);
+            int count = Integer.parseInt(res.toString());
+            return count == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

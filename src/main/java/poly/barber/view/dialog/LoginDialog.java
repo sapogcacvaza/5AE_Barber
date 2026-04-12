@@ -29,9 +29,19 @@ public class LoginDialog extends javax.swing.JDialog {
         this.parent = parent;
         initComponents();
         setLocationRelativeTo(parent);
-        
-        txtname.setText("admin");
-        psw.setText("123456");
+
+        txtname.setText("longvt");
+        psw.setText("123");
+    }
+    private boolean loginSuccess = false;
+
+    public boolean isLoginSuccess() {
+        return loginSuccess;
+    }
+    private Account account;
+
+    public Account getAccount() {
+        return account;
     }
 
     /**
@@ -131,12 +141,11 @@ public class LoginDialog extends javax.swing.JDialog {
         try {
             Account acc = service.login(user, pass);
 
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
+            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!\nRole: " + acc.getRole());
 
-            // 👇 truyền user qua main
-            parent.setUser(acc);
+            loginSuccess = true;
+            this.account = acc; // 👈 LƯU LẠI
 
-            // 👇 phân quyền
             dispose();
 
         } catch (Exception e) {
@@ -152,7 +161,28 @@ public class LoginDialog extends javax.swing.JDialog {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+    // 🌟 Splash
+    SplashDialog splash = new SplashDialog(null, true);
+    splash.setVisible(true);
 
+    // 🧱 Tạo main TRƯỚC nhưng chưa show
+    Barber5AEJFrame main = new Barber5AEJFrame();
+
+    // 🔐 Login (gắn parent = main)
+    LoginDialog login = new LoginDialog(main);
+    login.setVisible(true);
+
+    // ✅ Nếu login OK
+    if (login.isLoginSuccess()) {
+
+        main.setUser(login.getAccount()); // truyền user
+        main.setVisible(true);
+
+    } else {
+        System.exit(0);
+    }
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
