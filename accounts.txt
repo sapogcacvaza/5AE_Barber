@@ -1,3 +1,0 @@
-longvt|123
-namlv|123|3
-dunglt|123|1
