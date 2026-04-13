@@ -4,10 +4,13 @@
  */
 package poly.barber.view;
 
+import javax.swing.JOptionPane;
 import poly.barber.entity.Account;
 import poly.barber.service.AccountService;
+import poly.barber.util.AuthUtil;
+import poly.barber.util.Session;
 import poly.barber.view.Dialog.ServiceJDialog;
-import poly.barber.view.dialog.AccountView;
+import poly.barber.view.dialog.AccountJDialog;
 import poly.barber.view.dialog.AppointmentJDialog;
 import poly.barber.view.dialog.BarberJDialog;
 import poly.barber.view.dialog.CustomerView;
@@ -61,56 +64,58 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     // 🟢 Gán user và phân quyền
     public void setUser(Account acc) {
         this.currentUser = acc;
+        Session.user = acc; // 🔥 QUAN TRỌNG
 
-        lblUser.setText(acc.getUsername()); // Hiển thị tên user
+        lblUser.setText(acc.getUsername());
 
-        boolean isEmployee = acc.getRole() == 1;
-        boolean isManager = acc.getRole() == 2;
-        boolean isAdmin = acc.getRole() == 3;
+        // ❌ reset toàn bộ trước
+        btnNhanVien.setEnabled(false);
+        btnbarber.setEnabled(false);
+        btngiamgia.setEnabled(false);
+        btnservice.setEnabled(false);
+        btnstatical.setEnabled(false);
+        btntaikhoan.setEnabled(false);
 
-        if (isAdmin) {
+        // ================= PHÂN QUYỀN =================
+        if (AuthUtil.isAdmin(acc)) {
             btnNhanVien.setEnabled(true);
             btnbarber.setEnabled(true);
             btngiamgia.setEnabled(true);
             btnservice.setEnabled(true);
             btnstatical.setEnabled(true);
             btntaikhoan.setEnabled(true);
-        } // Manager
-        else if (isManager) {
+        } else if (AuthUtil.isManager(acc)) {
             btnNhanVien.setEnabled(true);
             btnbarber.setEnabled(true);
             btnservice.setEnabled(true);
-
             btngiamgia.setEnabled(false);
-            btntaikhoan.setEnabled(false);
             btnstatical.setEnabled(false);
-        } // Nhân viên
-        else {
+            btntaikhoan.setEnabled(false);
+        } else if (AuthUtil.isStaff(acc)) {
             btnNhanVien.setEnabled(false);
             btnbarber.setEnabled(false);
-            btngiamgia.setEnabled(false);
             btnservice.setEnabled(false);
+            btngiamgia.setEnabled(false);
             btnstatical.setEnabled(false);
             btntaikhoan.setEnabled(false);
         }
     }
-        // Kiểm tra login
-    private boolean checkLogin() {
-        if (currentUser == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
-            return false;
-        }
-        return true;
+//ktra login
+private boolean requireLogin() {
+    if (Session.user == null) {
+        JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
+        return false;
     }
+    return true;
+}
 
-    // Kiểm tra admin
-    private boolean checkAdmin() {
-        if (currentUser.getRole() != 1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
-            return false;
-        }
+private boolean denyIfNoPermission(boolean condition) {
+    if (!requireLogin() || !condition) {
+        JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
         return true;
     }
+    return false;
+}
 
     // Mở dialog
     private void openDialog(javax.swing.JDialog dialog) {
@@ -301,132 +306,82 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
 
     private void btngiamgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngiamgiaActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        DiscountJdialog d = new DiscountJdialog(this, true);
-        d.setUser(currentUser);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canDiscount(Session.user))) return;
+
+    DiscountJdialog d = new DiscountJdialog(this, true);
+    d.setUser(currentUser);
+    openDialog(d);
     }//GEN-LAST:event_btngiamgiaActionPerformed
 
     private void btnbarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbarberActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
+    if (denyIfNoPermission(AuthUtil.canBarber(Session.user))) return;
 
-        BarberJDialog b = new BarberJDialog(this, true);
-        openDialog(b);
-
-        ServiceJDialog d = new ServiceJDialog(this, true);
-        openDialog(d);
-
+    openDialog(new BarberJDialog(this, true));
     }//GEN-LAST:event_btnbarberActionPerformed
 
     private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        EmployeeView d = new EmployeeView(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canEmployee(Session.user))) return;
+
+    openDialog(new EmployeeView(this, true));
     }//GEN-LAST:event_btnNhanVienActionPerformed
 
     private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        CustomerView d = new CustomerView(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canCustomer(Session.user))) return;
 
+    openDialog(new CustomerView(this, true));
     }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btninvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninvoiceActionPerformed
-        // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        InvoiceJDialog d = new InvoiceJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canInvoice(Session.user))) return;
+
+    openDialog(new InvoiceJDialog(this, true));
     }//GEN-LAST:event_btninvoiceActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        AppointmentJDialog d = new AppointmentJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canAppointment(Session.user))) return;
+
+    openDialog(new AppointmentJDialog(this, true));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnserviceActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        ServiceJDialog d = new ServiceJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canService(Session.user))) return;
+
+    openDialog(new ServiceJDialog(this, true));
     }//GEN-LAST:event_btnserviceActionPerformed
 
     private void btnhistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhistoryActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        HistoryJdialog d = new HistoryJdialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canHistory(Session.user))) return;
+
+    openDialog(new HistoryJdialog(this, true));
     }//GEN-LAST:event_btnhistoryActionPerformed
 
     private void btnstaticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstaticalActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        StatisticalJdialog2 d = new StatisticalJdialog2(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canStatistic(Session.user))) return;
+
+    openDialog(new StatisticalJdialog2(this, true));
     }//GEN-LAST:event_btnstaticalActionPerformed
 
     private void btntaikhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntaikhoanActionPerformed
         // TODO add your handling code here:
+    if (denyIfNoPermission(AuthUtil.canAccount(Session.user))) return;
 
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(
-                this,
-                "Bạn có chắc muốn đăng xuất?",
-                "Đăng xuất",
-                javax.swing.JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-            this.dispose(); // đóng main
-
-            LoginDialog login = new LoginDialog(null);
-            login.setVisible(true);
-
-            if (login.isLoginSuccess()) {
-                Barber5AEJFrame main = new Barber5AEJFrame();
-                main.setVisible(true);
-            } else {
-                System.exit(0);
-            }
-
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-
-        }
-        AccountView a = new AccountView(this, true);
-        openDialog(a);
+    openDialog(new AccountJDialog(this, true));
     }//GEN-LAST:event_btntaikhoanActionPerformed
-    }
+
     private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        PaymentJDialog d = new PaymentJDialog(this, true);
-        // demo dữ liệu
-        d.setPaymentData("1", "500000");
-        openDialog(d);
+     if (denyIfNoPermission(AuthUtil.canPayment(Session.user))) return;
+
+    PaymentJDialog d = new PaymentJDialog(this, true);
+    d.setPaymentData("1", "500000");
+    openDialog(d);
     }//GEN-LAST:event_btnpaymentActionPerformed
 
     private void btnout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnout1ActionPerformed
@@ -488,7 +443,7 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Barber5AEJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         //</editor-fold>
 
         /* Create and display the form */

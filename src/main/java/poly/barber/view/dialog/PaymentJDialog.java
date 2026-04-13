@@ -26,6 +26,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.awt.Desktop;
+import javax.swing.ComboBoxModel;
+import poly.barber.entity.Discount;
+import poly.barber.repository.Impl.DiscountRepository;
+
 /**
  *
  * @author DELL
@@ -36,6 +40,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     private DefaultTableModel dtm = new DefaultTableModel();
     private InvoiceDetailRepository idr = new InvoiceDetailRepository();
+    private DiscountRepository dr = new DiscountRepository();
 
     public void setPaymentData(String maHD, String tongTien) {
         // 1. Hiển thị thông tin lên các ô nhập
@@ -45,7 +50,10 @@ public class PaymentJDialog extends javax.swing.JDialog {
 
         // 2. Lấy Model của bảng và xóa trắng dữ liệu cũ (nếu có)
         DefaultTableModel dtmServices = (DefaultTableModel) tblServiceDetails.getModel();
+        dcbm = (DefaultComboBoxModel) cboDiscount.getModel();
+
         dtmServices.setRowCount(0);
+        showDiscount(dr.getAll());
 
         try {
             // 3. Gọi Repository để lấy danh sách dịch vụ theo Mã HĐ
@@ -67,7 +75,6 @@ public class PaymentJDialog extends javax.swing.JDialog {
         }
 
         // 4. Reset các ô tính tiền
-        txtGiamGia.setText("0");
         txtTienKhachDua.setText("");
         lblTienTraLai.setText("0");
     }
@@ -113,7 +120,8 @@ public class PaymentJDialog extends javax.swing.JDialog {
         lblTong1 = new javax.swing.JLabel();
         lblTongTien1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        txtGiamGia = new javax.swing.JTextField();
+        lblSoTienGiam = new javax.swing.JLabel();
+        cboDiscount = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         btnThanhToanIn = new javax.swing.JButton();
         btnIn = new javax.swing.JButton();
@@ -197,9 +205,12 @@ public class PaymentJDialog extends javax.swing.JDialog {
         lblTongTien1.setForeground(new java.awt.Color(51, 51, 51));
         lblTongTien1.setText("TỔNG TIỀN:");
 
-        txtGiamGia.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtGiamGiaKeyReleased(evt);
+        lblSoTienGiam.setText("         ");
+
+        cboDiscount.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboDiscountActionPerformed(evt);
             }
         });
 
@@ -226,14 +237,6 @@ public class PaymentJDialog extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblTong, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblTongTien1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(lblTong1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblThanhTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -242,7 +245,18 @@ public class PaymentJDialog extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblTra)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTienTraLai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(lblTienTraLai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblTong, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTongTien1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblSoTienGiam)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(cboDiscount, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -258,12 +272,14 @@ public class PaymentJDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtGiamGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                    .addComponent(cboDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblSoTienGiam)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTong1)
                     .addComponent(lblThanhTien))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 4, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -322,8 +338,10 @@ public class PaymentJDialog extends javax.swing.JDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -393,36 +411,6 @@ public class PaymentJDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboPaymentMethodsActionPerformed
 
-    private void txtGiamGiaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGiamGiaKeyReleased
-        try {
-            // 1. Lấy tổng tiền gốc từ label (loại bỏ dấu phẩy nếu có)
-            double tongTienGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
-
-            // 2. Lấy % giảm giá từ ô nhập (nếu trống thì coi như 0%)
-            String rGiamGia = txtGiamGia.getText().trim();
-            double phanTram = rGiamGia.isEmpty() ? 0 : Double.parseDouble(rGiamGia);
-
-            // Giới hạn không cho giảm quá 100%
-            if (phanTram > 100) {
-                phanTram = 100;
-            }
-            if (phanTram < 0) {
-                phanTram = 0;
-            }
-
-            // 3. Tính toán: Thành tiền = Tổng gốc - (Tổng gốc * % / 100)
-            double tienGiam = tongTienGoc * (phanTram / 100);
-            double thanhTien = tongTienGoc - tienGiam;
-
-            // 4. Hiển thị kết quả lên Label Thành tiền (định dạng số nguyên)
-            lblThanhTien.setText(String.format("%.0f", thanhTien));
-
-        } catch (NumberFormatException e) {
-            // Nếu người dùng nhập chữ, mặc định Thành tiền = Tổng tiền gốc
-            lblThanhTien.setText(lblTongTien1.getText());
-        }
-    }//GEN-LAST:event_txtGiamGiaKeyReleased
-
     private void txtTienKhachDuaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTienKhachDuaKeyTyped
         if (txtTienKhachDua.getText().length() >= 12 || !Character.isDigit(evt.getKeyChar())) {
             evt.consume(); // Hủy sự kiện phím, không cho hiện chữ lên ô text
@@ -431,79 +419,126 @@ public class PaymentJDialog extends javax.swing.JDialog {
 
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
         String maHD = txtMaHD.getText();
-    if (maHD.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Không có thông tin hóa đơn để in!");
-        return;
-    }
-
-    // Khởi tạo Document của iText (dùng đường dẫn đầy đủ để tránh xung đột)
-    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-    
-    try {
-        String fileName = "HoaDon_ThanhToan_" + maHD + ".pdf";
-        PdfWriter.getInstance(document, new FileOutputStream(fileName));
-        document.open();
-
-        // 1. Cấu hình Font tiếng Việt (Arial có sẵn trên Windows)
-        BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        Font fontTitle = new Font(bf, 18, Font.BOLD);
-        Font fontBold = new Font(bf, 12, Font.BOLD);
-        Font fontNormal = new Font(bf, 12, Font.NORMAL);
-
-        // 2. Tiêu đề cửa hàng
-        Paragraph title = new Paragraph("5AE BARBER CUT CUT", fontTitle);
-        title.setAlignment(Element.ALIGN_CENTER);
-        document.add(title);
-        document.add(new Paragraph("Địa chỉ: Hà Đông, Hà Nội", fontNormal));
-        document.add(new Paragraph("Mã hóa đơn: " + maHD, fontNormal));
-        document.add(new Paragraph("------------------------------------------------------------------"));
-
-        // 3. Bảng dịch vụ (Lấy từ tblServiceDetails của Khánh)
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100);
-        table.setSpacingBefore(10f);
-        
-        // Header bảng
-        table.addCell(new PdfPCell(new Paragraph("Dịch vụ", fontBold)));
-        table.addCell(new PdfPCell(new Paragraph("Số lượng", fontBold)));
-        table.addCell(new PdfPCell(new Paragraph("Thành tiền", fontBold)));
-
-        // Duyệt bảng tblServiceDetails
-        for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 0).toString(), fontNormal));
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 1).toString(), fontNormal));
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
-        }
-        document.add(table);
-
-        // 4. Phần tính toán tiền
-        document.add(new Paragraph(" "));
-        document.add(new Paragraph("Tổng tiền gốc: " + lblTongTien1.getText() + " VNĐ", fontNormal));
-        document.add(new Paragraph("Giảm giá: " + txtGiamGia.getText() + "%", fontNormal));
-        
-        Paragraph totalPay = new Paragraph("THÀNH TIỀN: " + lblThanhTien.getText() + " VNĐ", fontBold);
-        totalPay.setAlignment(Element.ALIGN_RIGHT);
-        document.add(totalPay);
-
-        document.add(new Paragraph("------------------------------------------------------------------"));
-        document.add(new Paragraph("Tiền khách đưa: " + txtTienKhachDua.getText() + " VNĐ", fontNormal));
-        document.add(new Paragraph("Tiền trả lại: " + lblTienTraLai.getText() + " VNĐ", fontNormal));
-        
-        document.add(new Paragraph("\nCảm ơn quý khách! Hẹn gặp lại tại 5AE Barber!", fontNormal));
-
-        document.close();
-
-        // 5. Tự động mở file PDF sau khi xuất
-        File file = new File(fileName);
-        if (file.exists()) {
-            Desktop.getDesktop().open(file);
+        if (maHD.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không có thông tin hóa đơn để in!");
+            return;
         }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Lỗi in hóa đơn: " + e.getMessage());
-        e.printStackTrace();
-    }
+        // Khởi tạo Document của iText (dùng đường dẫn đầy đủ để tránh xung đột)
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+
+        try {
+            String fileName = "HoaDon_ThanhToan_" + maHD + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+
+            // 1. Cấu hình Font tiếng Việt (Arial có sẵn trên Windows)
+            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fontTitle = new Font(bf, 18, Font.BOLD);
+            Font fontBold = new Font(bf, 12, Font.BOLD);
+            Font fontNormal = new Font(bf, 12, Font.NORMAL);
+
+            // 2. Tiêu đề cửa hàng
+            Paragraph title = new Paragraph("5AE BARBER CUT CUT", fontTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            document.add(new Paragraph("Địa chỉ: Hà Đông, Hà Nội", fontNormal));
+            document.add(new Paragraph("Mã hóa đơn: " + maHD, fontNormal));
+            document.add(new Paragraph("------------------------------------------------------------------"));
+
+            // 3. Bảng dịch vụ (Lấy từ tblServiceDetails của Khánh)
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+
+            // Header bảng
+            table.addCell(new PdfPCell(new Paragraph("Dịch vụ", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Số lượng", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Thành tiền", fontBold)));
+
+            // Duyệt bảng tblServiceDetails
+            for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 0).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 1).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
+            }
+            document.add(table);
+
+            // 4. Phần tính toán tiền
+            // Lấy thông tin từ ComboBox Giảm giá
+            String tenGiamGia = "";
+            Object selectedDiscount = cboDiscount.getSelectedItem();
+
+            if (selectedDiscount instanceof Discount d) {
+                tenGiamGia = d.getDiscountName(); // Lấy tên mã giảm giá (VD: Giảm giá hè)
+            } else {
+                tenGiamGia = "Không có";
+            }
+
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Tổng tiền gốc: " + lblTongTien1.getText() + " VNĐ", fontNormal));
+
+            String discountValueText = lblSoTienGiam.getText();
+            document.add(new Paragraph("Số tiền giảm: " + discountValueText, fontNormal));
+
+            Paragraph totalPay = new Paragraph("THÀNH TIỀN: " + lblThanhTien.getText() + " VNĐ", fontBold);
+            totalPay.setAlignment(Element.ALIGN_RIGHT);
+            document.add(totalPay);
+
+            document.add(new Paragraph("------------------------------------------------------------------"));
+            document.add(new Paragraph("Tiền khách đưa: " + txtTienKhachDua.getText() + " VNĐ", fontNormal));
+            document.add(new Paragraph("Tiền trả lại: " + lblTienTraLai.getText() + " VNĐ", fontNormal));
+
+            document.add(new Paragraph("\nCảm ơn quý khách! Hẹn gặp lại tại 5AE Barber!", fontNormal));
+
+            document.close();
+
+            // 5. Tự động mở file PDF sau khi xuất
+            File file = new File(fileName);
+            if (file.exists()) {
+                Desktop.getDesktop().open(file);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi in hóa đơn: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnInActionPerformed
+
+    private void cboDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDiscountActionPerformed
+        try {
+            // 1. Lấy tổng tiền gốc từ label
+            double tongTienGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
+            Object selected = cboDiscount.getSelectedItem();
+            double thanhTien = tongTienGoc;
+            double soTienGiam = 0;
+
+            // 2. Kiểm tra nếu người dùng chọn một mã giảm giá
+            if (selected instanceof Discount) {
+                Discount d = (Discount) selected;
+                if (d.getDiscountType() == 1) { // Giảm theo %
+                    soTienGiam = tongTienGoc * d.getDiscountValue().doubleValue() / 100;
+                } else { // Giảm theo tiền mặt
+                    soTienGiam = d.getDiscountValue().doubleValue();
+                }
+            }
+
+            thanhTien = tongTienGoc - soTienGiam;
+            if (thanhTien < 0) {
+                thanhTien = 0;
+            }
+
+            // 3. Hiển thị kết quả lên giao diện
+            lblSoTienGiam.setText(String.format(" -%,.0f VNĐ", soTienGiam));
+            lblThanhTien.setText(String.format("%,.0f", thanhTien));
+
+            // 4. Quan trọng: Gọi lại hàm tính tiền thừa để cập nhật lại con số
+            txtTienKhachDuaKeyReleased(null);
+
+        } catch (Exception e) {
+            System.out.println("Lỗi tính giảm giá: " + e.getMessage());
+        }
+    }//GEN-LAST:event_cboDiscountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -551,6 +586,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnIn;
     private javax.swing.JButton btnThanhToanIn;
+    private javax.swing.JComboBox<String> cboDiscount;
     private javax.swing.JComboBox<String> cboPaymentMethods;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -561,6 +597,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblSoTienGiam;
     private javax.swing.JLabel lblThanhTien;
     private javax.swing.JLabel lblTienTraLai;
     private javax.swing.JLabel lblTong;
@@ -568,7 +605,6 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel lblTongTien1;
     private javax.swing.JLabel lblTra;
     private javax.swing.JTable tblServiceDetails;
-    private javax.swing.JTextField txtGiamGia;
     private javax.swing.JTextField txtMaHD;
     private javax.swing.JTextField txtTienKhachDua;
     // End of variables declaration//GEN-END:variables
@@ -578,5 +614,15 @@ public class PaymentJDialog extends javax.swing.JDialog {
         for (PaymentMethod p : all) {
             dcbm.addElement(p.getPaymentName());
         }
+    }
+
+    private void showDiscount(List<Discount> all) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        model.addElement("Không áp dụng"); // Lựa chọn mặc định
+        for (Discount d : all) {
+            // Chỉ thêm các mã còn hạn và còn lượt dùng (nếu bạn đã lọc ở Repository thì tốt)
+            model.addElement(d);
+        }
+        cboDiscount.setModel(model);
     }
 }

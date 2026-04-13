@@ -103,7 +103,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Phone", "Email", "Gender", "CustomerCode"
+                "ID", "Tên", "Số Điện Thoại", "Email", "Giới Tính", "Mã Khách Hàng"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -121,9 +121,9 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
-        jButton2.setText("Next");
+        jButton2.setText(">>");
 
-        jButton3.setText("Previous");
+        jButton3.setText("<<");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -134,7 +134,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel3.setText("Showing 1 to 5 of 5 entries");
 
-        btnDelete.setText("Delete");
+        btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -242,13 +242,13 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Thông tin cá nhân");
 
-        jLabel9.setText("Name:");
+        jLabel9.setText("Tên:");
 
-        jLabel10.setText("Phone:");
+        jLabel10.setText("Số Điện Thoại:");
 
         jLabel11.setText("Email:");
 
-        jLabel12.setText("Gender:");
+        jLabel12.setText("Giới Tính:");
 
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
@@ -278,9 +278,9 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         txtCustomerID.setEditable(false);
 
-        jLabel13.setText("CustomerID");
+        jLabel13.setText("ID:");
 
-        jLabel14.setText("CustomerCode");
+        jLabel14.setText("Mã Khách Hàng:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

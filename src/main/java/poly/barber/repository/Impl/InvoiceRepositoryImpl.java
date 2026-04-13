@@ -5,7 +5,6 @@
 package poly.barber.repository.Impl;
 
 import java.util.List;
-import poly.barber.entity.Employee;
 import poly.barber.entity.Invoice;
 import poly.barber.repository.ICommonRepository;
 import poly.barber.util.XJdbc;

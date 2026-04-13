@@ -113,9 +113,9 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        jButton2.setText("Next");
+        jButton2.setText(">>");
 
-        jButton3.setText("Previous");
+        jButton3.setText("<<");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -126,7 +126,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel3.setText("Showing 1 to 5 of 5 entries");
 
-        btnDelete.setText("Delete");
+        btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -142,7 +142,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "FirstName", "LastName", "Phone", "Email", "Gender", "Address", "PositionID"
+                "ID", "Tên", "Họ", "Số Điện Thoại", "Email", "Giới Tính", "Địa chỉ", "ID Vị Trí"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -282,9 +282,9 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("Thông tin cá nhân");
 
-        jLabel9.setText("Firstname:");
+        jLabel9.setText("Tên:");
 
-        jLabel10.setText("Phone:");
+        jLabel10.setText("Số Điện Thoại:");
 
         jLabel11.setText("Email:");
 
@@ -294,9 +294,9 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        jLabel12.setText("Gender:");
+        jLabel12.setText("Giới Tính:");
 
-        jLabel13.setText("Address:");
+        jLabel13.setText("Địa Chỉ:");
 
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -324,9 +324,9 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         buttonGroup1.add(rdoNu);
         rdoNu.setText("Nữ");
 
-        jLabel14.setText("Lastname:");
+        jLabel14.setText("Họ:");
 
-        jLabel15.setText("EmployeeID");
+        jLabel15.setText("ID:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);

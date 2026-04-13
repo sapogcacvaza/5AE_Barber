@@ -174,17 +174,17 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; Account"/>
+            <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; t&#xe0;i kho&#x1ea3;n"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Next"/>
+            <Property name="text" type="java.lang.String" value="&gt;&gt;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Previous"/>
+            <Property name="text" type="java.lang.String" value="&lt;&lt;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
@@ -225,11 +225,11 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="0">
-                    <Column editable="false" title="AccountID" type="java.lang.Object"/>
+                    <Column editable="false" title="ID T&#xe0;i Kho&#x1ea3;n" type="java.lang.Object"/>
                     <Column editable="false" title="Username" type="java.lang.Object"/>
                     <Column editable="false" title="Password" type="java.lang.Object"/>
-                    <Column editable="false" title="Role" type="java.lang.Object"/>
-                    <Column editable="false" title="EmployeeID" type="java.lang.Object"/>
+                    <Column editable="false" title="Quy&#x1ec1;n" type="java.lang.Object"/>
+                    <Column editable="false" title="ID Nh&#xe2;n Vi&#xea;n" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -242,26 +242,26 @@
         </Container>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Username"/>
+            <Property name="text" type="java.lang.String" value="Username:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtUsername">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Password"/>
+            <Property name="text" type="java.lang.String" value="Password:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPassword">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Role"/>
+            <Property name="text" type="java.lang.String" value="Quy&#x1ec1;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="EmployeeID"/>
+            <Property name="text" type="java.lang.String" value="ID Nh&#xe2;n Vi&#xea;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cboEmployeeID">
@@ -309,7 +309,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="AcccountID"/>
+            <Property name="text" type="java.lang.String" value="ID T&#xe0;i Kho&#x1ea3;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtAccountID">
@@ -340,7 +340,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
-            <Property name="text" type="java.lang.String" value="L&#x1ecd;c role:"/>
+            <Property name="text" type="java.lang.String" value="L&#x1ecd;c quy&#x1ec1;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnTimKiem">
