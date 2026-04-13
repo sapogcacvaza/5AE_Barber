@@ -8,10 +8,19 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Invoice;
-import poly.barber.entity.PaymentMethod;
 import poly.barber.repository.Impl.CustomerRepository;
 import poly.barber.repository.Impl.InvoiceDetailRepository;
 import poly.barber.repository.Impl.InvoiceRepositoryImpl;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  *
@@ -24,6 +33,8 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     private InvoiceDetailRepository idr = new InvoiceDetailRepository();
     private CustomerRepository cr = new CustomerRepository();
 
+    private List<Invoice> listInvoice;
+
     /**
      * Creates new form InvoiceJDialog
      */
@@ -33,7 +44,10 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         setLocationRelativeTo(this);
 
         dtm = (DefaultTableModel) tblHoaDon.getModel();
+        tblHoaDon.setAutoCreateRowSorter(true);
+        tblBarber.setAutoCreateRowSorter(true);
         showTable(ir.getAll());
+
     }
 
     /**
@@ -58,8 +72,16 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         lblNgay = new javax.swing.JLabel();
         lblTenKhach = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lblnguoitao = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblServiceDetails = new javax.swing.JTable();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblBarber = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+        txtSearchCustomer = new javax.swing.JTextField();
+        btnLamMoi = new javax.swing.JButton();
+        btnIn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -117,29 +139,40 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         jLabel9.setText("SĐT");
 
+        jLabel11.setText("Người tạo");
+
+        lblnguoitao.setText("  ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblNgay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSDT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblMaHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTenKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel9))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(lblNgay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSDT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMaHD, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTenKhach, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblnguoitao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(lblMaHD))
@@ -155,7 +188,10 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(lblSDT))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblnguoitao)
+                    .addComponent(jLabel11)))
         );
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DỊCH VỤ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -174,6 +210,43 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         ));
         jScrollPane3.setViewportView(tblServiceDetails);
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thợ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
+
+        tblBarber.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Thợ", "Làm"
+            }
+        ));
+        jScrollPane1.setViewportView(tblBarber);
+
+        jLabel5.setText("Tìm kiếm khách hàng:");
+
+        txtSearchCustomer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchCustomerKeyReleased(evt);
+            }
+        });
+
+        btnLamMoi.setText("Làm mới");
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
+
+        btnIn.setText("In");
+        btnIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,14 +256,26 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 782, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnLamMoi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnIn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,12 +284,19 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jButton1)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtSearchCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(btnLamMoi)
+                    .addComponent(btnIn))
+                .addGap(6, 6, 6))
         );
 
         pack();
@@ -216,34 +308,53 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             return;
         }
 
-        // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ)
-        String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
-        int maHD = Integer.parseInt(maHDStr);
-
-        // 2. Hiển thị thông tin cơ bản lên các Label
-        lblMaHD.setText(maHDStr);
-        Object valueObj = tblHoaDon.getValueAt(row, 2);
-        if (valueObj != null) {
-            lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString()); // Time in
-        } else {
-            lblNgay.setText("");
+        // 1. Lấy InvoiceID an toàn
+        Object valId = tblHoaDon.getValueAt(row, 1);
+        String maHDStr = (valId == null) ? "" : valId.toString();
+        // Dùng try-catch hoặc kiểm tra để tránh lỗi format số
+        int maHD = -1;
+        try {
+            if (!maHDStr.isEmpty()) {
+                maHD = Integer.parseInt(maHDStr);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi định dạng mã HĐ");
         }
 
-        // 3. Lấy Tên và SĐT khách hàng từ CustomerRepository bằng JOIN
-        // customerRepo đã được khai báo: private CustomerRepository customerRepo = new CustomerRepository();
-        String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+        // 2. Lấy Ngày an toàn (SỬA LỖI DÒNG 327 TẠI ĐÂY)
+        Object valNgay = tblHoaDon.getValueAt(row, 2);
+        String ngayStr = (valNgay == null) ? "" : valNgay.toString();
 
-        if (info != null) {
-            lblTenKhach.setText(info[0]); // Fullname từ mảng trả về
-            lblSDT.setText(info[1]);      // Phone từ mảng trả về
-        } else {
-            // Trường hợp không tìm thấy (thường là khách vãng lai không có Appointment)
-            lblTenKhach.setText("Khách vãng lai");
-            lblSDT.setText("Không có");
+        // 3. Lấy Object từ list an toàn
+        int modelRow = tblHoaDon.convertRowIndexToModel(row);
+
+        // Kiểm tra index để tránh lỗi văng khỏi danh sách (IndexOutOfBounds)
+        if (modelRow >= 0 && modelRow < listInvoice.size()) {
+            Invoice selectedInv = listInvoice.get(modelRow);
+
+            // Đổ dữ liệu lên Label
+            lblMaHD.setText(maHDStr);
+            lblNgay.setText(ngayStr); // Đã an toàn
+
+            // Check null người tạo
+            String infoNguoiTao = (selectedInv != null) ? selectedInv.getEmployeeName() : "Không rõ";
+            lblnguoitao.setText(infoNguoiTao);
         }
 
-        // 4. Load chi tiết dịch vụ vào bảng bên phải
-        loadServiceTable(maHD);
+        // 4. Lấy thông tin khách và load bảng dịch vụ
+        if (maHD != -1) {
+            String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+            if (info != null && info.length >= 2) {
+                lblTenKhach.setText(info[0]);
+                lblSDT.setText(info[1]);
+            } else {
+                lblTenKhach.setText("Khách vãng lai");
+                lblSDT.setText("Không có");
+            }
+
+            loadServiceTable(maHD);
+            loadBarberTable(maHD);
+        }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -253,6 +364,13 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
+            return;
+        }
+
+        Object value = tblHoaDon.getValueAt(row, 2);
+// Dùng String.valueOf để biến null thành chuỗi "null", tránh lỗi khi so sánh .equals("")
+        if (value == null || String.valueOf(value).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lịch chưa kết thúc, không thể thanh toán!");
             return;
         }
 
@@ -280,7 +398,114 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         // 5. SAU KHI THANH TOÁN XONG (Dialog đóng) -> Cập nhật lại bảng
         showTable(ir.getAll());
+
+        lblMaHD.setText(" ");
+        lblNgay.setText(" ");
+        lblTenKhach.setText(" ");
+        lblSDT.setText(" ");
+        lblnguoitao.setText(" ");
+        ((DefaultTableModel) tblServiceDetails.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblBarber.getModel()).setRowCount(0);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtSearchCustomerKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchCustomerKeyReleased
+        String searchName = txtSearchCustomer.getText().trim();
+
+        // 1. Gọi Repository để lấy danh sách kết quả
+        List<Invoice> result;
+        if (searchName.isEmpty()) {
+            result = ir.getAll(); // Nếu trống thì hiện tất cả
+        } else {
+            result = ir.searchByCustomerName(searchName);
+        }
+
+        // 2. Đổ dữ liệu vào bảng
+        showTable(result);
+
+        // 3. Xóa trắng các thông tin chi tiết đang hiển thị bên trên
+        // để tránh người dùng hiểu lầm đó là chi tiết của hóa đơn mới tìm thấy
+        clearDetails();
+    }//GEN-LAST:event_txtSearchCustomerKeyReleased
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        showTable(ir.getAll());
+
+        txtSearchCustomer.setText("");
+
+        clearDetails();
+
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
+        int row = tblHoaDon.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
+            return;
+        }
+
+        Object value = tblHoaDon.getValueAt(row, 2);
+        if (value == null || String.valueOf(value).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lịch chưa hoàn thành, không được in!");
+            return;
+        }
+
+        // Sử dụng tên class đầy đủ để tránh lỗi Document của Swing
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        try {
+            String maHD = tblHoaDon.getValueAt(row, 1).toString();
+            String fileName = "HoaDon_5AE_" + maHD + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+
+            // Cấu hình Font tiếng Việt
+            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fontTitle = new Font(bf, 18, Font.BOLD);
+            Font fontBold = new Font(bf, 12, Font.BOLD);
+            Font fontNormal = new Font(bf, 12, Font.NORMAL);
+
+            // Nội dung hóa đơn
+            Paragraph title = new Paragraph("5AE BARBER CÚT CÚT", fontTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            document.add(new Paragraph("Mã hóa đơn: " + maHD, fontNormal));
+            document.add(new Paragraph("Khách hàng: " + lblTenKhach.getText(), fontNormal));
+            document.add(new Paragraph("Ngày tạo: " + lblNgay.getText(), fontNormal));
+            document.add(new Paragraph("Nhân viên: " + lblnguoitao.getText(), fontNormal));
+            document.add(new Paragraph("------------------------------------------------------------------"));
+
+            // Tạo bảng dịch vụ
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+
+            table.addCell(new PdfPCell(new Paragraph("Dịch vụ", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Số lượng", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Đơn giá", fontBold)));
+
+            for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 0).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 1).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
+            }
+            document.add(table);
+
+            document.add(new Paragraph("\nTổng tiền thanh toán: " + tblHoaDon.getValueAt(row, 4).toString() + " VNĐ", fontBold));
+            document.add(new Paragraph("\nCảm ơn quý khách đã tin tưởng 5AE Barber!", fontNormal));
+
+            document.close();
+
+            // Mở file ngay lập tức
+            File pdfFile = new File(fileName);
+            if (pdfFile.exists()) {
+                Desktop.getDesktop().open(pdfFile);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi in hóa đơn: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnInActionPerformed
 
     /**
      * @param args the command line arguments
@@ -325,27 +550,36 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIn;
+    private javax.swing.JButton btnLamMoi;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblMaHD;
     private javax.swing.JLabel lblNgay;
     private javax.swing.JLabel lblSDT;
     private javax.swing.JLabel lblTenKhach;
+    private javax.swing.JLabel lblnguoitao;
+    private javax.swing.JTable tblBarber;
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTable tblServiceDetails;
+    private javax.swing.JTextField txtSearchCustomer;
     // End of variables declaration//GEN-END:variables
 
     private void showTable(List<Invoice> all) {
+        this.listInvoice = all;
+
         dtm.setRowCount(0);
         for (Invoice i : all) {
-            // Chuyển đổi số 1, 2 thành chữ để hiển thị
             String trangThaiTxt = (i.getStatus() == 2) ? "Đã thanh toán" : "Chưa thanh toán";
 
             dtm.addRow(new Object[]{
@@ -353,10 +587,10 @@ public class InvoiceJDialog extends javax.swing.JDialog {
                 i.getInvoiceID(),
                 i.getCheckInDateTime(),
                 i.getCheckOutDateTime(),
-                i.getTotalAmount(),
-                i.getTotalDiscount(),
-                trangThaiTxt, // Hiển thị biến đã xử lý ở trên
-                i.getCreatedByEmployeeID()
+                String.format("%,.0f", i.getTotalAmount()),
+                String.format("%,.0f", i.getTotalDiscount()),
+                trangThaiTxt,
+                i.getEmployeeName()
             });
         }
     }
@@ -381,6 +615,59 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             }
         } catch (Exception e) {
             System.out.println("Lỗi load bảng dịch vụ: " + e.getMessage());
+        }
+    }
+
+    private void loadBarberTable(int invoiceId) {
+        DefaultTableModel dtmBarber = (DefaultTableModel) tblBarber.getModel();
+        dtmBarber.setRowCount(0);
+
+        try {
+            List<Object[]> list = idr.getBarbersByInvoice(invoiceId);
+            if (list != null) {
+                for (Object[] row : list) {
+                    dtmBarber.addRow(row);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearDetails() {
+        lblMaHD.setText(" ");
+        lblNgay.setText(" ");
+        lblTenKhach.setText(" ");
+        lblSDT.setText(" ");
+        lblnguoitao.setText(" ");
+        ((DefaultTableModel) tblServiceDetails.getModel()).setRowCount(0);
+        ((DefaultTableModel) tblBarber.getModel()).setRowCount(0);
+        DefaultTableModel dtmBarbers = (DefaultTableModel) tblBarber.getModel();
+        dtmBarbers.setRowCount(0);
+    }
+
+    public void exportToPDF(int invoiceId) {
+        // Chỉ định rõ ràng là Document của iText để tránh xung đột với Swing
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        try {
+            String path = "HoaDon_" + invoiceId + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(path));
+            document.open();
+
+            // Cấu hình Font (Đảm bảo file Arial.ttf có tồn tại trong máy)
+            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            com.itextpdf.text.Font fontTitle = new com.itextpdf.text.Font(bf, 18, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font fontBold = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font fontNormal = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.NORMAL);
+
+            // ... các đoạn Paragraph và Table giữ nguyên như cũ ...
+            // Lưu ý: Paragraph cũng nên dùng của iText
+            document.close();
+            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
+            java.awt.Desktop.getDesktop().open(new java.io.File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
         }
     }
 }

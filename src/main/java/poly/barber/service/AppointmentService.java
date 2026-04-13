@@ -47,6 +47,10 @@ public class AppointmentService {
         return repo.getAll();
     }
 
+    public Appointment getOne(Integer id) {
+        return repo.getOne(id);
+    }
+
     public List<Appointment> getAllWhereStatusIsWaiting(boolean today) {
         return repo.getAllWhereStatusIsWaiting(today);
     }
@@ -101,7 +105,7 @@ public class AppointmentService {
     public void updateStatus(int appointmentID, int status) {
         repo.updateStatus(appointmentID, status);
     }
-    
+
     public int updateStatusAutomatically() {
         return repo.updateStatusAutomatically();
     }
