@@ -77,28 +77,25 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         btntaikhoan.setEnabled(false);
 
         // ================= PHÂN QUYỀN =================
-        if (AuthUtil.isAdmin(acc)) {
-            btnNhanVien.setEnabled(true);
-            btnbarber.setEnabled(true);
-            btngiamgia.setEnabled(true);
-            btnservice.setEnabled(true);
-            btnstatical.setEnabled(true);
-            btntaikhoan.setEnabled(true);
-        } else if (AuthUtil.isManager(acc)) {
-            btnNhanVien.setEnabled(true);
-            btnbarber.setEnabled(true);
-            btnservice.setEnabled(true);
-            btngiamgia.setEnabled(false);
-            btnstatical.setEnabled(false);
-            btntaikhoan.setEnabled(false);
-        } else if (AuthUtil.isStaff(acc)) {
-            btnNhanVien.setEnabled(false);
-            btnbarber.setEnabled(false);
-            btnservice.setEnabled(false);
-            btngiamgia.setEnabled(false);
-            btnstatical.setEnabled(false);
-            btntaikhoan.setEnabled(false);
-        }
+if (AuthUtil.isAdmin(acc)) {
+    btnNhanVien.setEnabled(true);
+    btnbarber.setEnabled(true);
+    btngiamgia.setEnabled(true);
+    btnservice.setEnabled(true);
+    btnstatical.setEnabled(true);
+    btntaikhoan.setEnabled(true);
+}
+else if (AuthUtil.isManager(acc)) {
+    btnNhanVien.setEnabled(false); // ❗ sửa
+    btnbarber.setEnabled(true);
+    btnservice.setEnabled(false); // ❗ chỉ admin
+    btngiamgia.setEnabled(false);
+    btnstatical.setEnabled(false);
+    btntaikhoan.setEnabled(false);
+}
+else if (AuthUtil.isStaff(acc)) {
+    // staff chỉ đặt lịch → disable hết
+}
     }
 //ktra login
 private boolean requireLogin() {
