@@ -612,7 +612,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
     private void showComboBox(List<PaymentMethod> all) {
         dcbm.removeAllElements();
         for (PaymentMethod p : all) {
-            dcbm.addElement(p);
+            dcbm.addElement(p.getPaymentName());
         }
     }
 

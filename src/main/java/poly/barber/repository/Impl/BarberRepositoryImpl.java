@@ -69,7 +69,6 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
         return positionName;
     }
 
-// Hàm gọi Procedure để lấy thợ rảnh theo lịch trình (Status 1, 4)
     public List<Barber> getBarbersBySchedule(LocalDate date, LocalTime time, String categoryName) {
         List<Barber> list = new ArrayList<>();
         String sql = "{CALL getListAvailableBarber(?, ?, ?)}";
@@ -92,25 +91,25 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     }
 
     // Hàm lọc thợ dựa trên isBusy (Dùng khi khách đã đến - Status 2)
-    public List<Barber> getBarbersByBusyStatus(int status) {
-        List<Barber> list = new ArrayList<>();
-        String sql = "SELECT * FROM Barber WHERE isBusy = ?";
-
-        try (Connection con = XJdbc.openConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, status);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(readBarberFromResultSet(rs));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    // Hàm bổ trợ đọc dữ liệu
+//    public List<Barber> getBarbersByBusyStatus(int status) {
+//        List<Barber> list = new ArrayList<>();
+//        String sql = "SELECT * FROM Barber WHERE isBusy = ?";
+//
+//        try (Connection con = XJdbc.openConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+//
+//            ps.setInt(1, status);
+//            try (ResultSet rs = ps.executeQuery()) {
+//                while (rs.next()) {
+//                    list.add(readBarberFromResultSet(rs));
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return list;
+//    }
+//
+//    // Hàm bổ trợ đọc dữ liệu
     private Barber readBarberFromResultSet(ResultSet rs) throws SQLException {
         Barber b = new Barber();
         b.setBarberID(rs.getInt("BarberID"));

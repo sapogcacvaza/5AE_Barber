@@ -18,7 +18,7 @@ import poly.barber.repository.Impl.EmployeeImpl;
  *
  * @author Dell
  */
-public class AccountView extends javax.swing.JDialog implements AccountController {
+public class AccountJDialog extends javax.swing.JDialog implements AccountController {
 
     AccountImpl acrepo = new AccountImpl();
     EmployeeImpl nvrepo = new EmployeeImpl();
@@ -27,7 +27,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
     DefaultComboBoxModel dcbm2 = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbm3 = new DefaultComboBoxModel();
 
-    public AccountView(java.awt.Frame parent, boolean modal) {
+    public AccountJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -89,11 +89,11 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Quản lý Account");
+        jLabel1.setText("Quản lý tài khoản");
 
-        jButton2.setText("Next");
+        jButton2.setText(">>");
 
-        jButton3.setText("Previous");
+        jButton3.setText("<<");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -118,7 +118,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
 
             },
             new String [] {
-                "AccountID", "Username", "Password", "Role", "EmployeeID"
+                "ID Tài Khoản", "Username", "Password", "Quyền", "ID Nhân Viên"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -137,13 +137,13 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
         });
         jScrollPane2.setViewportView(tblAccount);
 
-        jLabel4.setText("Username");
+        jLabel4.setText("Username:");
 
-        jLabel5.setText("Password");
+        jLabel5.setText("Password:");
 
-        jLabel6.setText("Role");
+        jLabel6.setText("Quyền:");
 
-        jLabel7.setText("EmployeeID");
+        jLabel7.setText("ID Nhân Viên:");
 
         cboEmployeeID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -165,7 +165,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
             }
         });
 
-        jLabel8.setText("AcccountID");
+        jLabel8.setText("ID Tài Khoản:");
 
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -181,7 +181,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
             }
         });
 
-        jLabel9.setText("Lọc role:");
+        jLabel9.setText("Lọc quyền:");
 
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
@@ -409,14 +409,18 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AccountView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AccountView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AccountView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AccountView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AccountJDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -425,7 +429,7 @@ public class AccountView extends javax.swing.JDialog implements AccountControlle
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AccountView dialog = new AccountView(new javax.swing.JFrame(), true);
+                AccountJDialog dialog = new AccountJDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

@@ -114,9 +114,9 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        jButton2.setText("Next");
+        jButton2.setText(">>");
 
-        jButton3.setText("Previous");
+        jButton3.setText("<<");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -127,7 +127,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         jLabel3.setText("Showing 1 to 5 of 5 entries");
 
-        btnDelete.setText("Delete");
+        btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -139,7 +139,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
             },
             new String [] {
-                "BarberID", "IsBusy", "Trạng Thái", "Họ", "Tên", "SĐT", "Email", "Vị Trí"
+                "ID", "Sẵn Sàng", "Trạng Thái", "Họ", "Tên", "SĐT", "Email", "Vị Trí"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -157,7 +157,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         });
         jScrollPane2.setViewportView(tblBarber);
 
-        jLabel4.setText("IsBusy");
+        jLabel4.setText("Sẵn sàng:");
 
         cboIsBusy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rảnh", "Bận" }));
         cboIsBusy.addActionListener(new java.awt.event.ActionListener() {
@@ -273,14 +273,14 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         cboPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        rdoViTri.setText("Vị trí");
+        rdoViTri.setText("Vị Trí:");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("Thông tin cá nhân");
 
-        jLabel9.setText("Firstname:");
+        jLabel9.setText("Tên:");
 
-        jLabel10.setText("Phone:");
+        jLabel10.setText("Số Điện Thoại:");
 
         jLabel11.setText("Email:");
 
@@ -316,7 +316,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        jLabel14.setText("Lastname:");
+        jLabel14.setText("Họ:");
 
         jLabel15.setText("BarberID:");
 

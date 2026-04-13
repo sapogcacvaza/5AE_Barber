@@ -8,13 +8,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Invoice;
-import poly.barber.entity.PaymentMethod;
 import poly.barber.repository.Impl.CustomerRepository;
 import poly.barber.repository.Impl.InvoiceDetailRepository;
 import poly.barber.repository.Impl.InvoiceRepositoryImpl;
-
 import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.Document; 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
@@ -23,7 +20,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileOutputStream; 
+import java.io.FileOutputStream;
+
 /**
  *
  * @author DELL
@@ -310,33 +308,53 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             return;
         }
 
-        // 1. Lấy InvoiceID từ cột số 1 trên table (Mã HĐ) - CÁCH NÀY LUÔN ĐÚNG
-        String maHDStr = tblHoaDon.getValueAt(row, 1).toString();
-        int maHD = Integer.parseInt(maHDStr);
-
-        // 2. SỬA LẠI ĐOẠN NÀY: Chuyển chỉ số dòng từ View sang Model
-        int modelRow = tblHoaDon.convertRowIndexToModel(row);
-
-        // Lấy selectedInv từ list đã lưu (listInvoice) thay vì gọi ir.getAll() liên tục
-        Invoice selectedInv = listInvoice.get(modelRow);
-
-        // 3. Đổ dữ liệu lên các Label (Giữ nguyên)
-        lblMaHD.setText(maHDStr);
-        lblNgay.setText(tblHoaDon.getValueAt(row, 2).toString());
-        lblnguoitao.setText(selectedInv.getEmployeeName());
-
-        // 4. Lấy thông tin khách và load bảng dịch vụ (Giữ nguyên)
-        String[] info = cr.getCustomerInfoByInvoiceId(maHD);
-        if (info != null) {
-            lblTenKhach.setText(info[0]);
-            lblSDT.setText(info[1]);
-        } else {
-            lblTenKhach.setText("Khách vãng lai");
-            lblSDT.setText("Không có");
+        // 1. Lấy InvoiceID an toàn
+        Object valId = tblHoaDon.getValueAt(row, 1);
+        String maHDStr = (valId == null) ? "" : valId.toString();
+        // Dùng try-catch hoặc kiểm tra để tránh lỗi format số
+        int maHD = -1;
+        try {
+            if (!maHDStr.isEmpty()) {
+                maHD = Integer.parseInt(maHDStr);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Lỗi định dạng mã HĐ");
         }
 
-        loadServiceTable(maHD);
-        loadBarberTable(maHD);
+        // 2. Lấy Ngày an toàn (SỬA LỖI DÒNG 327 TẠI ĐÂY)
+        Object valNgay = tblHoaDon.getValueAt(row, 2);
+        String ngayStr = (valNgay == null) ? "" : valNgay.toString();
+
+        // 3. Lấy Object từ list an toàn
+        int modelRow = tblHoaDon.convertRowIndexToModel(row);
+
+        // Kiểm tra index để tránh lỗi văng khỏi danh sách (IndexOutOfBounds)
+        if (modelRow >= 0 && modelRow < listInvoice.size()) {
+            Invoice selectedInv = listInvoice.get(modelRow);
+
+            // Đổ dữ liệu lên Label
+            lblMaHD.setText(maHDStr);
+            lblNgay.setText(ngayStr); // Đã an toàn
+
+            // Check null người tạo
+            String infoNguoiTao = (selectedInv != null) ? selectedInv.getEmployeeName() : "Không rõ";
+            lblnguoitao.setText(infoNguoiTao);
+        }
+
+        // 4. Lấy thông tin khách và load bảng dịch vụ
+        if (maHD != -1) {
+            String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+            if (info != null && info.length >= 2) {
+                lblTenKhach.setText(info[0]);
+                lblSDT.setText(info[1]);
+            } else {
+                lblTenKhach.setText("Khách vãng lai");
+                lblSDT.setText("Không có");
+            }
+
+            loadServiceTable(maHD);
+            loadBarberTable(maHD);
+        }
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -346,6 +364,13 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một hóa đơn từ danh sách để thanh toán!");
+            return;
+        }
+
+        Object value = tblHoaDon.getValueAt(row, 2);
+// Dùng String.valueOf để biến null thành chuỗi "null", tránh lỗi khi so sánh .equals("")
+        if (value == null || String.valueOf(value).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lịch chưa kết thúc, không thể thanh toán!");
             return;
         }
 
@@ -405,13 +430,14 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
         showTable(ir.getAll());
 
-    txtSearchCustomer.setText("");
+        txtSearchCustomer.setText("");
 
-    clearDetails();
+        clearDetails();
 
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
+<<<<<<< HEAD
        int row = tblHoaDon.getSelectedRow();
     if (row == -1) {
         JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
@@ -468,12 +494,76 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         File pdfFile = new File(fileName);
         if (pdfFile.exists()) {
             Desktop.getDesktop().open(pdfFile);
+=======
+        int row = tblHoaDon.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
+            return;
+>>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
         }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Lỗi in hóa đơn: " + e.getMessage());
-        e.printStackTrace();
-    }
+        Object value = tblHoaDon.getValueAt(row, 2);
+        if (value == null || String.valueOf(value).trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lịch chưa hoàn thành, không được in!");
+            return;
+        }
+
+        // Sử dụng tên class đầy đủ để tránh lỗi Document của Swing
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        try {
+            String maHD = tblHoaDon.getValueAt(row, 1).toString();
+            String fileName = "HoaDon_5AE_" + maHD + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            document.open();
+
+            // Cấu hình Font tiếng Việt
+            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font fontTitle = new Font(bf, 18, Font.BOLD);
+            Font fontBold = new Font(bf, 12, Font.BOLD);
+            Font fontNormal = new Font(bf, 12, Font.NORMAL);
+
+            // Nội dung hóa đơn
+            Paragraph title = new Paragraph("5AE BARBER CÚT CÚT", fontTitle);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+
+            document.add(new Paragraph("Mã hóa đơn: " + maHD, fontNormal));
+            document.add(new Paragraph("Khách hàng: " + lblTenKhach.getText(), fontNormal));
+            document.add(new Paragraph("Ngày tạo: " + lblNgay.getText(), fontNormal));
+            document.add(new Paragraph("Nhân viên: " + lblnguoitao.getText(), fontNormal));
+            document.add(new Paragraph("------------------------------------------------------------------"));
+
+            // Tạo bảng dịch vụ
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+
+            table.addCell(new PdfPCell(new Paragraph("Dịch vụ", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Số lượng", fontBold)));
+            table.addCell(new PdfPCell(new Paragraph("Đơn giá", fontBold)));
+
+            for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 0).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 1).toString(), fontNormal));
+                table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
+            }
+            document.add(table);
+
+            document.add(new Paragraph("\nTổng tiền thanh toán: " + tblHoaDon.getValueAt(row, 4).toString() + " VNĐ", fontBold));
+            document.add(new Paragraph("\nCảm ơn quý khách đã tin tưởng 5AE Barber!", fontNormal));
+
+            document.close();
+
+            // Mở file ngay lập tức
+            File pdfFile = new File(fileName);
+            if (pdfFile.exists()) {
+                Desktop.getDesktop().open(pdfFile);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Lỗi in hóa đơn: " + e.getMessage());
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_btnInActionPerformed
 
     /**
@@ -612,31 +702,31 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         ((DefaultTableModel) tblServiceDetails.getModel()).setRowCount(0);
         ((DefaultTableModel) tblBarber.getModel()).setRowCount(0);
         DefaultTableModel dtmBarbers = (DefaultTableModel) tblBarber.getModel();
-    dtmBarbers.setRowCount(0);
+        dtmBarbers.setRowCount(0);
     }
- public void exportToPDF(int invoiceId) {
-    // Chỉ định rõ ràng là Document của iText để tránh xung đột với Swing
-    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-    try {
-        String path = "HoaDon_" + invoiceId + ".pdf";
-        PdfWriter.getInstance(document, new FileOutputStream(path));
-        document.open();
 
-        // Cấu hình Font (Đảm bảo file Arial.ttf có tồn tại trong máy)
-        BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        com.itextpdf.text.Font fontTitle = new com.itextpdf.text.Font(bf, 18, com.itextpdf.text.Font.BOLD);
-        com.itextpdf.text.Font fontBold = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.BOLD);
-        com.itextpdf.text.Font fontNormal = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.NORMAL);
+    public void exportToPDF(int invoiceId) {
+        // Chỉ định rõ ràng là Document của iText để tránh xung đột với Swing
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        try {
+            String path = "HoaDon_" + invoiceId + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(path));
+            document.open();
 
-        // ... các đoạn Paragraph và Table giữ nguyên như cũ ...
-        // Lưu ý: Paragraph cũng nên dùng của iText
-        
-        document.close();
-        JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
-        java.awt.Desktop.getDesktop().open(new java.io.File(path));
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
+            // Cấu hình Font (Đảm bảo file Arial.ttf có tồn tại trong máy)
+            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            com.itextpdf.text.Font fontTitle = new com.itextpdf.text.Font(bf, 18, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font fontBold = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.BOLD);
+            com.itextpdf.text.Font fontNormal = new com.itextpdf.text.Font(bf, 12, com.itextpdf.text.Font.NORMAL);
+
+            // ... các đoạn Paragraph và Table giữ nguyên như cũ ...
+            // Lưu ý: Paragraph cũng nên dùng của iText
+            document.close();
+            JOptionPane.showMessageDialog(this, "Xuất hóa đơn thành công!");
+            java.awt.Desktop.getDesktop().open(new java.io.File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage());
+        }
     }
-}
 }
