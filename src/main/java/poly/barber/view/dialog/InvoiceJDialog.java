@@ -458,7 +458,7 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
         }
         document.add(table);
-
+        
         document.add(new Paragraph("\nTổng tiền thanh toán: " + tblHoaDon.getValueAt(row, 4).toString() + " VNĐ", fontBold));
         document.add(new Paragraph("\nCảm ơn quý khách đã tin tưởng 5AE Barber!", fontNormal));
 

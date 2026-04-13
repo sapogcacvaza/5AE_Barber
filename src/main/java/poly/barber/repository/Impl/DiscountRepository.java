@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import poly.barber.entity.Discount;
 import poly.barber.util.XJdbc;
+import poly.barber.util.XQuery;
 
 public class DiscountRepository {
-
+    String sql = "SELECT * FROM Discount WHERE Status = 1 AND EndDateTime > GETDATE() AND (MaxUsage > UsedCount)";
+    public List<Discount> getAll(){
+        return XQuery.getBeanList(Discount.class, sql);
+    }
     // 🔥 map dữ liệu
     private Discount mapRow(ResultSet rs) throws Exception {
         return Discount.builder()
@@ -88,24 +92,23 @@ public class DiscountRepository {
     // 🔥 thêm
     public void insert(Discount d) {
         String sql = """
-            INSERT INTO Discount
-            (DiscountName, DiscountType, DiscountValue, Description,
-             StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
-            VALUES (?,?,?,?,?,?,?,?,?)
-        """;
+        INSERT INTO Discount
+        (DiscountName, DiscountType, DiscountValue, Description,
+         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
+        VALUES (?,?,?,?,?,?,?,?,?)
+    """;
 
-        XJdbc.executeUpdate(sql,
-                d.getDiscountCode(),
-                d.getDiscountName(),
-                d.getDiscountType(),
-                d.getDiscountValue(),
-                d.getDescription(),
-                d.getStartDateTime(),
-                d.getEndDateTime(),
-                d.getStatus(),
-                d.getMaxUsage(),
-                d.getUsedCount()
-        );
+    XJdbc.executeUpdate(sql,
+            d.getDiscountName(), 
+            d.getDiscountType(),
+            d.getDiscountValue(),
+            d.getDescription(),
+            d.getStartDateTime(),
+            d.getEndDateTime(),
+            d.getStatus(),
+            d.getMaxUsage(),
+            d.getUsedCount()
+    );
     }
 
     // 🔥 update
@@ -140,7 +143,7 @@ public class DiscountRepository {
 
     // 🔥 xoá mềm
     public void updateStatus(int id, int status) {
-        String sql = "UPDATE Discount SET Status=? WHERE DiscountID=?";
+        String sql = "UPDATE Discount SET UsedCount = UsedCount + 1 WHERE DiscountID = ?";
         XJdbc.executeUpdate(sql, status, id);
     }
 }
