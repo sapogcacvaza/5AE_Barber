@@ -90,18 +90,18 @@ public class DiscountRepository {
     }
 
     // 🔥 thêm
-<<<<<<< HEAD
-    public void insert(Discount d) {
-        String sql = """
-        INSERT INTO Discount
-        (DiscountName, DiscountType, DiscountValue, Description,
-         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
-        VALUES (?,?,?,?,?,?,?,?,?)
-    """;
-
-    XJdbc.executeUpdate(sql,
-            d.getDiscountName(), 
-=======
+//<<<<<<< HEAD
+//    public void insert(Discount d) {
+//        String sql = """
+//        INSERT INTO Discount
+//        (DiscountName, DiscountType, DiscountValue, Description,
+//         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
+//        VALUES (?,?,?,?,?,?,?,?,?)
+//    """;
+//
+//    XJdbc.executeUpdate(sql,
+//            d.getDiscountName(), 
+//=======
 public void insert(Discount d) {
     String sql = """
         INSERT INTO Discount
@@ -113,7 +113,7 @@ public void insert(Discount d) {
     XJdbc.executeUpdate(sql,
             d.getDiscountCode(),   // ✅ đúng vị trí
             d.getDiscountName(),
->>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
+//>>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
             d.getDiscountType(),
             d.getDiscountValue(),
             d.getDescription(),
@@ -123,11 +123,11 @@ public void insert(Discount d) {
             d.getMaxUsage(),
             d.getUsedCount()
     );
-<<<<<<< HEAD
-    }
-=======
+//<<<<<<< HEAD
+//    }
+//=======
 }
->>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
+//>>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
 
     // 🔥 update
 public void update(Discount d) {

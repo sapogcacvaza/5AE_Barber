@@ -437,76 +437,11 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
-<<<<<<< HEAD
-       int row = tblHoaDon.getSelectedRow();
+        int row = tblHoaDon.getSelectedRow();
     if (row == -1) {
         JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
         return;
     }
-
-    // Sử dụng tên class đầy đủ để tránh lỗi Document của Swing
-    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-    try {
-        String maHD = tblHoaDon.getValueAt(row, 1).toString();
-        String fileName = "HoaDon_5AE_" + maHD + ".pdf";
-        PdfWriter.getInstance(document, new FileOutputStream(fileName));
-        document.open();
-
-        // Cấu hình Font tiếng Việt
-        BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-        Font fontTitle = new Font(bf, 18, Font.BOLD);
-        Font fontBold = new Font(bf, 12, Font.BOLD);
-        Font fontNormal = new Font(bf, 12, Font.NORMAL);
-
-        // Nội dung hóa đơn
-        Paragraph title = new Paragraph("5AE BARBER CÚT CÚT", fontTitle);
-        title.setAlignment(Element.ALIGN_CENTER);
-        document.add(title);
-        
-        document.add(new Paragraph("Mã hóa đơn: " + maHD, fontNormal));
-        document.add(new Paragraph("Khách hàng: " + lblTenKhach.getText(), fontNormal));
-        document.add(new Paragraph("Ngày tạo: " + lblNgay.getText(), fontNormal));
-        document.add(new Paragraph("Nhân viên: " + lblnguoitao.getText(), fontNormal));
-        document.add(new Paragraph("------------------------------------------------------------------"));
-
-        // Tạo bảng dịch vụ
-        PdfPTable table = new PdfPTable(3);
-        table.setWidthPercentage(100);
-        table.setSpacingBefore(10f);
-        
-        table.addCell(new PdfPCell(new Paragraph("Dịch vụ", fontBold)));
-        table.addCell(new PdfPCell(new Paragraph("Số lượng", fontBold)));
-        table.addCell(new PdfPCell(new Paragraph("Đơn giá", fontBold)));
-
-        for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 0).toString(), fontNormal));
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 1).toString(), fontNormal));
-            table.addCell(new Paragraph(tblServiceDetails.getValueAt(i, 2).toString(), fontNormal));
-        }
-        document.add(table);
-        
-        document.add(new Paragraph("\nTổng tiền thanh toán: " + tblHoaDon.getValueAt(row, 4).toString() + " VNĐ", fontBold));
-        document.add(new Paragraph("\nCảm ơn quý khách đã tin tưởng 5AE Barber!", fontNormal));
-
-        document.close();
-        
-        // Mở file ngay lập tức
-        File pdfFile = new File(fileName);
-        if (pdfFile.exists()) {
-            Desktop.getDesktop().open(pdfFile);
-=======
-        int row = tblHoaDon.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
-            return;
->>>>>>> d1da402626f82f4d01f6ea6e7cbdcb82c6afe5e7
-        }
-
-        Object value = tblHoaDon.getValueAt(row, 2);
-        if (value == null || String.valueOf(value).trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Lịch chưa hoàn thành, không được in!");
-            return;
-        }
 
         // Sử dụng tên class đầy đủ để tránh lỗi Document của Swing
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
