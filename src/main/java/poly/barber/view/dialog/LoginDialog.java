@@ -11,6 +11,7 @@ import poly.barber.service.AccountService;
 import poly.barber.view.Barber5AEJFrame;
 import java.io.*;
 import java.util.Properties;
+import javax.swing.ImageIcon;
 import poly.barber.util.Session;
 
 /**
@@ -21,7 +22,7 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginDialog.class.getName());
     AccountService service = new AccountService();
-    
+
     /**
      * Creates new form LoginDialog
      */
@@ -32,7 +33,7 @@ public class LoginDialog extends javax.swing.JDialog {
         this.parent = parent;
         initComponents();
         setLocationRelativeTo(parent);
-        
+
 //        txtname.setText("longvt");
 //        psw.setText("123");
 //        loadAccount();
@@ -110,117 +111,26 @@ public class LoginDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         jLabel4 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        checkboxlil = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
+        psw = new javax.swing.JPasswordField();
         btnlil = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtname = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        psw = new javax.swing.JPasswordField();
-        jLabel3 = new javax.swing.JLabel();
         btnLoginIn = new javax.swing.JButton();
-        checkboxlil = new javax.swing.JCheckBox();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 398, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setPreferredSize(new java.awt.Dimension(400, 0));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setPreferredSize(new java.awt.Dimension(400, 100));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(153, 0, 51));
-        jLabel5.setText("Chào mừng quay  trở lại");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(81, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
-        );
-
-        jPanel13.add(jPanel3);
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(400, 100));
-
-        btnlil.setBackground(new java.awt.Color(0, 102, 153));
-        btnlil.setForeground(new java.awt.Color(255, 255, 255));
-        btnlil.setText("Đăng nhập với toàn khoản hiện có");
-        btnlil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnlilActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel2.setText("Tên Đăng Nhập");
-
-        txtname.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnameActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtname)
-                    .addComponent(jLabel2)
-                    .addComponent(btnlil, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
-                .addContainerGap(74, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(btnlil, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
-        );
-
-        jPanel13.add(jPanel2);
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(400, 200));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setBackground(new java.awt.Color(0, 102, 153));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -230,15 +140,50 @@ public class LoginDialog extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
+        jPanel13.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 420, 90, -1));
+
+        checkboxlil.setForeground(new java.awt.Color(255, 255, 255));
+        checkboxlil.setText("ghi nhớ tài khoản");
+        checkboxlil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkboxlilActionPerformed(evt);
+            }
+        });
+        jPanel13.add(checkboxlil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 360, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Mật Khẩu");
+        jPanel13.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, -1, -1));
 
         psw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pswActionPerformed(evt);
             }
         });
+        jPanel13.add(psw, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, 260, 30));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel3.setText("Mật Khẩu");
+        btnlil.setBackground(new java.awt.Color(0, 102, 153));
+        btnlil.setForeground(new java.awt.Color(255, 255, 255));
+        btnlil.setText("Đăng nhập với toàn khoản hiện có");
+        btnlil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlilActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnlil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 260, 40));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Tên Đăng Nhập");
+        jPanel13.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 190, -1, -1));
+
+        txtname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnameActionPerformed(evt);
+            }
+        });
+        jPanel13.add(txtname, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 260, 30));
 
         btnLoginIn.setBackground(new java.awt.Color(0, 102, 153));
         btnLoginIn.setForeground(new java.awt.Color(255, 255, 255));
@@ -248,50 +193,17 @@ public class LoginDialog extends javax.swing.JDialog {
                 btnLoginInActionPerformed(evt);
             }
         });
+        jPanel13.add(btnLoginIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 420, -1, -1));
 
-        checkboxlil.setText("ghi nhớ tài khoản");
-        checkboxlil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                checkboxlilActionPerformed(evt);
-            }
-        });
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Đăng Nhập");
+        jPanel13.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, 140, 38));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnLoginIn)
-                .addGap(28, 28, 28)
-                .addComponent(jButton2)
-                .addGap(41, 41, 41))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(checkboxlil)
-                    .addComponent(psw, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addContainerGap(72, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(psw, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(checkboxlil)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLoginIn)
-                    .addComponent(jButton2))
-                .addGap(36, 36, 36))
-        );
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/Gemini_Generated_Image_29jbvg29jbvg29jb.png"))); // NOI18N
+        jPanel13.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-340, -40, -1, -1));
 
-        jPanel13.add(jPanel4);
-
-        getContentPane().add(jPanel13, java.awt.BorderLayout.WEST);
+        getContentPane().add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -303,39 +215,39 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private void btnLoginInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginInActionPerformed
         // TODO add your handling code here:
-String user = txtname.getText().trim();
-    String pass = new String(psw.getPassword()).trim();
+        String user = txtname.getText().trim();
+        String pass = new String(psw.getPassword()).trim();
 
-    // ✅ validate trước
-    if (user.isEmpty() || pass.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Không được để trống!");
-        return;
-    }
-
-    try {
-        // ✅ gọi DB 1 lần duy nhất
-        Account acc = service.login(user, pass);
-
-        // ✅ GÁN SESSION Ở ĐÂY
-        Session.user = acc;
-
-        // ✅ lưu nếu tick
-        if (checkboxlil.isSelected()) {
-            saveAccount(user, pass, String.valueOf(acc.getRole()));
+        // ✅ validate trước
+        if (user.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không được để trống!");
+            return;
         }
 
-        JOptionPane.showMessageDialog(this,
-                "Đăng nhập thành công!\nRole: " + acc.getRole()
-        );
+        try {
+            // ✅ gọi DB 1 lần duy nhất
+            Account acc = service.login(user, pass);
 
-        loginSuccess = true;
-        this.account = acc;
+            // ✅ GÁN SESSION Ở ĐÂY
+            Session.user = acc;
 
-        dispose();
+            // ✅ lưu nếu tick
+            if (checkboxlil.isSelected()) {
+                saveAccount(user, pass, String.valueOf(acc.getRole()));
+            }
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, e.getMessage());
-    }
+            JOptionPane.showMessageDialog(this,
+                    "Đăng nhập thành công!\nRole: " + acc.getRole()
+            );
+
+            loginSuccess = true;
+            this.account = acc;
+
+            dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnLoginInActionPerformed
 
     private void pswActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswActionPerformed
@@ -410,15 +322,12 @@ String user = txtname.getText().trim();
     private javax.swing.JButton btnlil;
     private javax.swing.JCheckBox checkboxlil;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPasswordField psw;
     private javax.swing.JTextField txtname;
     // End of variables declaration//GEN-END:variables
