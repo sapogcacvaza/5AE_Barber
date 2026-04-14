@@ -65,6 +65,10 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
         Object[] data = {obj.getFirstname(), obj.getLastname(), obj.getPhone(), obj.getEmail(), obj.isGender(), obj.getAddress(), obj.getPositionID()};
         XJdbc.executeUpdate(sqlAdd, data);
     }
+        public int addReturnInt(Employee obj) {
+        Object[] data = {obj.getFirstname(), obj.getLastname(), obj.getPhone(), obj.getEmail(), obj.isGender(), obj.getAddress(), obj.getPositionID()};
+        return XJdbc.executeUpdate(sqlAdd, data);
+    }
 
     @Override
     public void delete(Integer id) {
@@ -78,6 +82,6 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     }
 
     public static void main(String[] args) {
-        System.out.println(new EmployeeImpl().getAll());
+        System.out.println(new EmployeeImpl().searchByPhone("0911111111"));
     }
 }

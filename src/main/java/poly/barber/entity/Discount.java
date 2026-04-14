@@ -23,4 +23,11 @@ public class Discount {
     private int status;
     private int maxUsage;
     private int usedCount;
+    
+    @Override
+public String toString() {
+    // Nếu DiscountType = 1 thì hiện %, ngược lại hiện VNĐ
+    String unit = (this.discountType == 1) ? "%" : " VNĐ";
+    return this.discountName + " (-" + this.discountValue + unit + ")";
+}
 }

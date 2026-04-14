@@ -10,7 +10,7 @@ import poly.barber.service.AccountService;
 import poly.barber.util.AuthUtil;
 import poly.barber.util.Session;
 import poly.barber.view.Dialog.ServiceJDialog;
-import poly.barber.view.dialog.AccountView;
+import poly.barber.view.dialog.AccountJDialog;
 import poly.barber.view.dialog.AppointmentJDialog;
 import poly.barber.view.dialog.BarberJDialog;
 import poly.barber.view.dialog.CustomerView;
@@ -375,7 +375,7 @@ private boolean denyIfNoPermission(boolean condition) {
         // TODO add your handling code here:
     if (denyIfNoPermission(AuthUtil.canAccount(Session.user))) return;
 
-    openDialog(new AccountView(this, true));
+    openDialog(new AccountJDialog(this, true));
     }//GEN-LAST:event_btntaikhoanActionPerformed
 
     private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
