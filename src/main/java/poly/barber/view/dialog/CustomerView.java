@@ -674,7 +674,11 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         } else {
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không. Việc này sẽ xóa toàn bộ thông tin liên quan đến khách hàng này.");
             if (confirm == JOptionPane.YES_OPTION) {
+                try{
                 khrepo.delete(Integer.parseInt(txtCustomerID.getText()));
+                }catch(Exception e){
+                    JOptionPane.showMessageDialog(this, "Không thể xóa khách hàng này!");
+                }
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
                 fillToTable(khrepo.getAll());
             } else {

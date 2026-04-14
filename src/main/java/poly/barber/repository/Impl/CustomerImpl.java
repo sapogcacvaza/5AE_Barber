@@ -98,13 +98,6 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
 
     @Override
     public void delete(Integer id) {
-
-        XJdbc.executeUpdate(sqlDeletePayment, id);
-        XJdbc.executeUpdate(sqlDeleteInvoiceDetail, id);
-        XJdbc.executeUpdate(sqlDeleteInvoiceDiscount, id);
-        XJdbc.executeUpdate(sqlDeleteDetail, id);
-        XJdbc.executeUpdate(sqlDeleteInvoice, id);
-        XJdbc.executeUpdate(sqlDeleteAppointment, id);
         XJdbc.executeUpdate(sqlDeleteCustomer, id);
     }
 
