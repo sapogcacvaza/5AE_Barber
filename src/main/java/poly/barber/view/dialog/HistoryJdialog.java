@@ -25,7 +25,6 @@ import poly.barber.repository.Impl.EmployeeImpl;
 import poly.barber.repository.Impl.HistoryRepositoryImpl;
 import poly.barber.repository.Impl.InvoiceRepositoryImpl;
 import poly.barber.repository.Impl.PaymentRepositoryImpl;
-import poly.barber.service.InvoiceService;
 import poly.barber.util.XQuery;
 
 /**
@@ -1139,11 +1138,17 @@ public class HistoryJdialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabInvoiceDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabInvoiceDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabInvoiceDetail)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabInvoiceDetail)
+                .addContainerGap())
         );
 
         pack();

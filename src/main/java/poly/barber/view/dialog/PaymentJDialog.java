@@ -10,7 +10,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Invoice;
-import poly.barber.entity.InvoiceDetail;
 import poly.barber.entity.PaymentMethod;
 import poly.barber.repository.Impl.InvoiceDetailRepository;
 import poly.barber.repository.Impl.InvoiceRepositoryImpl;
