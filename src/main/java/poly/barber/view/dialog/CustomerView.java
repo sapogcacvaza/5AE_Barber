@@ -39,6 +39,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         setLocationRelativeTo(null);
         dtm = (DefaultTableModel) tblKhachHang.getModel();
         fillToTable(khrepo.getAll());
+        btnDelete.setEnabled(false);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -53,10 +55,6 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         btnTimKiem = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
         cboFilter = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
@@ -84,9 +82,13 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Khách hàng");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý khách hàng");
 
+        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,25 +116,13 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 return canEdit [columnIndex];
             }
         });
+        tblKhachHang.setSelectionBackground(new java.awt.Color(0, 153, 255));
         tblKhachHang.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblKhachHangMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tblKhachHang);
-
-        jButton2.setText(">>");
-
-        jButton3.setText("<<");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("1");
-
-        jLabel3.setText("Showing 1 to 5 of 5 entries");
 
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +140,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel4.setText("Lọc giới tính:");
 
+        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,6 +149,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
         });
 
+        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -180,22 +174,14 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(48, 48, 48)
-                                .addComponent(btnUseCustomer)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addGap(17, 17, 17)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnUseCustomer)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(15, 15, 15))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(txtTimKiem)
@@ -228,16 +214,14 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
                     .addComponent(btnDelete)
                     .addComponent(btnUseCustomer))
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Danh sách", jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel8.setText("Thông tin cá nhân");
@@ -250,6 +234,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel12.setText("Giới Tính:");
 
+        btnThem.setBackground(new java.awt.Color(0, 153, 255));
+        btnThem.setForeground(new java.awt.Color(255, 255, 255));
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -377,19 +363,6 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
-        int index = tblKhachHang.getSelectedRow();
-        setForm(index);
-    }//GEN-LAST:event_tblKhachHangMouseClicked
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        deleteCheckedItems();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNamActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoNamActionPerformed
@@ -408,35 +381,54 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
-                khrepo.update(getForm());
-                fillToTable(khrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa khách hàng thành công");
+                int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa khách hàng này không?");
+                if (confirm == JOptionPane.YES_OPTION) {
+                    khrepo.update(getForm());
+                    JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công");
+                    fillToTable(khrepo.getAll());
+
+                }
             }
         }
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cboFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboFilterActionPerformed
+    private void btnUnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnFilterActionPerformed
+        fillToTable(khrepo.getAll());
+    }//GEN-LAST:event_btnUnFilterActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         fillToTable(khrepo.getGender(genderFilter()));
     }//GEN-LAST:event_btnFilterActionPerformed
 
-    private void btnUnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnFilterActionPerformed
-        fillToTable(khrepo.getAll());
-    }//GEN-LAST:event_btnUnFilterActionPerformed
+    private void cboFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboFilterActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        deleteCheckedItems();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
+        int index = tblKhachHang.getSelectedRow();
+        setForm(index);
+
+        if (index != -1) {
+            btnDelete.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblKhachHangMouseClicked
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
 
         List<Customer> lst = khrepo.searchByPhone(txtTimKiem.getText());
+        System.out.println(lst);
         if (!lst.isEmpty()) {
             fillToTable(lst);
             return;
         }
         List<Customer> lst2 = khrepo.searchByName(txtTimKiem.getText());
-        if (!lst.isEmpty()) {
+        System.out.println(lst2);
+        if (!lst2.isEmpty()) {
             fillToTable(lst2);
             return;
         }
@@ -480,16 +472,12 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JButton btnUseCustomer;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboFilter;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -509,6 +497,16 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     // End of variables declaration//GEN-END:variables
 
     public boolean checkNull() {
+        try {
+            int phone = Integer.parseInt(txtPhone.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại");
+            return false;
+        }
+        if (txtPhone.getText().trim().length() < 10 || txtPhone.getText().trim().length() > 10) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền số điện thoại đủ 10 chữ số");
+            return false;
+        }
         if (txtName.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Không được để trống name");
             return false;
@@ -659,6 +657,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không. Việc này sẽ xóa toàn bộ thông tin liên quan đến khách hàng này.");
             if (confirm == JOptionPane.YES_OPTION) {
                 khrepo.delete(Integer.parseInt(txtCustomerID.getText()));
+                JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
                 fillToTable(khrepo.getAll());
             } else {
                 return;
@@ -700,4 +699,5 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     public Customer getSelectedCustomer() {
         return selectedCustomer;
     }
+
 }

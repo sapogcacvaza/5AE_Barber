@@ -37,6 +37,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         dcbmStatusFilter = (DefaultComboBoxModel) cboStatusFilter.getModel();
         fillToTable(brepo.getAll());
         fillToPositionCombobox(bprepo.getAll());
+        btnDelete.setEnabled(false);
     }
 
     /**
@@ -56,10 +57,6 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         jLabel1 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblBarber = new javax.swing.JTable();
@@ -98,6 +95,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý Barber");
 
@@ -107,25 +106,14 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTimKiemActionPerformed(evt);
             }
         });
-
-        jButton2.setText(">>");
-
-        jButton3.setText("<<");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("1");
-
-        jLabel3.setText("Showing 1 to 5 of 5 entries");
 
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -150,6 +138,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                 return canEdit [columnIndex];
             }
         });
+        tblBarber.setSelectionBackground(new java.awt.Color(0, 153, 255));
         tblBarber.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblBarberMouseClicked(evt);
@@ -166,6 +155,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +173,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnFilter1.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter1.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter1.setText("Lọc");
         btnFilter1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +182,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,17 +200,6 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(11, 11, 11)
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDelete)
-                            .addGap(18, 18, 18)
-                            .addComponent(jButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jLabel2)
-                            .addGap(17, 17, 17)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(txtTimKiem)
@@ -234,7 +218,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(btnFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnUnFilter))))
+                            .addComponent(btnUnFilter)))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -254,22 +239,15 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                     .addComponent(btnUnFilter)
                     .addComponent(btnTimKiem))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(309, 309, 309)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton2)
-                            .addComponent(jLabel2)
-                            .addComponent(btnDelete))))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDelete)
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Danh sách", jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         cboPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -286,6 +264,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         rdoTrangThai.setText("Trạng Thái");
 
+        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -433,26 +413,9 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_formMouseClicked
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int a = tblBarber.getSelectedRow();
-        if (a == -1) {
-            return;
-        }
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Barber này không?");
-        if (confirm == JOptionPane.YES_OPTION) {
-            brepo.delete(Integer.parseInt(lblBarberId.getText()));
-            fillToTable(brepo.getAll());
-        }
-
-    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void rdoDiLamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoDiLamActionPerformed
         // TODO add your handling code here:
@@ -469,52 +432,71 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void tblBarberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBarberMouseClicked
-        int index = tblBarber.getSelectedRow();
-        setForm(index);
-    }//GEN-LAST:event_tblBarberMouseClicked
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
-                brepo.update(getForm());
-                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
-                fillToTable(brepo.getAll());
+                int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa Barber này không?");
+                if (confirm == JOptionPane.YES_OPTION) {
+                    brepo.update(getForm());
+                    JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                    fillToTable(brepo.getAll());
+                }
             }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cboIsBusyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboIsBusyActionPerformed
+    private void rdoNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNghiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboIsBusyActionPerformed
-
-    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
-        fillToTable(brepo.isBusyFilter(isBusyFilter()));
-    }//GEN-LAST:event_btnFilterActionPerformed
-
-    private void cboStatusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboStatusFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboStatusFilterActionPerformed
-
-    private void btnFilter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilter1ActionPerformed
-        fillToTable(brepo.statusFilter(statusFilter()));
-    }//GEN-LAST:event_btnFilter1ActionPerformed
+    }//GEN-LAST:event_rdoNghiActionPerformed
 
     private void btnUnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUnFilterActionPerformed
         fillToTable(brepo.getAll());
     }//GEN-LAST:event_btnUnFilterActionPerformed
 
-    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+    private void btnFilter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilter1ActionPerformed
+        fillToTable(brepo.statusFilter(statusFilter()));
+    }//GEN-LAST:event_btnFilter1ActionPerformed
 
-    }//GEN-LAST:event_txtTimKiemActionPerformed
+    private void cboStatusFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboStatusFilterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboStatusFilterActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        fillToTable(brepo.isBusyFilter(isBusyFilter()));
+    }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void cboIsBusyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboIsBusyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboIsBusyActionPerformed
+
+    private void tblBarberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBarberMouseClicked
+        int index = tblBarber.getSelectedRow();
+        setForm(index);
+        if (index != -1) {
+            btnDelete.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblBarberMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int a = tblBarber.getSelectedRow();
+        if (a == -1) {
+            return;
+        }
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Barber này không?");
+        if (confirm == JOptionPane.YES_OPTION) {
+            brepo.delete(Integer.parseInt(lblBarberId.getText()));
+            fillToTable(brepo.getAll());
+            JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
 
-     }//GEN-LAST:event_btnTimKiemActionPerformed
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
-    private void rdoNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNghiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNghiActionPerformed
+    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+
+    }//GEN-LAST:event_txtTimKiemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -579,15 +561,11 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     private javax.swing.JComboBox<String> cboIsBusy;
     private javax.swing.JComboBox<String> cboPosition;
     private javax.swing.JComboBox<String> cboStatusFilter;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
@@ -623,6 +601,16 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     }
 
     public boolean checkNull() {
+        try {
+            int phone = Integer.parseInt(txtPhone.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại");
+            return false;
+        }
+        if (txtPhone.getText().trim().length() < 10 || txtPhone.getText().trim().length() > 10) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền số điện thoại đủ 10 chữ số");
+            return false;
+        }
         if (txtFirstname.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Firstname");
             return false;
