@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import java.util.List;
 
 import java.util.List;
+import poly.barber.entity.Account;
 
 /**
  *
@@ -29,7 +30,8 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     CustomerImpl khrepo = new CustomerImpl();
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
-
+    //Lấy user từ Session (đã gán ở LoginDialog)
+    Account user = poly.barber.util.Session.user;
     private Customer selectedCustomer;
     private List<Customer> list = new ArrayList<>();
 
@@ -40,6 +42,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         dtm = (DefaultTableModel) tblKhachHang.getModel();
         fillToTable(khrepo.getAll());
         btnDelete.setEnabled(false);
+        auth();
 
     }
 
@@ -412,9 +415,11 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         int index = tblKhachHang.getSelectedRow();
         setForm(index);
-
-        if (index != -1) {
+        try{
+        if (index != -1 &&user.getRole()==1) {
             btnDelete.setEnabled(true);
+        }}catch(Exception e){
+            System.out.println(e);
         }
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
@@ -495,6 +500,19 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    public void auth() {
+        if (user != null) {
+            int role = user.getRole();
+
+            if (role == 2) {
+                btnDelete.setEnabled(false);
+            } else if (role == 3) {
+                btnDelete.setEnabled(false);
+                btnUpdate.setEnabled(false);
+            }
+        }
+    }
 
     public boolean checkNull() {
         try {
