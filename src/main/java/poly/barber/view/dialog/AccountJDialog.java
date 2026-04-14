@@ -8,11 +8,13 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.poifs.property.Parent;
 import poly.barber.controller.Impl.AccountController;
 import poly.barber.entity.Account;
 import poly.barber.entity.Employee;
 import poly.barber.repository.Impl.AccountImpl;
 import poly.barber.repository.Impl.EmployeeImpl;
+import poly.barber.util.XDialog;
 
 /**
  *
@@ -20,6 +22,7 @@ import poly.barber.repository.Impl.EmployeeImpl;
  */
 public class AccountJDialog extends javax.swing.JDialog implements AccountController {
 
+    EmployeeView epv = new EmployeeView(new javax.swing.JFrame(), true);
     AccountImpl acrepo = new AccountImpl();
     EmployeeImpl nvrepo = new EmployeeImpl();
     DefaultTableModel dtm = new DefaultTableModel();
@@ -37,8 +40,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         dcbm3 = (DefaultComboBoxModel) cboFilter.getModel();
         fillToTable(acrepo.getAll());
         fillToEmployeeIDCombobox(nvrepo.getAll());
-        fillToRoleCombobox(acrepo.getRoles());
-        fillToFilterRoleCombobox(acrepo.getRoles());
+//        fillToRoleCombobox(acrepo.getRoles());
+//        fillToFilterRoleCombobox(acrepo.getRoles());
     }
 
     /**
@@ -54,11 +57,6 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        btnThem = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblAccount = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
@@ -66,8 +64,6 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         jLabel5 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        cboEmployeeID = new javax.swing.JComboBox<>();
         btnXoa = new javax.swing.JButton();
         btnChinhSua = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
@@ -79,6 +75,14 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         txtTimKiem = new javax.swing.JTextField();
         btnUnFilter = new javax.swing.JButton();
         cboRole = new javax.swing.JComboBox<>();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        lblPhone = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lblName = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        cboEmployeeID = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Account");
@@ -88,30 +92,10 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý tài khoản");
-
-        jButton2.setText(">>");
-
-        jButton3.setText("<<");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("1");
-
-        jLabel3.setText("Showing 1 to 5 of 5 entries");
-
-        btnThem.setBackground(new java.awt.Color(0, 153, 255));
-        btnThem.setForeground(new java.awt.Color(255, 255, 255));
-        btnThem.setText("Thêm");
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
 
         tblAccount.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -130,6 +114,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
         tblAccount.setToolTipText("");
+        tblAccount.setSelectionBackground(new java.awt.Color(0, 153, 255));
         tblAccount.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblAccountMouseClicked(evt);
@@ -142,10 +127,6 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         jLabel5.setText("Password:");
 
         jLabel6.setText("Quyền:");
-
-        jLabel7.setText("ID Nhân Viên:");
-
-        cboEmployeeID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnXoa.setBackground(new java.awt.Color(0, 153, 255));
         btnXoa.setForeground(new java.awt.Color(255, 255, 255));
@@ -174,7 +155,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
-        cboFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Quản Lý", "Nhân Viên" }));
+        cboFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nhân Viên", "Quản Lý", "Admin" }));
         cboFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboFilterActionPerformed(evt);
@@ -183,14 +164,12 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         jLabel9.setText("Lọc quyền:");
 
-        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.setText("Tìm User");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTimKiemActionPerformed(evt);
             }
         });
-
-        txtTimKiem.setText("Tìm theo tên...");
 
         btnUnFilter.setText("Bỏ lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -199,7 +178,69 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
-        cboRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nhân Viên", "Quản Lý", "Admin" }));
+        cboRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboRoleActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông tin người sử dụng:"));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("Số Điện Thoại:");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel11.setText("Họ Và Tên:");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addComponent(lblName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblPhone)
+                        .addGap(19, 19, 19)))
+                .addGap(94, 94, 94))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblName)
+                    .addComponent(lblPhone))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
+        btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Chọn Người Sử Dụng:");
+
+        cboEmployeeID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboEmployeeIDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -208,49 +249,39 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtTimKiem)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cboFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnUnFilter))
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4)
-                                    .addComponent(txtUsername)
-                                    .addComponent(jLabel5)
-                                    .addComponent(txtPassword)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(cboEmployeeID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnChinhSua, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8)
-                                    .addComponent(txtAccountID)
-                                    .addComponent(cboRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(0, 18, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnTimKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cboFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnUnFilter))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4)
+                            .addComponent(txtUsername)
+                            .addComponent(jLabel5)
+                            .addComponent(txtPassword)
+                            .addComponent(jLabel6)
+                            .addComponent(btnChinhSua, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                            .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtAccountID)
+                            .addComponent(cboRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                            .addComponent(jLabel7)
+                            .addComponent(cboEmployeeID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,7 +297,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
                     .addComponent(btnFilter)
                     .addComponent(btnUnFilter))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -286,24 +318,20 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cboEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                        .addComponent(btnThem)
+                        .addComponent(cboEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnChinhSua)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChinhSua))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addContainerGap(9, Short.MAX_VALUE))
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(29, 29, 29))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnChinhSua, btnThem, btnXoa});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnChinhSua, btnXoa});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -332,37 +360,27 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         setForm(index);
     }//GEN-LAST:event_tblAccountMouseClicked
 
-    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        if (checkNull()) {
-            if (checkDuplicateInsert()) {
-                acrepo.add(getForm());
-                fillToTable(acrepo.getAll());
-                fillToEmployeeIDCombobox(nvrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã thêm Account thành công!");
-            }
-        }
-
-
-    }//GEN-LAST:event_btnThemActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        acrepo.delete(Integer.parseInt(txtAccountID.getText()));
-        fillToTable(acrepo.getAll());
-        fillToEmployeeIDCombobox(nvrepo.getAll());
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Account này không?");
+        if (confirm == JOptionPane.YES_OPTION) {
+            acrepo.delete(Integer.parseInt(txtAccountID.getText()));
+            fillToTable(acrepo.getAll());
+            fillToEmployeeIDCombobox(nvrepo.getAll());
+            JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnChinhSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChinhSuaActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
-                acrepo.update(getForm());
-                fillToTable(acrepo.getAll());
-                fillToEmployeeIDCombobox(nvrepo.getAll());
-                System.out.println(getForm());
-                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn sửa thông tin Account này không?");
+                if (confirm == JOptionPane.YES_OPTION) {
+                    acrepo.update(getForm());
+                    fillToTable(acrepo.getAll());
+                    fillToEmployeeIDCombobox(nvrepo.getAll());
+                    System.out.println(getForm());
+                    JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                }
             }
         }
 
@@ -391,6 +409,26 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         fillToTable(acrepo.getAll());
 
     }//GEN-LAST:event_btnTimKiemActionPerformed
+
+    private void cboRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboRoleActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if (checkNull()) {
+            if (checkDuplicateInsert()) {
+                acrepo.add(getForm());
+                fillToTable(acrepo.getAll());
+                fillToEmployeeIDCombobox(nvrepo.getAll());
+                System.out.println(getForm());
+                JOptionPane.showMessageDialog(this, "Đã thêm thành công!");
+            }
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void cboEmployeeIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEmployeeIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboEmployeeIDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -442,9 +480,9 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnChinhSua;
     private javax.swing.JButton btnFilter;
-    private javax.swing.JButton btnThem;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnXoa;
@@ -453,10 +491,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     private javax.swing.JComboBox<String> cboEmployeeID;
     private javax.swing.JComboBox<String> cboFilter;
     private javax.swing.JComboBox<String> cboRole;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -465,7 +501,10 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JLabel lblPhone;
     private javax.swing.JTable tblAccount;
     private javax.swing.JTextField txtAccountID;
     private javax.swing.JTextField txtPassword;
@@ -501,13 +540,15 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
     public int roleFilter() {
         if (cboFilter.getSelectedItem().equals("Nhân Viên")) {
-            return 1;
+            return 3;
         }
         if (cboFilter.getSelectedItem().equals("Quản Lý")) {
             return 2;
-        }if (cboFilter.getSelectedItem().equals("Admin")) {
-            
-        }return 3;
+        }
+        if (cboFilter.getSelectedItem().equals("Admin")) {
+
+        }
+        return 1;
     }
 
     public boolean checkNull() {
@@ -539,7 +580,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         cboRole.setSelectedItem(tblAccount.getValueAt(index, 3));
         Employee nv = nvrepo.getOne((Integer) tblAccount.getValueAt(index, 4));
         cboEmployeeID.setSelectedItem(nv.getEmail());
-
+        lblName.setText(nv.getLastname() + " " + nv.getFirstname());
+        lblPhone.setText(nv.getPhone());
     }
 
     @Override
@@ -549,11 +591,11 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         ac.setUsername(txtUsername.getText());
         ac.setPassword(txtPassword.getText());
         if (cboRole.getSelectedItem() == "Nhân Viên") {
-            ac.setRole(1);
+            ac.setRole(3);
         } else if (cboRole.getSelectedItem() == "Quản Lý") {
             ac.setRole(2);
         } else {
-            ac.setRole(3);
+            ac.setRole(1);
         }
         ac.setAccountID(Integer.parseInt(txtAccountID.getText()));
         Employee nv = nvrepo.getAll().get(cboEmployeeID.getSelectedIndex());
@@ -566,7 +608,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     public void fillToTable(List<Account> lst) {
         dtm.setRowCount(0);
         for (Account ac : lst) {
-            dtm.addRow(new Object[]{ac.getAccountID(), ac.getUsername(), ac.getPassword(), ac.getRole() == 1 ? "Nhân Viên" : ac.getRole() == 2 ? "Quản Lý" : "Admin", ac.getEmployeeID()});
+            dtm.addRow(new Object[]{ac.getAccountID(), ac.getUsername(), ac.getPassword(), ac.getRole() == 1 ? "Admin" : ac.getRole() == 2 ? "Quản Lý" : "Nhân Viên", ac.getEmployeeID()});
         }
     }
 
@@ -632,30 +674,29 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         }
     }
 
-    public void fillToFilterRoleCombobox(List<Integer> lst) {
-        dcbm3.removeAllElements();
-        for (Integer i : lst) {
-            if (i == 1) {
-                dcbm3.addElement("Nhân Viên");
-            } else if (i == 2) {
-                dcbm3.addElement("Quản Lý");
-            } else if(i==3){
-                dcbm3.addElement("Admin");
-            }
-        }
-
-    }    public void fillToRoleCombobox(List<Integer> lst) {
-        dcbm.removeAllElements();
-        for (Integer i : lst) {
-            if (i == 1) {
-                dcbm.addElement("Nhân Viên");
-            } else if (i == 2) {
-                dcbm.addElement("Quản Lý");
-            } else if(i==3){
-                dcbm.addElement("Admin");
-            }
-        }
-
-    }
-
+//    public void fillToFilterRoleCombobox(List<Integer> lst) {
+//        dcbm3.removeAllElements();
+//        for (Integer i : lst) {
+//            if (i == 3) {
+//                dcbm3.addElement("Nhân Viên");
+//            } else if (i == 2) {
+//                dcbm3.addElement("Quản Lý");
+//            } else if(i==1){
+//                dcbm3.addElement("Admin");
+//            }
+//        }
+//
+//    }    public void fillToRoleCombobox(List<Integer> lst) {
+//        dcbm.removeAllElements();
+//        for (Integer i : lst) {
+//            if (i == 3) {
+//                dcbm.addElement("Nhân Viên");
+//            } else if (i == 2) {
+//                dcbm.addElement("Quản Lý");
+//            } else if(i==1){
+//                dcbm.addElement("Admin");
+//            }
+//        }
+//
+//    }
 }

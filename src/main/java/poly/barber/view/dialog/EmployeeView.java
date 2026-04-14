@@ -4,15 +4,19 @@
  */
 package poly.barber.view.dialog;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.controller.Impl.EmployeeController;
+import poly.barber.entity.Account;
 import poly.barber.entity.Employee;
 import poly.barber.entity.EmployeePosition;
+import poly.barber.repository.Impl.AccountImpl;
 import poly.barber.repository.Impl.EmployeeImpl;
 import poly.barber.repository.Impl.EmployeePositionImpl;
+import poly.barber.util.XDialog;
 
 /**
  *
@@ -22,6 +26,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
     EmployeeImpl nvrepo = new EmployeeImpl();
     EmployeePositionImpl eprepo = new EmployeePositionImpl();
+    AccountImpl acrepo = new AccountImpl();
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbm2 = new DefaultComboBoxModel();
@@ -36,6 +41,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         fillToTable(nvrepo.getAll());
         fillToCombobox(eprepo.getAll());
         fillToPositionFilterCombobox(eprepo.getAll());
+        btnDelete.setEnabled(false);
     }
 
     /**
@@ -53,10 +59,6 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         jLabel1 = new javax.swing.JLabel();
         txtTimKiem = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         btnDelete = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
@@ -97,6 +99,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý nhân viên");
 
@@ -106,25 +112,14 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTimKiemActionPerformed(evt);
             }
         });
-
-        jButton2.setText(">>");
-
-        jButton3.setText("<<");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("1");
-
-        jLabel3.setText("Showing 1 to 5 of 5 entries");
 
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -169,6 +164,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +182,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnFilter1.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter1.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter1.setText("Lọc");
         btnFilter1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,6 +191,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,18 +209,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addGap(17, 17, 17)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addComponent(jLabel1))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(txtTimKiem)
@@ -238,7 +228,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUnFilter)))
+                        .addComponent(btnUnFilter))
+                    .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -258,22 +249,15 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                     .addComponent(btnUnFilter)
                     .addComponent(btnTimKiem))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(309, 309, 309)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton2)
-                            .addComponent(jLabel2)
-                            .addComponent(btnDelete))))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDelete)
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Danh sách", jPanel1);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         cboPosition.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -298,6 +282,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel13.setText("Địa Chỉ:");
 
+        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -442,10 +428,6 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_formMouseClicked
@@ -461,9 +443,20 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         if (checkNull()) {
             if (checkDuplicateInsert()) {
-                nvrepo.add(getForm());
-                fillToTable(nvrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã thêm nhân viên thành công!");
+                int check = nvrepo.addReturnInt(getForm());
+                System.out.println(check);
+                if (check > 0) {
+                    Employee emp = nvrepo.searchByPhone(txtPhone.getText()).get(0);
+                    Account ac = new Account();
+                    ac.setEmployeeID(emp.getEmployeeID());
+                    ac.setPassword("123");
+                    ac.setRole(3);
+                    ac.setUsername(emp.getPhone());
+                    acrepo.add(ac);
+                    fillToTable(nvrepo.getAll());
+                    JOptionPane.showMessageDialog(this, "Đã thêm nhân viên thành công!");
+                }
+
             }
         }
 
@@ -472,14 +465,22 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
         int index = tblNhanVien.getSelectedRow();
         setForm(index);
+
+        if (index != -1) {
+            btnDelete.setEnabled(true);
+        }
     }//GEN-LAST:event_tblNhanVienMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
-                nvrepo.update(getForm());
-                fillToTable(nvrepo.getAll());
-                JOptionPane.showMessageDialog(this, "Đã chỉnh sửa nhân viên thành công!");
+                int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn chỉnh sửa nhân viên này không?");
+                if (confirm == JOptionPane.YES_OPTION) {
+                    nvrepo.update(getForm());
+                    JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                    fillToTable(nvrepo.getAll());
+
+                }
             }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -593,8 +594,6 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private javax.swing.JComboBox<String> cboFilter;
     private javax.swing.JComboBox<String> cboPosition;
     private javax.swing.JComboBox<String> cboPositionFilter;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -602,8 +601,6 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
@@ -640,10 +637,21 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     public boolean checkNull() {
+        try {
+            int phone = Integer.parseInt(txtPhone.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số điện thoại");
+            return false;
+        }
+        if (txtPhone.getText().trim().length() < 10 || txtPhone.getText().trim().length() > 10) {
+            JOptionPane.showMessageDialog(this, "Vui lòng điền số điện thoại đủ 10 chữ số");
+            return false;
+        }
         if (txtFirstname.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Firstname");
             return false;
         }
+
         if (txtLastname.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng không để trống Lastname");
             return false;
@@ -790,8 +798,17 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     @Override
     public void deleteCheckedItems() {
         Employee nv = nvrepo.getAll().get(tblNhanVien.getSelectedRow());
-        nvrepo.delete(nv.getEmployeeID());
-        fillToTable(nvrepo.getAll());
+        try {
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên này không?");
+            if (confirm == JOptionPane.YES_OPTION) {
+                nvrepo.delete(nv.getEmployeeID());
+                JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+                fillToTable(nvrepo.getAll());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Không thể xóa nhân viên này!");
+        }
+
     }
 
     @Override
@@ -819,4 +836,5 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     ) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
 }
