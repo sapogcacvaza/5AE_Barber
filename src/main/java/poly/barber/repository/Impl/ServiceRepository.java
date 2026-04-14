@@ -2,16 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package poly.barber.repository;
+package poly.barber.repository.Impl;
 
 import java.util.List;
 import poly.barber.entity.Service;
+import poly.barber.repository.ICommonRepository;
 import poly.barber.util.XQuery;
+
 /**
  *
  * @author DELL
  */
-public class ServiceRepository implements ICommonRepository<Service, Integer>{
+public class ServiceRepository implements ICommonRepository<Service, Integer> {
+
     private final String SELECT_ALL = "SELECT ServiceID, ServiceName, Price, Duration, ServiceCategoryID FROM Service";
     private final String SELECT_BY_ID = "SELECT * FROM Service WHERE ServiceID = ?";
     private final String INSERT_SQL = "INSERT INTO Service (ServiceName, Price, Duration, ServiceCategoryID) VALUES (?, ?, ?, ?)";
@@ -30,20 +33,20 @@ public class ServiceRepository implements ICommonRepository<Service, Integer>{
 
     @Override
     public void add(Service obj) {
-        XQuery.update(INSERT_SQL, 
-                obj.getServiceName(), 
-                obj.getPrice(), 
-                obj.getDuration(), 
+        XQuery.update(INSERT_SQL,
+                obj.getServiceName(),
+                obj.getPrice(),
+                obj.getDuration(),
                 obj.getServiceCategoryID());
     }
 
     @Override
     public void update(Service obj) {
-        XQuery.update(UPDATE_SQL, 
-                obj.getServiceName(), 
-                obj.getPrice(), 
-                obj.getDuration(), 
-                obj.getServiceCategoryID(), 
+        XQuery.update(UPDATE_SQL,
+                obj.getServiceName(),
+                obj.getPrice(),
+                obj.getDuration(),
+                obj.getServiceCategoryID(),
                 obj.getServiceID());
     }
 
@@ -62,4 +65,3 @@ public class ServiceRepository implements ICommonRepository<Service, Integer>{
         return XQuery.getSingleBean(Service.class, sql, ten.trim());
     }
 }
-

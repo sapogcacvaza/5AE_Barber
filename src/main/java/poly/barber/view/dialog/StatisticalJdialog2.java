@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -238,6 +239,11 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
         jLabel8.setText("Doanh Thu 7 Ngày Vừa Qua");
 
         txtDoanhThuThang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtDoanhThuThang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDoanhThuThangActionPerformed(evt);
+            }
+        });
 
         txtDoanhThuTuan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
@@ -545,7 +551,7 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Tên dịch vụ", "Chức Vụ", "Số lượt sử dụng", "Tổng doanh thu ", "Trạng thái"
+                "Tên Thợ", "Chuyên", "Số lượt sử dụng", "Tổng doanh thu ", "Trạng thái"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -667,6 +673,10 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
         }
         exportToExcel(tblNhanVien, "Thong_Ke_Nhan_Vien");
     }//GEN-LAST:event_btnExportExcel2ActionPerformed
+
+    private void txtDoanhThuThangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDoanhThuThangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDoanhThuThangActionPerformed
 
     /**
      * @param args the command line arguments
@@ -838,21 +848,15 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
     }
 
     private void displayChartInPanel(javax.swing.JPanel panel, JFreeChart chart) {
-        // Khởi tạo ChartPanel với các tham số khóa tương tác:
-        // ChartPanel(chart, properties, save, print, zoom, tooltips)
-        ChartPanel chartPanel = new ChartPanel(chart, false, false, false, false, false);
-
-        // Tắt Menu chuột phải (Popup Menu)
-        chartPanel.setPopupMenu(null);
-
-        // Tắt khả năng Zoom (phóng to/thu nhỏ bằng chuột)
-        chartPanel.setDomainZoomable(false);
-        chartPanel.setRangeZoomable(false);
-
-        panel.removeAll();
+        panel.removeAll(); // Xóa sạch biểu đồ cũ
+        ChartPanel chartPanel = new ChartPanel(chart);
         panel.setLayout(new java.awt.BorderLayout());
         panel.add(chartPanel, java.awt.BorderLayout.CENTER);
-        panel.validate();
+
+        // Ba dòng lệnh "thần thánh" để hiện ngay lập tức:
+        panel.revalidate();
+        panel.repaint();
+        panel.getParent().revalidate(); // Ép cả Panel cha (jPanel4) cập nhật
     }
 
     private void resetFrom() {
@@ -868,69 +872,91 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
     }
 
     private void searchByDate() {
-        java.util.Date tuNgay = jdTuNgay.getDate();
-        java.util.Date denNgay = jdDenNgay.getDate();
+        // 1. Ép JDateChooser chốt dữ liệu
+        jdTuNgay.cleanup();
+        jdDenNgay.cleanup();
 
-        List<Object[]> data = statRepo.getStatisticalByDate(tuNgay, denNgay);
+        java.util.Date tuNgayRaw = jdTuNgay.getDate();
+        java.util.Date denNgayRaw = jdDenNgay.getDate();
 
-        if (data.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Không có dữ liệu trong khoảng thời gian này.");
+        if (tuNgayRaw == null || denNgayRaw == null) {
             return;
         }
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat chartFormat = new SimpleDateFormat("dd/MM");
+        // 2. Chuẩn hóa thời gian (00:00:00 - 23:59:59)
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTime(tuNgayRaw);
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+        cal.set(java.util.Calendar.MINUTE, 0);
+        cal.set(java.util.Calendar.SECOND, 0);
+        cal.set(java.util.Calendar.MILLISECOND, 0);
+        java.util.Date tuNgay = cal.getTime();
 
-        DefaultTableModel model = (DefaultTableModel) tblTongQuan.getModel();
-        model.setRowCount(0);
-        DefaultCategoryDataset revenueDataset = new DefaultCategoryDataset();
-        DefaultCategoryDataset customerDataset = new DefaultCategoryDataset();
+        cal.setTime(denNgayRaw);
+        cal.set(java.util.Calendar.HOUR_OF_DAY, 23);
+        cal.set(java.util.Calendar.MINUTE, 59);
+        cal.set(java.util.Calendar.SECOND, 59);
+        cal.set(java.util.Calendar.MILLISECOND, 999);
+        java.util.Date denNgay = cal.getTime();
 
-        for (Object[] row : data) {
-            model.addRow(row);
+        // 3. LẤY DỮ LIỆU TỪ REPOSITORY
+        List<Object[]> data = statRepo.getStatisticalByDate(tuNgay, denNgay);
 
-            String fullDate = row[0].toString();
-            String shortDate = fullDate;
-            try {
-                shortDate = chartFormat.format(inputFormat.parse(fullDate));
-            } catch (Exception e) {
-                if (fullDate.length() >= 5) {
-                    shortDate = fullDate.substring(0, 5);
-                }
+        // 4. DÙNG SWINGUTILITIES ĐỂ ÉP VẼ UI NGAY LẬP TỨC
+        SwingUtilities.invokeLater(() -> {
+            DefaultTableModel model = (DefaultTableModel) tblTongQuan.getModel();
+            model.setRowCount(0); // Xóa bảng cũ
+
+            if (data == null || data.isEmpty()) {
+                jpnChartLeft.removeAll();
+                jpnChartRight.removeAll();
+                jpnChartLeft.repaint();
+                jpnChartRight.repaint();
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu trong khoảng thời gian này.");
+                return;
             }
 
-            double khach = Double.parseDouble(row[1].toString());
-            double doanhThu = Double.parseDouble(row[2].toString());
+            SimpleDateFormat chartFormat = new SimpleDateFormat("dd/MM");
+            DefaultCategoryDataset revenueDataset = new DefaultCategoryDataset();
+            DefaultCategoryDataset customerDataset = new DefaultCategoryDataset();
 
-            revenueDataset.addValue(doanhThu, "Doanh thu", shortDate);
-            customerDataset.addValue(khach, "Lượng khách", shortDate);
-        }
+            for (Object[] row : data) {
+                model.addRow(row); // Đổ vào bảng
 
-        // 2. Vẽ lại biểu đồ
-        JFreeChart barChart = ChartFactory.createBarChart("DOANH THU", "Ngày", "VNĐ", revenueDataset);
-        JFreeChart customerChart = ChartFactory.createBarChart("LƯỢNG KHÁCH", "Ngày", "Số lượng", customerDataset);
+                // Xử lý ngày hiển thị trên biểu đồ
+                String shortDate = (row[0] instanceof java.util.Date)
+                        ? chartFormat.format((java.util.Date) row[0])
+                        : row[0].toString();
 
-        // --- PHẦN BỔ SUNG: HIỂN THỊ SỐ TRÊN CỘT DOANH THU ---
-        org.jfree.chart.plot.CategoryPlot plotRev = barChart.getCategoryPlot();
-        org.jfree.chart.renderer.category.BarRenderer renRev = (org.jfree.chart.renderer.category.BarRenderer) plotRev.getRenderer();
-        renRev.setDefaultItemLabelsVisible(true);
-        renRev.setDefaultItemLabelGenerator(new org.jfree.chart.labels.StandardCategoryItemLabelGenerator(
-                "{2}", new java.text.DecimalFormat("#,###")));
-        plotRev.getRangeAxis().setUpperMargin(0.2); // Nới rộng đỉnh biểu đồ 20%
+                double khach = Double.parseDouble(row[1].toString());
+                double doanhThu = Double.parseDouble(row[2].toString());
 
-        // --- PHẦN BỔ SUNG: HIỂN THỊ SỐ TRÊN CỘT LƯỢNG KHÁCH ---
-        org.jfree.chart.plot.CategoryPlot plotCust = customerChart.getCategoryPlot();
-        org.jfree.chart.renderer.category.BarRenderer renCust = (org.jfree.chart.renderer.category.BarRenderer) plotCust.getRenderer();
-        renCust.setDefaultItemLabelsVisible(true);
-        renCust.setDefaultItemLabelGenerator(new org.jfree.chart.labels.StandardCategoryItemLabelGenerator(
-                "{2}", new java.text.DecimalFormat("0")));
-        plotCust.getRangeAxis().setUpperMargin(0.2); // Nới rộng đỉnh biểu đồ 20%
+                revenueDataset.addValue(doanhThu, "Doanh thu", shortDate);
+                customerDataset.addValue(khach, "Lượng khách", shortDate);
+            }
 
-        formatChart(barChart, new Color(70, 130, 180));
-        formatChart(customerChart, new Color(46, 204, 113));
+            // Vẽ biểu đồ mới
+            JFreeChart barChart = ChartFactory.createBarChart("DOANH THU", "Ngày", "VNĐ", revenueDataset);
+            JFreeChart customerChart = ChartFactory.createBarChart("LƯỢNG KHÁCH", "Ngày", "Số lượng", customerDataset);
 
-        displayChartInPanel(jpnChartLeft, barChart);
-        displayChartInPanel(jpnChartRight, customerChart);
+            // Định dạng biểu đồ (Gọi hàm format của bạn)
+            formatChart(barChart, new Color(70, 130, 180));
+            formatChart(customerChart, new Color(46, 204, 113));
+
+            // Hiển thị lên Panel
+            displayChartInPanel(jpnChartLeft, barChart);
+            displayChartInPanel(jpnChartRight, customerChart);
+
+            // LỆNH QUAN TRỌNG: Ép toàn bộ các cấp giao diện cập nhật
+            tblTongQuan.revalidate();
+            tblTongQuan.repaint();
+            jTabbedNhanVien.revalidate();
+            jTabbedNhanVien.repaint();
+
+            // Cuối cùng, ép chính nó (Dialog/Frame) vẽ lại lần cuối
+            this.getContentPane().revalidate();
+            this.getContentPane().repaint();
+        });
     }
 
     private void displaySummary() {
@@ -953,6 +979,9 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
     }
 
     private boolean isValidDate() {
+        jdTuNgay.cleanup();
+        jdDenNgay.cleanup();
+
         java.util.Date tuNgay = jdTuNgay.getDate();
         java.util.Date denNgay = jdDenNgay.getDate();
         java.util.Date hienTai = new java.util.Date(); // Ngày hôm nay
@@ -1236,9 +1265,9 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             // Hiển thị lên Panel
             displayChartInPanel(jpnChartLeft2, pieChart);
             displayChartInPanel(jpnChartRight2, barChart);
-            
+
             jScrollPane3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu nhân viên!");
