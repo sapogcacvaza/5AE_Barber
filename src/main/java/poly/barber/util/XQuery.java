@@ -126,9 +126,6 @@ public static void update(String sql, Object... values) {
     } catch (Exception ex) {
         throw new RuntimeException("Lỗi thực thi SQL: " + ex.getMessage(), ex);
     }
-
-
-   
-
+    
 }
 }
