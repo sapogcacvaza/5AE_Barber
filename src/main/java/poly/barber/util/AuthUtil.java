@@ -37,58 +37,58 @@ public class AuthUtil {
 
     // ================= PERMISSION (THEO ĐỀ BÀI) =================
 
-    // 👤 Khách hàng
-    public static boolean canCustomer(Account u) {
-        return isLogin(u);
-    }
+   // 👤 Khách hàng (chỉ admin + manager xem)
+public static boolean canCustomer(Account u) {
+    return isAdminOrManager(u);
+}
 
-    // 📅 ĐẶT LỊCH: ADMIN + MANAGER + STAFF
-    public static boolean canAppointment(Account u) {
-        return isStaffOrAbove(u);
-    }
+// 📅 ĐẶT LỊCH (cả 3 role)
+public static boolean canAppointment(Account u) {
+    return isStaffOrAbove(u);
+}
 
-    // 💰 HÓA ĐƠN: ADMIN + MANAGER + STAFF
-    public static boolean canInvoice(Account u) {
-        return isStaffOrAbove(u);
-    }
+// 💰 HÓA ĐƠN (chỉ admin + manager)
+public static boolean canInvoice(Account u) {
+    return isAdminOrManager(u);
+}
 
-    // 💳 THANH TOÁN: ADMIN + MANAGER
-    public static boolean canPayment(Account u) {
-        return isAdminOrManager(u);
-    }
+// 💳 THANH TOÁN (admin + manager)
+public static boolean canPayment(Account u) {
+    return isAdminOrManager(u);
+}
 
-    // 💈 BARBER: ADMIN + MANAGER
-    public static boolean canBarber(Account u) {
-        return isAdminOrManager(u);
-    }
+// 💈 BARBER (admin + manager)
+public static boolean canBarber(Account u) {
+    return isAdminOrManager(u);
+}
 
-    // 👨‍💼 NHÂN VIÊN: ADMIN + MANAGER
-    public static boolean canEmployee(Account u) {
-        return isAdminOrManager(u);
-    }
+// 👨‍💼 NHÂN VIÊN (admin ONLY)
+public static boolean canEmployee(Account u) {
+    return isAdmin(u);
+}
 
-    // 💇‍♂️ DỊCH VỤ: ADMIN ONLY
-    public static boolean canService(Account u) {
-        return isAdmin(u);
-    }
+// 💇‍♂️ DỊCH VỤ (admin ONLY)
+public static boolean canService(Account u) {
+    return isAdmin(u);
+}
 
-    // 🎟 GIẢM GIÁ: ADMIN ONLY
-    public static boolean canDiscount(Account u) {
-        return isAdmin(u);
-    }
+// 🎟 GIẢM GIÁ (admin ONLY)
+public static boolean canDiscount(Account u) {
+    return isAdmin(u);
+}
 
-    // 📊 THỐNG KÊ: ADMIN ONLY
-    public static boolean canStatistic(Account u) {
-        return isAdmin(u);
-    }
+// 📊 THỐNG KÊ (admin ONLY)
+public static boolean canStatistic(Account u) {
+    return isAdmin(u);
+}
 
-    // 👤 TÀI KHOẢN: ADMIN ONLY
-    public static boolean canAccount(Account u) {
-        return isAdmin(u);
-    }
+// 👤 TÀI KHOẢN (admin ONLY)
+public static boolean canAccount(Account u) {
+    return isAdmin(u);
+}
 
-    // 📜 LỊCH SỬ: ADMIN + MANAGER + STAFF
-    public static boolean canHistory(Account u) {
-        return isStaffOrAbove(u);
-    }
+// 📜 LỊCH SỬ (admin + manager)
+public static boolean canHistory(Account u) {
+    return isAdminOrManager(u);
+}
 }
