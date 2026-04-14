@@ -86,31 +86,31 @@ public class DiscountRepository {
     }
 
     // 🔥 thêm
-public void insert(Discount d) {
-    String sql = """
+    public void insert(Discount d) {
+        String sql = """
         INSERT INTO Discount
         (DiscountCode, DiscountName, DiscountType, DiscountValue, Description,
          StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
         VALUES (?,?,?,?,?,?,?,?,?,?)
     """;
 
-    XJdbc.executeUpdate(sql,
-            d.getDiscountCode(),   // ✅ đúng vị trí
-            d.getDiscountName(),
-            d.getDiscountType(),
-            d.getDiscountValue(),
-            d.getDescription(),
-            d.getStartDateTime(),
-            d.getEndDateTime(),
-            d.getStatus(),
-            d.getMaxUsage(),
-            d.getUsedCount()
-    );
-}
+        XJdbc.executeUpdate(sql,
+                d.getDiscountCode(), // ✅ đúng vị trí
+                d.getDiscountName(),
+                d.getDiscountType(),
+                d.getDiscountValue(),
+                d.getDescription(),
+                d.getStartDateTime(),
+                d.getEndDateTime(),
+                d.getStatus(),
+                d.getMaxUsage(),
+                d.getUsedCount()
+        );
+    }
 
     // 🔥 update
-public void update(Discount d) {
-    String sql = """
+    public void update(Discount d) {
+        String sql = """
         UPDATE Discount SET
         DiscountCode=?,
         DiscountName=?,
@@ -125,36 +125,55 @@ public void update(Discount d) {
         WHERE DiscountID=?
     """;
 
-    XJdbc.executeUpdate(sql,
-            d.getDiscountCode(),
-            d.getDiscountName(),
-            d.getDiscountType(),
-            d.getDiscountValue(),
-            d.getDescription(),
-            d.getStartDateTime(),
-            d.getEndDateTime(),
-            d.getStatus(),
-            d.getMaxUsage(),
-            d.getUsedCount(),
-            d.getDiscountID()
-    );
-}
+        XJdbc.executeUpdate(sql,
+                d.getDiscountCode(),
+                d.getDiscountName(),
+                d.getDiscountType(),
+                d.getDiscountValue(),
+                d.getDescription(),
+                d.getStartDateTime(),
+                d.getEndDateTime(),
+                d.getStatus(),
+                d.getMaxUsage(),
+                d.getUsedCount(),
+                d.getDiscountID()
+        );
+    }
 
     // 🔥 xoá mềm
     public void updateStatus(int id, int status) {
         String sql = "UPDATE Discount SET Status=? WHERE DiscountID=?";
         XJdbc.executeUpdate(sql, status, id);
     }
-public boolean existsCode(String code, int id) {
-    String sql = "SELECT COUNT(*) FROM Discount WHERE DiscountCode = ? AND DiscountID <> ?";
-    try {
-        ResultSet rs = XJdbc.executeQuery(sql, code, id);
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
+
+    public boolean existsCode(String code, int id) {
+        String sql = "SELECT COUNT(*) FROM Discount WHERE DiscountCode = ? AND DiscountID <> ?";
+        try {
+            ResultSet rs = XJdbc.executeQuery(sql, code, id);
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-    } catch (Exception e) {
-        throw new RuntimeException(e);
+        return false;
     }
-    return false;
-}
+
+// Lấy thông tin khuyến mãi đã áp dụng cho một hóa đơn cụ thể
+    public Discount findByInvoiceID(int invoiceID) {
+        String sql = """
+        SELECT d.* FROM Discount d
+        JOIN InvoiceDiscount id ON d.DiscountID = id.DiscountID
+        WHERE id.InvoiceID = ?
+    """;
+        try {
+            ResultSet rs = XJdbc.executeQuery(sql, invoiceID);
+            if (rs.next()) {
+                return mapRow(rs);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
 }
