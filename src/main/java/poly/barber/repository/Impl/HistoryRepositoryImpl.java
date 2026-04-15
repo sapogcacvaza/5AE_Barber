@@ -110,6 +110,7 @@ public class HistoryRepositoryImpl {
 
     public List<Object[]> getAppointmentHistory() {
         String sql = "SELECT \n"
+                + "    a.AppointmentID, \n" // Thêm ID để xử lý logic ngầm
                 + "    a.AppointmentCode, \n"
                 + "    c.Fullname, \n"
                 + "    c.Phone, \n"
@@ -131,21 +132,70 @@ public class HistoryRepositoryImpl {
     }
 
     public Object[] getPaymentDetailByInvoiceID(int invoiceID) {
-        String sql = """
-        SELECT 
-            p.CreatedDateTime, 
-            i.TotalDiscount, 
-            i.TotalAmount, 
-            pm.PaymentName, -- Đã sửa theo ảnh database của bạn
-            (SELECT SUM(id.Quantity * id.Price) FROM InvoiceDetail id WHERE id.InvoiceID = i.InvoiceID) as TotalService
-        FROM Invoice i
-        LEFT JOIN Payment p ON i.InvoiceID = p.InvoiceID
-        LEFT JOIN PaymentMethod pm ON p.PaymentMethodID = pm.PaymentMethodID
-        WHERE i.InvoiceID = ?
-    """;
+        String sql = "SELECT "
+                + "    i.CheckOutDateTime, " // index 0
+                + "    i.TotalDiscount, " // index 1
+                + "    i.TotalAmount, " // index 2
+                + "    pm.PaymentName, " // index 3
+                + "    (SELECT SUM(id.Quantity * id.Price) FROM InvoiceDetail id WHERE id.InvoiceID = i.InvoiceID) AS TotalService, " // index 4
+                + "    d.DiscountCode, " // index 5 (Mã giảm giá)
+                + "    d.DiscountName " // index 6 (Tên chương trình)
+                + "FROM Invoice i "
+                + "LEFT JOIN Payment p ON i.InvoiceID = p.InvoiceID "
+                + "LEFT JOIN PaymentMethod pm ON p.PaymentMethodID = pm.PaymentMethodID "
+                // JOIN để lấy thông tin khuyến mãi từ database của bạn
+                + "LEFT JOIN InvoiceDiscount idisc ON i.InvoiceID = idisc.InvoiceID "
+                + "LEFT JOIN Discount d ON idisc.DiscountID = d.DiscountID "
+                + "WHERE i.InvoiceID = ?";
 
         List<Object[]> list = XQuery.getRawList(sql, invoiceID);
         return list.isEmpty() ? null : list.get(0);
+    }
+
+    public Object[] getAppointmentDetailById(int appointmentId) {
+        String sql = "SELECT \n"
+                + "    a.AppointmentCode, \n"
+                + "    a.AppointmentDateTime, \n"
+                + "    a.CreatedDateTime, \n"
+                + "    a.TotalDuration, \n"
+                + "    a.Note, \n"
+                + "    CASE a.[Status]\n"
+                + "        WHEN 1 THEN N'Chưa đến'\n"
+                + "        WHEN 2 THEN N'Đã đến'\n"
+                + "        WHEN 3 THEN N'Đã hủy'\n"
+                + "        WHEN 4 THEN N'Đang chờ xử lý'\n"
+                + "        WHEN 5 THEN N'Đã xong'\n"
+                + "        ELSE N'Khác'\n"
+                + "    END AS StatusText, \n"
+                + "    c.CustomerCode, \n"
+                + "    c.Fullname, \n"
+                + "    c.Phone \n"
+                + "FROM Appointment a \n"
+                + "JOIN Customer c ON a.CustomerID = c.CustomerID \n"
+                + "WHERE a.AppointmentID = ?";
+
+        List<Object[]> list = XQuery.getRawList(sql, appointmentId);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    public List<Object[]> getServiceDetailsByAppointmentId(int appointmentId) {
+        String sql = "SELECT \n"
+                + "    s.ServiceName, \n" // Tên dịch vụ
+                + "    b.FirstName + ' ' + b.LastName, \n" // Thợ thực hiện
+                + "    ad.Price, \n" // Giá
+                + "    CASE ad.[Status]\n" // Trạng thái dịch vụ
+                + "        WHEN 0 THEN N'Chờ'\n"
+                + "        WHEN 1 THEN N'Đang làm'\n"
+                + "        WHEN 2 THEN N'Xong'\n"
+                + "        WHEN 3 THEN N'Hủy dịch vụ'\n"
+                + "        ELSE N'Không xác định'\n"
+                + "    END \n"
+                + "FROM AppointmentDetail ad \n"
+                + "JOIN Service s ON ad.ServiceID = s.ServiceID \n"
+                + "JOIN Barber b ON ad.BarberID = b.BarberID \n"
+                + "WHERE ad.AppointmentID = ?";
+
+        return XQuery.getRawList(sql, appointmentId); // Sử dụng hàm tiện ích XQuery bạn đã cung cấp
     }
 
 }

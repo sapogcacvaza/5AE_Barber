@@ -4,9 +4,13 @@
  */
 package poly.barber.view;
 
+import javax.swing.JOptionPane;
 import poly.barber.entity.Account;
 import poly.barber.service.AccountService;
+import poly.barber.util.AuthUtil;
+import poly.barber.util.Session;
 import poly.barber.view.Dialog.ServiceJDialog;
+import poly.barber.view.dialog.AccountJDialog;
 import poly.barber.view.dialog.AppointmentJDialog;
 import poly.barber.view.dialog.BarberJDialog;
 import poly.barber.view.dialog.CustomerView;
@@ -60,48 +64,55 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     // 🟢 Gán user và phân quyền
     public void setUser(Account acc) {
         this.currentUser = acc;
+        Session.user = acc; // 🔥 QUAN TRỌNG
 
-        lblUser.setText(acc.getUsername()); // Hiển thị tên user
+        lblUser.setText(acc.getUsername());
 
-        boolean isAdmin = acc.getRole() == 1;
-        boolean isManager = acc.getRole() == 2;
+        // ❌ reset toàn bộ trước
+        btnNhanVien.setEnabled(false);
+        btnbarber.setEnabled(false);
+        btngiamgia.setEnabled(false);
+        btnservice.setEnabled(false);
+        btnstatical.setEnabled(false);
+        btntaikhoan.setEnabled(false);
 
-        // Admin có quyền tất cả
-        btnNhanVien.setEnabled(isAdmin);
-        btnbarber.setEnabled(isAdmin);
-        btngiamgia.setEnabled(isAdmin);
-        btnservice.setEnabled(isAdmin);
-        btnstatical.setEnabled(isAdmin);
-
-        // Manager: disable một số chức năng
-        if (isManager) {
-            btngiamgia.setEnabled(false);
-        }
-
-        // Các nút luôn enable cho tất cả
-        btnKhachHang.setEnabled(true);
-        btninvoice.setEnabled(true);
-        jButton3.setEnabled(true);
-        btnhistory.setEnabled(true);
+        // ================= PHÂN QUYỀN =================
+if (AuthUtil.isAdmin(acc)) {
+    btnNhanVien.setEnabled(true);
+    btnbarber.setEnabled(true);
+    btngiamgia.setEnabled(true);
+    btnservice.setEnabled(true);
+    btnstatical.setEnabled(true);
+    btntaikhoan.setEnabled(true);
+}
+else if (AuthUtil.isManager(acc)) {
+    btnNhanVien.setEnabled(false); // ❗ sửa
+    btnbarber.setEnabled(true);
+    btnservice.setEnabled(false); // ❗ chỉ admin
+    btngiamgia.setEnabled(false);
+    btnstatical.setEnabled(false);
+    btntaikhoan.setEnabled(false);
+}
+else if (AuthUtil.isStaff(acc)) {
+    // staff chỉ đặt lịch → disable hết
+}
     }
+//ktra login
+private boolean requireLogin() {
+    if (Session.user == null) {
+        JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
+        return false;
+    }
+    return true;
+}
 
-    // Kiểm tra login
-    private boolean checkLogin() {
-        if (currentUser == null) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
-            return false;
-        }
+private boolean denyIfNoPermission(boolean condition) {
+    if (!requireLogin() || !condition) {
+        JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
         return true;
     }
-
-    // Kiểm tra admin
-    private boolean checkAdmin() {
-        if (currentUser.getRole() != 1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
-            return false;
-        }
-        return true;
-    }
+    return false;
+}
 
     // Mở dialog
     private void openDialog(javax.swing.JDialog dialog) {
@@ -121,17 +132,20 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblUser = new javax.swing.JLabel();
-        btnout = new javax.swing.JButton();
-        btnbarber = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        btninvoice = new javax.swing.JButton();
-        btnhistory = new javax.swing.JButton();
-        btnstatical = new javax.swing.JButton();
-        btngiamgia = new javax.swing.JButton();
-        btnNhanVien = new javax.swing.JButton();
+        btntaikhoan = new javax.swing.JButton();
+        btnout1 = new javax.swing.JButton();
         btnKhachHang = new javax.swing.JButton();
         btnservice = new javax.swing.JButton();
+        btnNhanVien = new javax.swing.JButton();
+        btngiamgia = new javax.swing.JButton();
         btnpayment = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        btnbarber = new javax.swing.JButton();
+        btninvoice = new javax.swing.JButton();
+        btnstatical = new javax.swing.JButton();
+        btnhistory = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -145,91 +159,29 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblUser.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
-        lblUser.setForeground(new java.awt.Color(204, 0, 0));
+        lblUser.setForeground(new java.awt.Color(255, 255, 255));
         lblUser.setText("USER");
-        jPanel2.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 240, -1));
+        jPanel2.add(lblUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 240, -1));
 
-        btnout.setBackground(new java.awt.Color(0, 102, 153));
-        btnout.setForeground(new java.awt.Color(255, 255, 255));
-        btnout.setText("ĐĂNG XUẤT");
-        btnout.addActionListener(new java.awt.event.ActionListener() {
+        btntaikhoan.setBackground(new java.awt.Color(0, 102, 153));
+        btntaikhoan.setForeground(new java.awt.Color(255, 255, 255));
+        btntaikhoan.setText("QUẢN LÝ TÀI KHOẢN");
+        btntaikhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnoutActionPerformed(evt);
+                btntaikhoanActionPerformed(evt);
             }
         });
-        jPanel2.add(btnout, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 320, 250, 40));
+        jPanel2.add(btntaikhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 250, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 940));
-
-        btnbarber.setBackground(new java.awt.Color(0, 102, 153));
-        btnbarber.setForeground(new java.awt.Color(255, 255, 255));
-        btnbarber.setText("BARBER");
-        btnbarber.addActionListener(new java.awt.event.ActionListener() {
+        btnout1.setBackground(new java.awt.Color(0, 102, 153));
+        btnout1.setForeground(new java.awt.Color(255, 255, 255));
+        btnout1.setText("ĐĂNG XUẤT");
+        btnout1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnbarberActionPerformed(evt);
+                btnout1ActionPerformed(evt);
             }
         });
-        jPanel1.add(btnbarber, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 210, 250, 40));
-
-        jButton3.setBackground(new java.awt.Color(0, 102, 153));
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("ĐẶT LỊCH");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 90, 250, 40));
-
-        btninvoice.setBackground(new java.awt.Color(0, 102, 153));
-        btninvoice.setForeground(new java.awt.Color(255, 255, 255));
-        btninvoice.setText("HOÁ ĐƠN");
-        btninvoice.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btninvoiceActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btninvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 90, 250, 40));
-
-        btnhistory.setBackground(new java.awt.Color(0, 102, 153));
-        btnhistory.setForeground(new java.awt.Color(255, 255, 255));
-        btnhistory.setText("LỊCH SỬ");
-        btnhistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnhistoryActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnhistory, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 270, 250, 40));
-
-        btnstatical.setBackground(new java.awt.Color(0, 102, 153));
-        btnstatical.setForeground(new java.awt.Color(255, 255, 255));
-        btnstatical.setText("THỐNG KÊ");
-        btnstatical.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnstaticalActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnstatical, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 150, 250, 40));
-
-        btngiamgia.setBackground(new java.awt.Color(0, 102, 153));
-        btngiamgia.setForeground(new java.awt.Color(255, 255, 255));
-        btngiamgia.setText("QUẢN LÝ GIẢM GIÁ");
-        btngiamgia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btngiamgiaActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btngiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 210, 250, 40));
-
-        btnNhanVien.setBackground(new java.awt.Color(0, 102, 153));
-        btnNhanVien.setForeground(new java.awt.Color(255, 255, 255));
-        btnNhanVien.setText("QUẢN LÝ NHÂN VIÊN");
-        btnNhanVien.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNhanVienActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 250, 40));
+        jPanel2.add(btnout1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 720, 250, 40));
 
         btnKhachHang.setBackground(new java.awt.Color(0, 102, 153));
         btnKhachHang.setForeground(new java.awt.Color(255, 255, 255));
@@ -239,7 +191,7 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
                 btnKhachHangActionPerformed(evt);
             }
         });
-        jPanel1.add(btnKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 30, 250, 40));
+        jPanel2.add(btnKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 250, 40));
 
         btnservice.setBackground(new java.awt.Color(0, 102, 153));
         btnservice.setForeground(new java.awt.Color(255, 255, 255));
@@ -249,7 +201,27 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
                 btnserviceActionPerformed(evt);
             }
         });
-        jPanel1.add(btnservice, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 30, 250, 40));
+        jPanel2.add(btnservice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 250, 40));
+
+        btnNhanVien.setBackground(new java.awt.Color(0, 102, 153));
+        btnNhanVien.setForeground(new java.awt.Color(255, 255, 255));
+        btnNhanVien.setText("QUẢN LÝ NHÂN VIÊN");
+        btnNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNhanVienActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 250, 40));
+
+        btngiamgia.setBackground(new java.awt.Color(0, 102, 153));
+        btngiamgia.setForeground(new java.awt.Color(255, 255, 255));
+        btngiamgia.setText("QUẢN LÝ GIẢM GIÁ");
+        btngiamgia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btngiamgiaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btngiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, 250, 40));
 
         btnpayment.setBackground(new java.awt.Color(0, 102, 153));
         btnpayment.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,21 +231,77 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
                 btnpaymentActionPerformed(evt);
             }
         });
-        jPanel1.add(btnpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 270, 250, 40));
+        jPanel2.add(btnpayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 490, 250, 40));
+
+        jButton3.setBackground(new java.awt.Color(0, 102, 153));
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("ĐẶT LỊCH");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 250, 40));
+
+        btnbarber.setBackground(new java.awt.Color(0, 102, 153));
+        btnbarber.setForeground(new java.awt.Color(255, 255, 255));
+        btnbarber.setText("BARBER");
+        btnbarber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnbarberActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnbarber, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 250, 40));
+
+        btninvoice.setBackground(new java.awt.Color(0, 102, 153));
+        btninvoice.setForeground(new java.awt.Color(255, 255, 255));
+        btninvoice.setText("HOÁ ĐƠN");
+        btninvoice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btninvoiceActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btninvoice, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 540, 250, 40));
+
+        btnstatical.setBackground(new java.awt.Color(0, 102, 153));
+        btnstatical.setForeground(new java.awt.Color(255, 255, 255));
+        btnstatical.setText("THỐNG KÊ");
+        btnstatical.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnstaticalActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnstatical, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 640, 250, 40));
+
+        btnhistory.setBackground(new java.awt.Color(0, 102, 153));
+        btnhistory.setForeground(new java.awt.Color(255, 255, 255));
+        btnhistory.setText("LỊCH SỬ");
+        btnhistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnhistoryActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnhistory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 590, 250, 40));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/Gemini_Generated_Image_f4l6m7f4l6m7f4l6.png"))); // NOI18N
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 940));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/Gemini_Generated_Image_9kyc8n9kyc8n9kyc.png"))); // NOI18N
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1046, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1596, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -281,121 +309,117 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
 
     private void btngiamgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngiamgiaActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        DiscountJdialog d = new DiscountJdialog(this, true);
-        d.setUser(currentUser);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canDiscount(Session.user))) return;
+
+    DiscountJdialog d = new DiscountJdialog(this, true);
+    d.setUser(currentUser);
+    openDialog(d);
     }//GEN-LAST:event_btngiamgiaActionPerformed
 
     private void btnbarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbarberActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        BarberJDialog b = new BarberJDialog(this, true);
-        openDialog(b);
+    if (denyIfNoPermission(AuthUtil.canBarber(Session.user))) return;
+
+    openDialog(new BarberJDialog(this, true));
     }//GEN-LAST:event_btnbarberActionPerformed
 
     private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        EmployeeView d = new EmployeeView(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canEmployee(Session.user))) return;
+
+    openDialog(new EmployeeView(this, true));
     }//GEN-LAST:event_btnNhanVienActionPerformed
 
     private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        CustomerView d = new CustomerView(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canCustomer(Session.user))) return;
 
+    openDialog(new CustomerView(this, true));
     }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btninvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninvoiceActionPerformed
-        // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        InvoiceJDialog d = new InvoiceJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canInvoice(Session.user))) return;
+
+    openDialog(new InvoiceJDialog(this, true));
     }//GEN-LAST:event_btninvoiceActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        AppointmentJDialog d = new AppointmentJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canAppointment(Session.user))) return;
+
+    openDialog(new AppointmentJDialog(this, true));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnserviceActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        ServiceJDialog d = new ServiceJDialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canService(Session.user))) return;
+
+    openDialog(new ServiceJDialog(this, true));
     }//GEN-LAST:event_btnserviceActionPerformed
 
     private void btnhistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhistoryActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
-        }
-        HistoryJdialog d = new HistoryJdialog(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canHistory(Session.user))) return;
+
+    openDialog(new HistoryJdialog(this, true));
     }//GEN-LAST:event_btnhistoryActionPerformed
 
     private void btnstaticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstaticalActionPerformed
         // TODO add your handling code here:
-        if (!checkLogin() || !checkAdmin()) {
-            return;
-        }
-        StatisticalJdialog2 d = new StatisticalJdialog2(this, true);
-        openDialog(d);
+    if (denyIfNoPermission(AuthUtil.canStatistic(Session.user))) return;
+
+    openDialog(new StatisticalJdialog2(this, true));
     }//GEN-LAST:event_btnstaticalActionPerformed
 
-    private void btnoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnoutActionPerformed
+    private void btntaikhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntaikhoanActionPerformed
+        // TODO add your handling code here:
+    if (denyIfNoPermission(AuthUtil.canAccount(Session.user))) return;
+
+    openDialog(new AccountJDialog(this, true));
+    }//GEN-LAST:event_btntaikhoanActionPerformed
+
+    private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
+        // TODO add your handling code here:
+     if (denyIfNoPermission(AuthUtil.canPayment(Session.user))) return;
+
+    PaymentJDialog d = new PaymentJDialog(this, true);
+    d.setPaymentData("1", "500000");
+    openDialog(d);
+    }//GEN-LAST:event_btnpaymentActionPerformed
+
+    private void btnout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnout1ActionPerformed
         // TODO add your handling code here:
         int confirm = javax.swing.JOptionPane.showConfirmDialog(
                 this,
                 "Bạn có chắc muốn đăng xuất?",
-                "Đăng xuất",
+                "Xác nhận",
                 javax.swing.JOptionPane.YES_NO_OPTION
         );
 
         if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-            this.dispose(); // đóng main
 
-            LoginDialog login = new LoginDialog(null);
+            // ❌ Xóa user hiện tại
+            currentUser = null;
+
+            // ❌ Ẩn main
+            this.setVisible(false);
+
+            // 🔐 Mở lại login
+            LoginDialog login = new LoginDialog(this);
             login.setVisible(true);
 
-            if (login.isLoginSuccess()) {
-                Barber5AEJFrame main = new Barber5AEJFrame();
-                main.setVisible(true);
-            } else {
+            // ❌ Nếu không login lại → thoát
+            if (!login.isLoginSuccess()) {
                 System.exit(0);
             }
-        }
-    }//GEN-LAST:event_btnoutActionPerformed
 
-    private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
-        // TODO add your handling code here:
-        if (!checkLogin()) {
-            return;
+            // ✅ Nếu login lại thành công
+            setUser(login.getAccount());
+
+            // 👉 Hiện lại main
+            this.setVisible(true);
         }
-        PaymentJDialog d = new PaymentJDialog(this, true);
-        // demo dữ liệu
-        d.setPaymentData("1", "500000");
-        openDialog(d);
-    }//GEN-LAST:event_btnpaymentActionPerformed
+    }//GEN-LAST:event_btnout1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -422,7 +446,7 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Barber5AEJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -437,11 +461,14 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btngiamgia;
     private javax.swing.JButton btnhistory;
     private javax.swing.JButton btninvoice;
-    private javax.swing.JButton btnout;
+    private javax.swing.JButton btnout1;
     private javax.swing.JButton btnpayment;
     private javax.swing.JButton btnservice;
     private javax.swing.JButton btnstatical;
+    private javax.swing.JButton btntaikhoan;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblUser;

@@ -438,16 +438,10 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
     private void btnInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInActionPerformed
         int row = tblHoaDon.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
-            return;
-        }
-
-        Object value = tblHoaDon.getValueAt(row, 2);
-        if (value == null || String.valueOf(value).trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Lịch chưa hoàn thành, không được in!");
-            return;
-        }
+    if (row == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn hóa đơn cần in!");
+        return;
+    }
 
         // Sử dụng tên class đầy đủ để tránh lỗi Document của Swing
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();

@@ -9,6 +9,10 @@ import poly.barber.repository.Impl.loginRepository;
 import javax.swing.JOptionPane;
 import poly.barber.service.AccountService;
 import poly.barber.view.Barber5AEJFrame;
+import java.io.*;
+import java.util.Properties;
+import javax.swing.ImageIcon;
+import poly.barber.util.Session;
 
 /**
  *
@@ -30,8 +34,9 @@ public class LoginDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(parent);
 
-        txtname.setText("longvt");
-        psw.setText("123");
+//        txtname.setText("longvt");
+//        psw.setText("123");
+//        loadAccount();
     }
     private boolean loginSuccess = false;
 
@@ -42,6 +47,58 @@ public class LoginDialog extends javax.swing.JDialog {
 
     public Account getAccount() {
         return account;
+    }
+
+    public void saveAccount(String user, String pass, String role) {
+        try {
+            File file = new File("accounts.txt");
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.equals(user + "|" + pass + "|" + role)) {
+                    br.close();
+                    return;
+                }
+            }
+            br.close();
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+            bw.write(user + "|" + pass + "|" + role);
+            bw.newLine();
+            bw.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public java.util.List<String> getSavedAccounts() {
+        java.util.List<String> list = new java.util.ArrayList<>();
+
+        try {
+            File file = new File("accounts.txt");
+            if (!file.exists()) {
+                return list;
+            }
+
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                list.add(line);
+            }
+
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
     /**
@@ -55,38 +112,25 @@ public class LoginDialog extends javax.swing.JDialog {
 
         jLabel4 = new javax.swing.JLabel();
         jPanel13 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        checkboxlil = new javax.swing.JCheckBox();
+        jLabel3 = new javax.swing.JLabel();
+        psw = new javax.swing.JPasswordField();
+        btnlil = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         txtname = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
         btnLoginIn = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        psw = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         jLabel4.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel13.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel13.setPreferredSize(new java.awt.Dimension(400, 0));
         jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel2.setText("Tên Đăng Nhập");
-        jPanel13.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 230, -1, 20));
-        jPanel13.add(txtname, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 260, 240, 30));
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        jLabel3.setText("Mật Khẩu");
-        jPanel13.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 300, -1, 20));
-
-        btnLoginIn.setBackground(new java.awt.Color(0, 102, 153));
-        btnLoginIn.setForeground(new java.awt.Color(255, 255, 255));
-        btnLoginIn.setText("Đăng nhập");
-        btnLoginIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginInActionPerformed(evt);
-            }
-        });
-        jPanel13.add(btnLoginIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 370, -1, 30));
 
         jButton2.setBackground(new java.awt.Color(0, 102, 153));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
@@ -96,27 +140,70 @@ public class LoginDialog extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel13.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 370, -1, 30));
+        jPanel13.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(413, 420, 90, -1));
+
+        checkboxlil.setForeground(new java.awt.Color(255, 255, 255));
+        checkboxlil.setText("ghi nhớ tài khoản");
+        checkboxlil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkboxlilActionPerformed(evt);
+            }
+        });
+        jPanel13.add(checkboxlil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 360, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Mật Khẩu");
+        jPanel13.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, -1, -1));
 
         psw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pswActionPerformed(evt);
             }
         });
-        jPanel13.add(psw, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 330, 240, -1));
+        jPanel13.add(psw, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 310, 260, 30));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, 1198, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, 756, Short.MAX_VALUE)
-        );
+        btnlil.setBackground(new java.awt.Color(0, 102, 153));
+        btnlil.setForeground(new java.awt.Color(255, 255, 255));
+        btnlil.setText("Đăng nhập với toàn khoản hiện có");
+        btnlil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlilActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnlil, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 260, 40));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Tên Đăng Nhập");
+        jPanel13.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 190, -1, -1));
+
+        txtname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnameActionPerformed(evt);
+            }
+        });
+        jPanel13.add(txtname, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 220, 260, 30));
+
+        btnLoginIn.setBackground(new java.awt.Color(0, 102, 153));
+        btnLoginIn.setForeground(new java.awt.Color(255, 255, 255));
+        btnLoginIn.setText("Đăng nhập");
+        btnLoginIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginInActionPerformed(evt);
+            }
+        });
+        jPanel13.add(btnLoginIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 420, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Đăng Nhập");
+        jPanel13.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, 140, 38));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo/Gemini_Generated_Image_29jbvg29jbvg29jb.png"))); // NOI18N
+        jPanel13.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-340, -40, -1, -1));
+
+        getContentPane().add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -131,20 +218,30 @@ public class LoginDialog extends javax.swing.JDialog {
         String user = txtname.getText().trim();
         String pass = new String(psw.getPassword()).trim();
 
-        // ✅ validate
+        // ✅ validate trước
         if (user.isEmpty() || pass.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Không được để trống!");
             return;
         }
 
-        // gọi DB
         try {
+            // ✅ gọi DB 1 lần duy nhất
             Account acc = service.login(user, pass);
 
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!\nRole: " + acc.getRole());
+            // ✅ GÁN SESSION Ở ĐÂY
+            Session.user = acc;
+
+            // ✅ lưu nếu tick
+            if (checkboxlil.isSelected()) {
+                saveAccount(user, pass, String.valueOf(acc.getRole()));
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    "Đăng nhập thành công!\nRole: " + acc.getRole()
+            );
 
             loginSuccess = true;
-            this.account = acc; // 👈 LƯU LẠI
+            this.account = acc;
 
             dispose();
 
@@ -157,40 +254,79 @@ public class LoginDialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_pswActionPerformed
 
+    private void checkboxlilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkboxlilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_checkboxlilActionPerformed
+
+    private void txtnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtnameActionPerformed
+
+    private void btnlilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlilActionPerformed
+        // TODO add your handling code here:
+        java.util.List<String> accounts = getSavedAccounts();
+
+        if (accounts.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Chưa có tài khoản nào được lưu!");
+            return;
+        }
+
+        String selected = (String) JOptionPane.showInputDialog(
+                this,
+                "Chọn tài khoản:",
+                "Danh sách tài khoản",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                accounts.toArray(),
+                accounts.get(0)
+        );
+
+        if (selected != null) {
+            String[] parts = selected.split("\\|");
+            txtname.setText(parts[0]);
+            psw.setText(parts[1]);
+        }
+    }//GEN-LAST:event_btnlilActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
-    // 🌟 Splash
-    SplashDialog splash = new SplashDialog(null, true);
-    splash.setVisible(true);
+//
+//  java.awt.EventQueue.invokeLater(() -> {
+//
+//        // 🌟 Splash
+//        SplashDialog splash = new SplashDialog(null, true);
+//        splash.setVisible(true);
+//
+//        // 🧱 Main (chưa show)
+//        Barber5AEJFrame main = new Barber5AEJFrame();
+//
+//        // 🔐 Login
+//        LoginDialog login = new LoginDialog(main);
+//        login.setVisible(true);
+//
+//        if (login.isLoginSuccess()) {
+//            main.setUser(login.getAccount());
+//            main.setVisible(true);
+//        } else {
+//            System.exit(0);
+//        }
+//
+//    });
 
-    // 🧱 Tạo main TRƯỚC nhưng chưa show
-    Barber5AEJFrame main = new Barber5AEJFrame();
-
-    // 🔐 Login (gắn parent = main)
-    LoginDialog login = new LoginDialog(main);
-    login.setVisible(true);
-
-    // ✅ Nếu login OK
-    if (login.isLoginSuccess()) {
-
-        main.setUser(login.getAccount()); // truyền user
-        main.setVisible(true);
-
-    } else {
-        System.exit(0);
-    }
-    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLoginIn;
+    private javax.swing.JButton btnlil;
+    private javax.swing.JCheckBox checkboxlil;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPasswordField psw;
     private javax.swing.JTextField txtname;

@@ -63,7 +63,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        tabInvoiceDetail = new javax.swing.JTabbedPane();
+        tabAppointmentDetail = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLichSu = new javax.swing.JTable();
@@ -101,12 +101,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDanhSachDV = new javax.swing.JTable();
         jPanel12 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         txtTenKH = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtSDT = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txtMaKHHD = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         txtMaGiamGia = new javax.swing.JTextField();
@@ -147,15 +145,15 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         txtMaLD = new javax.swing.JTextField();
-        txtTongTime = new javax.swing.JTextField();
-        txtTimeHenLD = new javax.swing.JTextField();
+        txtTongThoiLuong = new javax.swing.JTextField();
+        txtThoiGianHen = new javax.swing.JTextField();
         jLabel35 = new javax.swing.JLabel();
-        txtTimeTaoLD = new javax.swing.JTextField();
+        txtThoiGianTao = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        cboTrangThaiLD = new javax.swing.JComboBox<>();
         jLabel32 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        txtNote = new javax.swing.JTextArea();
+        txtGhiChu = new javax.swing.JTextArea();
+        txtTrangThaiLD = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
         txtTenKHLD = new javax.swing.JTextField();
@@ -165,7 +163,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
         txtSoDienThoaiLD = new javax.swing.JTextField();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDsLd = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -326,7 +324,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        tabInvoiceDetail.addTab("Lịch Sử Hóa Đơn", jPanel1);
+        tabAppointmentDetail.addTab("Lịch Sử Hóa Đơn", jPanel1);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Hóa Đơn"));
 
@@ -520,8 +518,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông Tin Khách Hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP));
 
-        jLabel5.setText("Mã Khách Hàng:");
-
         jLabel6.setText("Số Điện Thoại");
 
         jLabel14.setText("Tên Khách Hàng");
@@ -534,35 +530,27 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtMaKHHD, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE))
+                        .addComponent(jLabel6)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtSDT, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                     .addGroup(jPanel12Layout.createSequentialGroup()
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel6))
+                        .addComponent(jLabel14)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTenKH)
-                            .addComponent(txtSDT))))
+                        .addComponent(txtTenKH, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtMaKHHD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(txtTenKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(27, 27, 27))
         );
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Khuyến Mãi"));
@@ -745,7 +733,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                             .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 108, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -767,22 +755,27 @@ public class HistoryJdialog extends javax.swing.JDialog {
                     .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        tabInvoiceDetail.addTab("Chi Tiết Hóa Đơn", jPanel2);
+        tabAppointmentDetail.addTab("Chi Tiết Hóa Đơn", jPanel2);
 
         tblLichDat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã Lịch", "Khách Hàng", "Số Điện Thoại", "Ngày Giờ", "Trạng Thái", "Người Tạo"
+                "ID Lịch", "Mã Lịch", "Khách Hàng", "Số Điện Thoại", "Ngày Giờ", "Trạng Thái", "Người Tạo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblLichDat.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblLichDatMouseClicked(evt);
             }
         });
         jScrollPane3.setViewportView(tblLichDat);
@@ -920,7 +913,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
         );
 
-        tabInvoiceDetail.addTab("Lịch Sử Đặt Lịch ", jPanel4);
+        tabAppointmentDetail.addTab("Lịch Sử Đặt Lịch ", jPanel4);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Lịch Đặt"));
 
@@ -941,14 +934,12 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel27.setText("Trạng Thái");
 
-        cboTrangThaiLD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel32.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel32.setText("Ghi Chú:");
 
-        txtNote.setColumns(20);
-        txtNote.setRows(5);
-        jScrollPane4.setViewportView(txtNote);
+        txtGhiChu.setColumns(20);
+        txtGhiChu.setRows(5);
+        jScrollPane4.setViewportView(txtGhiChu);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -965,11 +956,11 @@ public class HistoryJdialog extends javax.swing.JDialog {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel28)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtTongTime, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtTongThoiLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel24)
                                         .addGap(41, 41, 41)
-                                        .addComponent(txtTimeHenLD, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtThoiGianHen, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(50, 50, 50)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
@@ -978,9 +969,9 @@ public class HistoryJdialog extends javax.swing.JDialog {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                         .addComponent(jLabel27)
                                         .addGap(60, 60, 60)))
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTimeTaoLD, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtThoiGianTao, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(53, 53, 53))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1009,15 +1000,15 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
-                    .addComponent(txtTimeHenLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtThoiGianHen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35)
-                    .addComponent(txtTimeTaoLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtThoiGianTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel28)
-                    .addComponent(txtTongTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTongThoiLuong, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel27)
-                    .addComponent(cboTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel32)
@@ -1081,7 +1072,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi Tiết Dịch Vụ"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDsLd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1092,7 +1083,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 "Tên Dịch Vụ", "Thợ Thực Hiện ", "Giá ", "Trạng Thái Dịch Vụ"
             }
         ));
-        jScrollPane6.setViewportView(jTable1);
+        jScrollPane6.setViewportView(tblDsLd);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1132,7 +1123,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        tabInvoiceDetail.addTab("Chi Tiết Lịch Đăt", jPanel5);
+        tabAppointmentDetail.addTab("Chi Tiết Lịch Đăt", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1140,14 +1131,14 @@ public class HistoryJdialog extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tabInvoiceDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabAppointmentDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabInvoiceDetail)
+                .addComponent(tabAppointmentDetail)
                 .addContainerGap())
         );
 
@@ -1237,6 +1228,12 @@ public class HistoryJdialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboTrangThaiDlActionPerformed
 
+    private void tblLichDatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLichDatMouseClicked
+        if (evt.getClickCount() == 2) {
+            showDetailLD();
+        }
+    }//GEN-LAST:event_tblLichDatMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1289,7 +1286,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cboNhanVienDl;
     private javax.swing.JComboBox<String> cboTrangThaiDl;
     private javax.swing.JComboBox<String> cboTrangThaiHD;
-    private javax.swing.JComboBox<String> cboTrangThaiLD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1321,7 +1317,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1348,42 +1343,42 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable jTable1;
     private com.toedter.calendar.JDateChooser jdDenNgayDL;
     private com.toedter.calendar.JDateChooser jdDenNgayHD;
     private com.toedter.calendar.JDateChooser jdTuNgayDL;
     private com.toedter.calendar.JDateChooser jdTuNgayHD;
     private javax.swing.JRadioButton rdoChuaThanhToan;
     private javax.swing.JRadioButton rdoDaThanhToan;
-    private javax.swing.JTabbedPane tabInvoiceDetail;
+    private javax.swing.JTabbedPane tabAppointmentDetail;
     private javax.swing.JTable tblDanhSachDV;
+    private javax.swing.JTable tblDsLd;
     private javax.swing.JTable tblLichDat;
     private javax.swing.JTable tblLichSu;
     private javax.swing.JTable tblNhanVien;
     private javax.swing.JTextField txtDiscountName;
+    private javax.swing.JTextArea txtGhiChu;
     private javax.swing.JTextField txtGiamGia;
     private javax.swing.JTextField txtIdHD;
     private javax.swing.JTextField txtMaGiamGia;
     private javax.swing.JTextField txtMaHoaDon;
-    private javax.swing.JTextField txtMaKHHD;
     private javax.swing.JTextField txtMaKHLD;
     private javax.swing.JTextField txtMaLD;
     private javax.swing.JTextField txtNgayGioThanhToan;
     private javax.swing.JTextField txtNguoiTao;
-    private javax.swing.JTextArea txtNote;
     private javax.swing.JTextField txtPhuongThucThanhToan;
     private javax.swing.JTextField txtSDT;
     private javax.swing.JTextField txtSoDienThoaiLD;
     private javax.swing.JTextField txtTenKH;
     private javax.swing.JTextField txtTenKHLD;
     private javax.swing.JTextField txtThanhTien;
+    private javax.swing.JTextField txtThoiGianHen;
+    private javax.swing.JTextField txtThoiGianTao;
     private javax.swing.JTextField txtTimeCheckIn;
     private javax.swing.JTextField txtTimeCheckOut;
-    private javax.swing.JTextField txtTimeHenLD;
-    private javax.swing.JTextField txtTimeTaoLD;
+    private javax.swing.JTextField txtTongThoiLuong;
     private javax.swing.JTextField txtTongTienDichVu;
     private javax.swing.JTextField txtTongTienGiamGia;
-    private javax.swing.JTextField txtTongTime;
+    private javax.swing.JTextField txtTrangThaiLD;
     // End of variables declaration//GEN-END:variables
 
     private void loadToTableLichSu(List<Object[]> all) {
@@ -1417,7 +1412,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
             loadTableNhanVienPhucVu(invoiceID);
 
             // 4. Chuyển Tab (Chỉ số tab bắt đầu từ 0, Lịch sử là 0, Chi tiết là 1)
-            tabInvoiceDetail.setSelectedIndex(1);
+            tabAppointmentDetail.setSelectedIndex(1);
             fillServiceTable(invoiceID);
         }
     }
@@ -1429,18 +1424,16 @@ public class HistoryJdialog extends javax.swing.JDialog {
         if (invoice != null) {
             txtMaHoaDon.setText(String.valueOf(invoice.getInvoiceCode()));
             //Lấy appointmentID từ invoice
-            int appointmentID = invoice.getAppointmentID();
+            Integer appointmentID = invoice.getAppointmentID();
             Appointment app = appointmentRepo.getOne(appointmentID);
             if (app != null) {
                 int khachHangId = app.getCustomerID();
                 Customer kh = customerRepo.getOne(khachHangId);
 
                 if (kh != null) {
-                    txtMaKHHD.setText(kh.getCustomerCode());
                     txtTenKH.setText(kh.getFullname());
                     txtSDT.setText(kh.getPhone());
                 } else {
-                    txtMaKHHD.setText("Không có thông tin ");
                     txtTenKH.setText("Không có thông tin");
                     txtSDT.setText("Không có thông tin");
                 }
@@ -1454,18 +1447,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 txtNguoiTao.setText("Không xác định !");
             }
 
-            Discount d = dRepo.findByInvoiceID(id);
-            if (d != null) {
-                txtMaGiamGia.setText(d.getDiscountCode());
-                txtDiscountName.setText(d.getDiscountName());
-
-                // Nếu bạn muốn hiển thị giá trị giảm (ví dụ 10% hoặc 50k)
-                // txtGiamGia.setText(String.valueOf(d.getDiscountValue()));
-            } else {
-                txtMaGiamGia.setText("Không có");
-                txtDiscountName.setText("Không áp dụng");
-            }
-
             // 1. Khai báo định dạng (Dấu phẩy phân cách, không lấy số lẻ thập phân)
             java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
 
@@ -1474,7 +1455,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
             txtThanhTien.setText(df.format(amount)); // Kết quả sẽ là: 800,000
             txtTimeCheckIn.setText(String.valueOf(invoice.getCheckInDateTime()));
             txtTimeCheckOut.setText(String.valueOf(invoice.getCheckOutDateTime()));
-            txtGiamGia.setText(String.valueOf(invoice.getTotalDiscount()));
+//            txtGiamGia.setText(String.valueOf(invoice.getTotalDiscount()));
             txtIdHD.setText(String.valueOf(invoice.getInvoiceID()));
 
             //txtPhuongThucThanhToan
@@ -1572,13 +1553,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
     }
 
     private boolean validateFilter(Date tuNgay, Date denNgay) {
-//        if (tuNgay == null || denNgay == null) {
-//            // Thông báo lỗi nếu bạn muốn bắt buộc chọn ngày
-//            JOptionPane.showMessageDialog(this, "Vui lòng chọn đầy đủ từ ngày đến ngày!");
-//            return false;
-//
-//            // Hoặc nếu không chọn thì mặc định không lọc theo ngày (tùy bạn)
-//        }
 
         if (tuNgay != null && denNgay != null) {
             if (tuNgay.after(denNgay)) {
@@ -1652,32 +1626,84 @@ public class HistoryJdialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Lỗi truy vấn lịch sử lịch hẹn!");
         }
     }
-    
+
     private void fillThanhToanFields(int invoiceID) {
-    // Gọi hàm từ repo
-    Object[] data = historyRepo.getPaymentDetailByInvoiceID(invoiceID);
+        Object[] data = historyRepo.getPaymentDetailByInvoiceID(invoiceID);
 
-    if (data != null) {
-        // Sử dụng DecimalFormat để hiện tiền dạng 650,000 như trong ảnh
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+        if (data != null) {
+            java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        // 1. Ngày giờ thanh toán (CreatedDateTime)
-        txtNgayGioThanhToan.setText(data[0] != null ? data[0].toString() : "Chưa thanh toán");
+            // 1. Mã giảm giá (Lấy từ index 5 trong SQL mới)
+            txtMaGiamGia.setText(data[5] != null ? data[5].toString() : "Không có");
 
-        // 2. Tổng tiền dịch vụ (TotalService - chưa giảm)
-        double totalService = (data[4] != null) ? Double.parseDouble(data[4].toString()) : 0.0;
-        txtTongTienDichVu.setText(df.format(totalService));
+            // 2. Tên chương trình (Lấy từ index 6 trong SQL mới)
+            txtDiscountName.setText(data[6] != null ? data[6].toString() : "Không áp dụng");
 
-        // 3. Tổng tiền giảm giá (TotalDiscount)
-        double totalDiscount = (data[1] != null) ? Double.parseDouble(data[1].toString()) : 0.0;
-        txtTongTienGiamGia.setText(df.format(totalDiscount));
+            // 3. Số tiền giảm giá (Lấy từ index 1 - TotalDiscount của Invoice)
+            double discountVal = data[1] != null ? Double.parseDouble(data[1].toString()) : 0;
+            txtGiamGia.setText(df.format(discountVal));
 
-        // 4. Phương thức thanh toán (PaymentMethod)
-        txtPhuongThucThanhToan.setText(data[3] != null ? data[3].toString() : "N/A");
+            // 1. Ngày giờ thanh toán (Lấy index 0 từ SQL)
+            txtNgayGioThanhToan.setText(data[0] != null ? sdf.format(data[0]) : "Chưa thanh toán");
 
-        // 5. Ô số tiền thanh toán lớn (TotalAmount - thực trả)
-        double totalAmount = (data[2] != null) ? Double.parseDouble(data[2].toString()) : 0.0;
-        txtThanhTien.setText(df.format(totalAmount)); // Giả sử txtThanhTien là ô to bên phải
+            // 2. Tổng tiền dịch vụ - Tiền gốc chưa giảm (Index 4)
+            double totalService = data[4] != null ? Double.parseDouble(data[4].toString()) : 0;
+            txtTongTienDichVu.setText(df.format(totalService));
+
+            // 3. Tổng tiền giảm giá (Index 1)
+            double totalDiscount = data[1] != null ? Double.parseDouble(data[1].toString()) : 0;
+            txtTongTienGiamGia.setText(df.format(totalDiscount));
+
+            // 4. Phương thức thanh toán (Index 3)
+            txtPhuongThucThanhToan.setText(data[3] != null ? data[3].toString() : "N/A");
+
+            // 5. Thành tiền - Ô chữ to bên phải (Index 2)
+            double totalAmount = data[2] != null ? Double.parseDouble(data[2].toString()) : 0;
+            txtThanhTien.setText(df.format(totalAmount));
+        }
     }
-}
+
+    private void showDetailLD() {
+        int row = tblLichDat.getSelectedRow(); // Lấy dòng được chọn
+        if (row >= 0) {
+            // Lấy ID từ cột ẩn (Giả sử cột 0)
+            int id = Integer.parseInt(tblLichDat.getValueAt(row, 0).toString());
+
+            // Gọi hàm và truyền ID vào
+            fillToTabDetailLD(id);
+
+            // Chuyển tab
+            tabAppointmentDetail.setSelectedIndex(3);
+        }
+
+    }
+
+    private void fillToTabDetailLD(int id) {
+        Object[] data = historyRepo.getAppointmentDetailById(id);
+
+        if (data != null) {
+            txtMaLD.setText(data[0].toString());
+            txtThoiGianHen.setText(data[1].toString());
+            txtThoiGianTao.setText(data[2].toString());
+            txtTongThoiLuong.setText(data[3].toString());
+            txtGhiChu.setText(data[4] != null ? data[4].toString() : "");
+
+            // Đổ dữ liệu chữ vào JTextField thay vì setSelectedIndex
+            txtTrangThaiLD.setText(data[5].toString());
+
+            txtMaKHLD.setText(data[6].toString());
+            txtTenKHLD.setText(data[7].toString());
+            txtSoDienThoaiLD.setText(data[8].toString());
+        }
+
+        // 2. Đổ dữ liệu vào bảng tblDsLd
+        List<Object[]> listServices = historyRepo.getServiceDetailsByAppointmentId(id);
+        DefaultTableModel model = (DefaultTableModel) tblDsLd.getModel();
+        model.setRowCount(0);
+        for (Object[] rowObj : listServices) {
+            model.addRow(rowObj);
+        }
+    }
+
 }

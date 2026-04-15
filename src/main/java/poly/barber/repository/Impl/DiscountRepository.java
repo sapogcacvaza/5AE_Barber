@@ -5,8 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import poly.barber.entity.Discount;
 import poly.barber.util.XJdbc;
+import poly.barber.util.XQuery;
 
 public class DiscountRepository {
+    //
+
+    String sql = "SELECT * FROM Discount WHERE Status = 1 AND EndDateTime > GETDATE() AND (MaxUsage > UsedCount)";
+
+    public List<Discount> getAll() {
+        return XQuery.getBeanList(Discount.class, sql);
+    }
 
     // 🔥 map dữ liệu
     private Discount mapRow(ResultSet rs) throws Exception {
@@ -86,6 +94,18 @@ public class DiscountRepository {
     }
 
     // 🔥 thêm
+//<<<<<<< HEAD
+//    public void insert(Discount d) {
+//        String sql = """
+//        INSERT INTO Discount
+//        (DiscountName, DiscountType, DiscountValue, Description,
+//         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
+//        VALUES (?,?,?,?,?,?,?,?,?)
+//    """;
+//
+//    XJdbc.executeUpdate(sql,
+//            d.getDiscountName(), 
+//
     public void insert(Discount d) {
         String sql = """
         INSERT INTO Discount
@@ -96,7 +116,7 @@ public class DiscountRepository {
 
         XJdbc.executeUpdate(sql,
                 d.getDiscountCode(), // ✅ đúng vị trí
-                d.getDiscountName(),
+                d.getDiscountCode(), // ✅ đúng vị trí
                 d.getDiscountType(),
                 d.getDiscountValue(),
                 d.getDescription(),
@@ -106,8 +126,37 @@ public class DiscountRepository {
                 d.getMaxUsage(),
                 d.getUsedCount()
         );
+//<<<<<<< HEAD
+//    }
     }
 
+    // 🔥 thêm
+//<<<<<<< HEAD
+//    public void insert(Discount d) {
+//        String sql = """
+//        INSERT INTO Discount
+//        (DiscountName, DiscountType, DiscountValue, Description,
+//         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
+//        VALUES (?,?,?,?,?,?,?,?,?)
+//    """;
+//
+//    XJdbc.executeUpdate(sql,
+//            d.getDiscountName(), 
+//
+//    public void insert(Discount d) {
+//        String sql = """
+//        INSERT INTO Discount
+//        (DiscountCode, DiscountName, DiscountType, DiscountValue, Description,
+//         StartDateTime, EndDateTime, Status, MaxUsage, UsedCount)
+//        VALUES (?,?,?,?,?,?,?,?,?,?)
+//    """;
+//
+//        XJdbc.executeUpdate(sql,
+//                d.getDiscountCode(), // ✅ đúng vị trí
+//                d.getDiscountName(),
+//
+//    
+//    }
     // 🔥 update
     public void update(Discount d) {
         String sql = """
@@ -142,7 +191,7 @@ public class DiscountRepository {
 
     // 🔥 xoá mềm
     public void updateStatus(int id, int status) {
-        String sql = "UPDATE Discount SET Status=? WHERE DiscountID=?";
+        String sql = "UPDATE Discount SET UsedCount = UsedCount + 1 WHERE DiscountID = ?";
         XJdbc.executeUpdate(sql, status, id);
     }
 

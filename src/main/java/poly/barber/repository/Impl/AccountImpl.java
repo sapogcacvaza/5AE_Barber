@@ -29,7 +29,7 @@ public class AccountImpl implements ICommonRepository<Account, Integer> {
     String sqlGetRoleInt = "SELECT DISTINCT role FROM Account";
 
     public List<Account> searchByUsername(String username) {
-        return XQuery.getBeanList(Account.class, sqlSearchByUsername, username);
+        return XQuery.getBeanList(Account.class, sqlSearchByUsername, "%"+username+"%");
     }
 
     public List<Account> getRole(int id) {

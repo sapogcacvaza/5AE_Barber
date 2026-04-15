@@ -1,4 +1,4 @@
-package poly.barber.entity;
+ package poly.barber.entity;
 
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
