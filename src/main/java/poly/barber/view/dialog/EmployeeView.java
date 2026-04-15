@@ -797,6 +797,11 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
     @Override
     public void deleteCheckedItems() {
+        int index = tblNhanVien.getSelectedRow();
+        if(index==-1){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa!");
+            return;
+        }
         Employee nv = nvrepo.getAll().get(tblNhanVien.getSelectedRow());
         try {
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên này không?");

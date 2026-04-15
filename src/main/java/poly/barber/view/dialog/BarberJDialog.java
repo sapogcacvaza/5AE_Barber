@@ -484,7 +484,12 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Barber này không?");
         if (confirm == JOptionPane.YES_OPTION) {
+            try{
             brepo.delete(Integer.parseInt(lblBarberId.getText()));
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(this, "Không thể xóa Barber này!");
+                return;
+            }
             fillToTable(brepo.getAll());
             JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
         }

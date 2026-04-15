@@ -361,6 +361,11 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     }//GEN-LAST:event_tblAccountMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        int index = tblAccount.getSelectedRow();
+        if(index==-1){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn Account cần xóa");
+            return;
+        }
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Account này không?");
         if (confirm == JOptionPane.YES_OPTION) {
             acrepo.delete(Integer.parseInt(txtAccountID.getText()));
