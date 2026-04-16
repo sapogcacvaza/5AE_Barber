@@ -90,7 +90,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Quản lý khách hàng");
 
-        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setBackground(new java.awt.Color(0, 102, 153));
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
@@ -127,6 +127,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
+        btnDelete.setForeground(new java.awt.Color(0, 102, 153));
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,7 +144,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel4.setText("Lọc giới tính:");
 
-        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -152,7 +153,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
         });
 
-        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -161,6 +162,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
         });
 
+        btnUseCustomer.setForeground(new java.awt.Color(0, 102, 153));
         btnUseCustomer.setText("Chọn khách hàng");
         btnUseCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -237,7 +239,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel12.setText("Giới Tính:");
 
-        btnThem.setBackground(new java.awt.Color(0, 153, 255));
+        btnThem.setBackground(new java.awt.Color(0, 102, 153));
         btnThem.setForeground(new java.awt.Color(255, 255, 255));
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
@@ -246,6 +248,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             }
         });
 
+        btnUpdate.setForeground(new java.awt.Color(0, 102, 153));
         btnUpdate.setText("Chỉnh sửa");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -192,6 +192,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnTimKiem.setBackground(new java.awt.Color(0, 102, 153));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm Kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,6 +201,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
             }
         });
 
+        btnBoLoc.setBackground(new java.awt.Color(0, 102, 153));
+        btnBoLoc.setForeground(new java.awt.Color(255, 255, 255));
         btnBoLoc.setText("Bỏ Lọc");
         btnBoLoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -782,6 +786,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnTimKiemDL.setBackground(new java.awt.Color(0, 102, 153));
+        btnTimKiemDL.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiemDL.setText("Tìm Kiếm");
         btnTimKiemDL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -789,6 +795,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
             }
         });
 
+        btnBoLocDL.setBackground(new java.awt.Color(0, 102, 153));
+        btnBoLocDL.setForeground(new java.awt.Color(255, 255, 255));
         btnBoLocDL.setText("Bỏ Lọc");
         btnBoLocDL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

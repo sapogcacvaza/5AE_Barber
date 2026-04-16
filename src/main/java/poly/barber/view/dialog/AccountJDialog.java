@@ -128,7 +128,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         jLabel6.setText("Quyền:");
 
-        btnXoa.setBackground(new java.awt.Color(0, 153, 255));
+        btnXoa.setBackground(new java.awt.Color(0, 102, 153));
         btnXoa.setForeground(new java.awt.Color(255, 255, 255));
         btnXoa.setText("Xóa");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +137,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
-        btnChinhSua.setBackground(new java.awt.Color(0, 153, 255));
+        btnChinhSua.setBackground(new java.awt.Color(0, 102, 153));
         btnChinhSua.setForeground(new java.awt.Color(255, 255, 255));
         btnChinhSua.setText("Chỉnh sửa");
         btnChinhSua.addActionListener(new java.awt.event.ActionListener() {
@@ -148,6 +148,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         jLabel8.setText("ID Tài Khoản:");
 
+        btnFilter.setBackground(new java.awt.Color(0, 102, 153));
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,6 +166,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         jLabel9.setText("Lọc quyền:");
 
+        btnTimKiem.setBackground(new java.awt.Color(0, 102, 153));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm User");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,6 +175,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
+        btnUnFilter.setBackground(new java.awt.Color(0, 102, 153));
+        btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +231,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setBackground(new java.awt.Color(0, 102, 153));
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -361,18 +367,31 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     }//GEN-LAST:event_tblAccountMouseClicked
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int index = tblAccount.getSelectedRow();
-        if(index==-1){
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn Account cần xóa");
-            return;
-        }
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Account này không?");
-        if (confirm == JOptionPane.YES_OPTION) {
-            acrepo.delete(Integer.parseInt(txtAccountID.getText()));
-            fillToTable(acrepo.getAll());
-            fillToEmployeeIDCombobox(nvrepo.getAll());
-            JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
-        }
+    int index = tblAccount.getSelectedRow();
+
+    if (index == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn Account cần xóa");
+        return;
+    }
+
+    // 👉 Lấy account đang chọn
+    Account acc = getForm();
+
+    // ❌ CHẶN ADMIN TRƯỚC
+    if (acc.getRole() == 1) {
+        JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!");
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Account này không?");
+    
+    if (confirm == JOptionPane.YES_OPTION) {
+        acrepo.delete(acc.getAccountID());
+        fillToTable(acrepo.getAll());
+        fillToEmployeeIDCombobox(nvrepo.getAll());
+
+        JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+    }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnChinhSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChinhSuaActionPerformed

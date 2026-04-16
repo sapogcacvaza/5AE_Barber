@@ -128,7 +128,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setBackground(new java.awt.Color(0, 102, 255));
+        jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -149,7 +149,6 @@ public class PaymentJDialog extends javax.swing.JDialog {
         jScrollPane2.setViewportView(tblServiceDetails);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết thanh toán"));
-        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
 
         jLabel2.setText("Mã HĐ:");
 
@@ -295,7 +294,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
                 .addGap(14, 14, 14))
         );
 
-        btnThanhToanIn.setBackground(new java.awt.Color(0, 51, 255));
+        btnThanhToanIn.setBackground(new java.awt.Color(0, 102, 153));
         btnThanhToanIn.setForeground(new java.awt.Color(255, 255, 255));
         btnThanhToanIn.setText("Thanh toán");
         btnThanhToanIn.setPreferredSize(new java.awt.Dimension(420, 32));
@@ -306,6 +305,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
         });
         jPanel2.add(btnThanhToanIn);
 
+        btnIn.setForeground(new java.awt.Color(0, 102, 153));
         btnIn.setText("In");
         btnIn.setPreferredSize(new java.awt.Dimension(190, 32));
         btnIn.addActionListener(new java.awt.event.ActionListener() {
@@ -315,6 +315,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
         });
         jPanel2.add(btnIn);
 
+        btnHuy.setForeground(new java.awt.Color(0, 102, 153));
         btnHuy.setText("Huỷ");
         btnHuy.setPreferredSize(new java.awt.Dimension(190, 32));
         jPanel2.add(btnHuy);

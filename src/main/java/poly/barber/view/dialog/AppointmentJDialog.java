@@ -173,6 +173,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnAddAppoint.setBackground(new java.awt.Color(0, 102, 153));
+        btnAddAppoint.setForeground(new java.awt.Color(255, 255, 255));
         btnAddAppoint.setText("THÊM LỊCH");
         btnAddAppoint.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,6 +265,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnCancelFilter.setBackground(new java.awt.Color(0, 102, 153));
+        btnCancelFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelFilter.setText("BỎ LỌC");
         btnCancelFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -270,6 +274,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnFind.setBackground(new java.awt.Color(0, 102, 153));
+        btnFind.setForeground(new java.awt.Color(255, 255, 255));
         btnFind.setText("TÌM");
         btnFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -285,6 +291,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         lblFilterByStatus.setText("LỌC THEO TÌNH TRẠNG");
 
+        btnReloadTablleCalendar.setBackground(new java.awt.Color(0, 102, 153));
+        btnReloadTablleCalendar.setForeground(new java.awt.Color(255, 255, 255));
         btnReloadTablleCalendar.setText("CẬP NHẬP LẠI BẢNG");
         btnReloadTablleCalendar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -377,6 +385,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         Tabbs.addTab("LỊCH", panelCalendar);
 
+        btnChooseCustomer.setBackground(new java.awt.Color(0, 102, 153));
+        btnChooseCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnChooseCustomer.setText("CHỌN KHÁCH HÀNG");
         btnChooseCustomer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -384,6 +394,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnChooseDate.setBackground(new java.awt.Color(0, 102, 153));
+        btnChooseDate.setForeground(new java.awt.Color(255, 255, 255));
         btnChooseDate.setText("CHỌN NGÀY");
         btnChooseDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -405,7 +417,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnAddService.setBackground(new java.awt.Color(0, 102, 153));
         btnAddService.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAddService.setForeground(new java.awt.Color(255, 255, 255));
         btnAddService.setText("THÊM DỊCH VỤ");
         btnAddService.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -419,6 +433,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnChooseBarber.setBackground(new java.awt.Color(0, 102, 153));
+        btnChooseBarber.setForeground(new java.awt.Color(255, 255, 255));
         btnChooseBarber.setText("CHỌN THỢ CẮT TÓC");
         btnChooseBarber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -471,7 +487,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         lblAppointmentTime.setText("THỜI GIAN HẸN:");
 
+        btnAddAppointment.setBackground(new java.awt.Color(0, 102, 153));
         btnAddAppointment.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnAddAppointment.setForeground(new java.awt.Color(255, 255, 255));
         btnAddAppointment.setText("ĐẶT LỊCH");
         btnAddAppointment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -515,6 +533,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblTitle1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitle1.setText("THÊM DỊCH VỤ VÀO LỊCH MỚI");
 
+        btnGetListBarber.setBackground(new java.awt.Color(0, 102, 153));
+        btnGetListBarber.setForeground(new java.awt.Color(255, 255, 255));
         btnGetListBarber.setText("XUẤT DANH SÁCH THỢ");
         btnGetListBarber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -525,6 +545,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblTotalAmount4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblTotalAmount4.setText("TỔNG THỜI GIAN:");
 
+        btnClear.setBackground(new java.awt.Color(0, 102, 153));
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("LÀM MỚI");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -561,6 +583,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         btnGroupAppointment.add(rdoCancel);
         rdoCancel.setText("Hủy lịch");
 
+        btnUpdateDetails.setBackground(new java.awt.Color(0, 102, 153));
+        btnUpdateDetails.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdateDetails.setText("CẬP NHẬT CHI TIẾT");
         btnUpdateDetails.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -586,6 +610,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         });
         jScrollPane5.setViewportView(tblAppointmentDetail);
 
+        btnChangeAppointmentStatus.setBackground(new java.awt.Color(0, 102, 153));
+        btnChangeAppointmentStatus.setForeground(new java.awt.Color(255, 255, 255));
         btnChangeAppointmentStatus.setText("THAY ĐỔI TRẠNG THÁI");
         btnChangeAppointmentStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -596,6 +622,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         lblTitle3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTitle3.setText("QUẢN LÝ TRẠNG THÁI DỊCH VỤ");
 
+        btnChangeDetailStatus.setBackground(new java.awt.Color(0, 102, 153));
+        btnChangeDetailStatus.setForeground(new java.awt.Color(255, 255, 255));
         btnChangeDetailStatus.setText("CẬP NHẬP TRẠNG THÁI");
         btnChangeDetailStatus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -633,7 +661,9 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
             }
         });
 
+        btnGoToPay.setBackground(new java.awt.Color(0, 102, 153));
         btnGoToPay.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnGoToPay.setForeground(new java.awt.Color(255, 255, 255));
         btnGoToPay.setText("THANH TOÁN");
         btnGoToPay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

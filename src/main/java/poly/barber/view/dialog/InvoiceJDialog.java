@@ -85,7 +85,7 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setBackground(new java.awt.Color(0, 102, 255));
+        jLabel1.setBackground(new java.awt.Color(0, 102, 153));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -114,6 +114,8 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         });
         jScrollPane2.setViewportView(tblHoaDon);
 
+        jButton1.setBackground(new java.awt.Color(0, 102, 153));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Thanh toán");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -233,6 +235,8 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnLamMoi.setBackground(new java.awt.Color(0, 102, 153));
+        btnLamMoi.setForeground(new java.awt.Color(255, 255, 255));
         btnLamMoi.setText("Làm mới");
         btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,6 +244,8 @@ public class InvoiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnIn.setBackground(new java.awt.Color(0, 102, 153));
+        btnIn.setForeground(new java.awt.Color(255, 255, 255));
         btnIn.setText("In");
         btnIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

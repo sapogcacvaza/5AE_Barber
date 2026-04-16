@@ -66,15 +66,16 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         this.currentUser = acc;
         Session.user = acc; // 🔥 QUAN TRỌNG
 
-        lblUser.setText(acc.getUsername());
+        lblUser.setText("<html>Xin chào,<br>" 
+        + acc.getUsername() + " (" + acc.getRoleName() + ")</html>");
 
         // ❌ reset toàn bộ trước
-        btnNhanVien.setEnabled(false);
-        btnbarber.setEnabled(false);
-        btngiamgia.setEnabled(false);
-        btnservice.setEnabled(false);
-        btnstatical.setEnabled(false);
-        btntaikhoan.setEnabled(false);
+btnNhanVien.setEnabled(true);
+btnbarber.setEnabled(true);
+btngiamgia.setEnabled(true);
+btnservice.setEnabled(true);
+btnstatical.setEnabled(true);
+btntaikhoan.setEnabled(true);
 
         // ================= PHÂN QUYỀN =================
 if (AuthUtil.isAdmin(acc)) {
@@ -86,12 +87,12 @@ if (AuthUtil.isAdmin(acc)) {
     btntaikhoan.setEnabled(true);
 }
 else if (AuthUtil.isManager(acc)) {
-    btnNhanVien.setEnabled(false); // ❗ sửa
+    btnNhanVien.setEnabled(true); // ❗ sửa
     btnbarber.setEnabled(true);
-    btnservice.setEnabled(false); // ❗ chỉ admin
-    btngiamgia.setEnabled(false);
-    btnstatical.setEnabled(false);
-    btntaikhoan.setEnabled(false);
+    btnservice.setEnabled(true); // ❗ chỉ admin
+    btngiamgia.setEnabled(true);
+    btnstatical.setEnabled(true);
+    btntaikhoan.setEnabled(true);
 }
 else if (AuthUtil.isStaff(acc)) {
     // staff chỉ đặt lịch → disable hết
