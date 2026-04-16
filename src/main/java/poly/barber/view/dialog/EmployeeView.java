@@ -23,7 +23,9 @@ import poly.barber.util.XDialog;
  * @author Dell
  */
 public class EmployeeView extends javax.swing.JDialog implements EmployeeController {
+    //Lấy user từ Session (đã gán ở LoginDialog)
 
+    Account user = poly.barber.util.Session.user;
     EmployeeImpl nvrepo = new EmployeeImpl();
     EmployeePositionImpl eprepo = new EmployeePositionImpl();
     AccountImpl acrepo = new AccountImpl();
@@ -41,7 +43,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         fillToTable(nvrepo.getAll());
         fillToCombobox(eprepo.getAll());
         fillToPositionFilterCombobox(eprepo.getAll());
-        btnDelete.setEnabled(false);
+        auth();
     }
 
     /**
@@ -90,6 +92,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         txtLastname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtEmployeeID = new javax.swing.JTextField();
+        btnUpdate1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nhân Viên");
@@ -148,6 +151,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 return canEdit [columnIndex];
             }
         });
+        tblNhanVien.setSelectionBackground(new java.awt.Color(0, 153, 255));
         tblNhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblNhanVienMouseClicked(evt);
@@ -314,6 +318,15 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel15.setText("ID:");
 
+        txtEmployeeID.setEditable(false);
+
+        btnUpdate1.setText("Làm mới Form");
+        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdate1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -322,41 +335,44 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel9)
-                            .addComponent(txtEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15)
-                            .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rdoNam)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoNu))
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel12)
-                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
-                            .addComponent(jLabel7)
-                            .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addGap(25, 25, 25)))
-                .addGap(22, 22, 22))
+                        .addGap(47, 47, 47))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel11)
+                                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel9)
+                                    .addComponent(txtEmployeeID, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel15)
+                                    .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(rdoNam)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(rdoNu))
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel12)
+                                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel7)
+                                    .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(btnUpdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))))
+                        .addGap(22, 22, 22))))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cboPosition, txtAddress, txtEmail, txtEmployeeID, txtFirstname, txtLastname, txtPhone});
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnUpdate});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,9 +419,11 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                         .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnUpdate))
-                .addContainerGap(83, Short.MAX_VALUE))
+                    .addComponent(btnUpdate)
+                    .addComponent(btnUpdate1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAdd)
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAdd, btnUpdate});
@@ -455,6 +473,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                     acrepo.add(ac);
                     fillToTable(nvrepo.getAll());
                     JOptionPane.showMessageDialog(this, "Đã thêm nhân viên thành công!");
+                    clearForm();
                 }
 
             }
@@ -465,10 +484,6 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private void tblNhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNhanVienMouseClicked
         int index = tblNhanVien.getSelectedRow();
         setForm(index);
-
-        if (index != -1) {
-            btnDelete.setEnabled(true);
-        }
     }//GEN-LAST:event_tblNhanVienMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -479,7 +494,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                     nvrepo.update(getForm());
                     JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
                     fillToTable(nvrepo.getAll());
-
+                    clearForm();
                 }
             }
         }
@@ -537,6 +552,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
+    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnUpdate1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -590,6 +609,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdate1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboFilter;
     private javax.swing.JComboBox<String> cboPosition;
@@ -621,6 +641,28 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    public void clearForm() {
+        txtAddress.setText("");
+        txtEmail.setText("");
+        txtEmployeeID.setText("");
+        txtFirstname.setText("");
+        txtLastname.setText("");
+        txtPhone.setText("");
+    }
+
+    public void auth() {
+        if (user != null) {
+            int role = user.getRole();
+
+            if (role == 2) {
+                btnDelete.setEnabled(false);
+            } else if (role == 3) {
+                btnDelete.setEnabled(false);
+                btnUpdate.setEnabled(false);
+            }
+        }
+    }
 
     public int positionFiter() {
         List<Employee> lst = nvrepo.getAll();
@@ -798,7 +840,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     @Override
     public void deleteCheckedItems() {
         int index = tblNhanVien.getSelectedRow();
-        if(index==-1){
+        if (index == -1) {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần xóa!");
             return;
         }
@@ -808,6 +850,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             if (confirm == JOptionPane.YES_OPTION) {
                 nvrepo.delete(nv.getEmployeeID());
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+                clearForm();
                 fillToTable(nvrepo.getAll());
             }
         } catch (Exception e) {

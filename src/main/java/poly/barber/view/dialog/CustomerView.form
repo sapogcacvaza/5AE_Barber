@@ -274,11 +274,6 @@
                               </Group>
                               <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="btnThem" min="-2" pref="120" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnUpdate" min="-2" pref="118" max="-2" attributes="0"/>
-                                  </Group>
                                   <Component id="jLabel10" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtPhone" alignment="0" min="-2" pref="244" max="-2" attributes="0"/>
                                   <Component id="txtCustomerCode" alignment="0" min="-2" pref="242" max="-2" attributes="0"/>
@@ -289,6 +284,17 @@
                                       <Component id="rdoNu" min="-2" pref="41" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="btnThem" min="-2" pref="242" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <Component id="btnUpdate1" min="-2" pref="118" max="-2" attributes="0"/>
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="btnUpdate" min="-2" pref="118" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -335,8 +341,8 @@
                               <Component id="txtCustomerID" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnThem" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="btnUpdate" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnUpdate1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
@@ -348,7 +354,9 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="119" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnThem" linkSize="2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="90" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -446,6 +454,14 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtCustomerCode">
+            </Component>
+            <Component class="javax.swing.JButton" name="btnUpdate1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i Form"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdate1ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

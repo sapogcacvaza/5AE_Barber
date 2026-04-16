@@ -21,13 +21,14 @@ import poly.barber.repository.Impl.BarberRepositoryImpl;
  * @author Dell
  */
 public class BarberJDialog extends javax.swing.JDialog implements BarberController {
-
+    
+    Account user = poly.barber.util.Session.user;
     BarberPositionRepositoryImpl bprepo = new BarberPositionRepositoryImpl();
     BarberRepositoryImpl brepo = new BarberRepositoryImpl();
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbmStatusFilter = new DefaultComboBoxModel();
-
+    
     public BarberJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -37,7 +38,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         dcbmStatusFilter = (DefaultComboBoxModel) cboStatusFilter.getModel();
         fillToTable(brepo.getAll());
         fillToPositionCombobox(bprepo.getAll());
-        btnDelete.setEnabled(false);
+        auth();
+        
     }
 
     /**
@@ -86,9 +88,10 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         txtLastname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         lblBarberId = new javax.swing.JLabel();
+        btnUpdate1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Nhân Viên");
+        setTitle("Barber");
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -127,7 +130,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
             },
             new String [] {
-                "ID", "Sẵn Sàng", "Trạng Thái", "Họ", "Tên", "SĐT", "Email", "Vị Trí"
+                "ID", "Sẵn Sàng", "Trạng Thái", "Tên", "Họ", "SĐT", "Email", "Vị Trí"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -300,7 +303,12 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         jLabel15.setText("BarberID:");
 
-        lblBarberId.setText("jLabel6");
+        btnUpdate1.setText("Làm mới Form");
+        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdate1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -324,19 +332,21 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                             .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 121, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(rdoTrangThai)
-                            .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rdoDiLam)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoNghi)))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(rdoTrangThai)
+                                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel14)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(rdoDiLam)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(rdoNghi))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(btnUpdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(22, 22, 22))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -344,8 +354,6 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cboPosition, txtEmail, txtFirstname, txtLastname, txtPhone});
-
-        jPanel2Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnUpdate});
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,9 +396,11 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                             .addComponent(rdoDiLam))))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnUpdate))
-                .addContainerGap(128, Short.MAX_VALUE))
+                    .addComponent(btnUpdate)
+                    .addComponent(btnUpdate1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAdd)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAdd, btnUpdate});
@@ -426,6 +436,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             if (checkDuplicateInsert()) {
                 brepo.add(getForm());
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công!");
+                clearForm();
                 fillToTable(brepo.getAll());
             }
         }
@@ -439,6 +450,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                 if (confirm == JOptionPane.YES_OPTION) {
                     brepo.update(getForm());
                     JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công!");
+                    clearForm();
                     fillToTable(brepo.getAll());
                 }
             }
@@ -472,36 +484,59 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     private void tblBarberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBarberMouseClicked
         int index = tblBarber.getSelectedRow();
         setForm(index);
-        if (index != -1) {
-            btnDelete.setEnabled(true);
-        }
     }//GEN-LAST:event_tblBarberMouseClicked
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         int a = tblBarber.getSelectedRow();
         if (a == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xóa!");
             return;
         }
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa Barber này không?");
         if (confirm == JOptionPane.YES_OPTION) {
-            try{
-            brepo.delete(Integer.parseInt(lblBarberId.getText()));
-            }catch(Exception e){
+            try {
+                brepo.delete(Integer.parseInt(lblBarberId.getText()));
+            } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Không thể xóa Barber này!");
                 return;
             }
             fillToTable(brepo.getAll());
             JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+            clearForm();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
-
+        List<Barber> lst = brepo.searchByPhone(txtTimKiem.getText());
+        if (!lst.isEmpty()) {
+            fillToTable(lst);
+            return;
+        }
+        
+        List<Barber> lst2 = brepo.searchByEmail(txtTimKiem.getText());
+        if (!lst2.isEmpty()) {
+            fillToTable(lst2);
+            return;
+        }
+        
+        List<Barber> lst3 = brepo.searchByName(txtTimKiem.getText());
+        if (!lst3.isEmpty()) {
+            fillToTable(lst3);
+            return;
+        }
+        
+        JOptionPane.showMessageDialog(this,
+                "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
+        fillToTable(brepo.getAll());
     }//GEN-LAST:event_btnTimKiemActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
 
     }//GEN-LAST:event_txtTimKiemActionPerformed
+
+    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnUpdate1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -560,6 +595,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdate1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
@@ -591,20 +627,41 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+ 
+    public void clearForm(){
+        txtEmail.setText("");
+        txtFirstname.setText("");
+        txtLastname.setText("");
+        txtPhone.setText("");
+        lblBarberId.setText("");
+    }
+    public void auth() {
+        if (user != null) {
+            int role = user.getRole();
+            
+            if (role == 2) {
+                btnDelete.setEnabled(false);
+            } else if (role == 3) {
+                btnDelete.setEnabled(false);
+                btnUpdate.setEnabled(false);
+            }
+        }
+    }
+    
     public int statusFilter() {
         if (cboStatusFilter.getSelectedItem().equals("Đi làm")) {
             return 1;
         }
         return 0;
     }
-
+    
     public int isBusyFilter() {
         if (cboIsBusy.getSelectedItem().equals("Rảnh")) {
             return 1;
         }
         return 0;
     }
-
+    
     public boolean checkNull() {
         try {
             int phone = Integer.parseInt(txtPhone.getText());
@@ -634,7 +691,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-
+    
     public boolean checkDuplicateInsert() {
         for (Barber b : brepo.getAll()) {
             if (txtEmail.getText().equals(b.getEmail())) {
@@ -648,11 +705,11 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-
+    
     public boolean checkDuplicateUpdate() {
         int currentID = Integer.parseInt(lblBarberId.getText());
         for (Barber b : brepo.getAll()) {
-
+            
             if (b.getBarberID() == currentID) {
                 continue;
             }
@@ -667,17 +724,17 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-
+    
     @Override
     public void open() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void setForm(Barber entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     public void setForm(int index) {
         lblBarberId.setText(tblBarber.getValueAt(index, 0) + "");
         if (tblBarber.getValueAt(index, 2) == "Đi làm") {
@@ -692,11 +749,13 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         BarberPosition b = bprepo.getOne((int) tblBarber.getValueAt(index, 7));
         cboPosition.setSelectedItem(b.getPositionName());
     }
-
+    
     @Override
     public Barber getForm() {
         Barber b = new Barber();
+        if(!lblBarberId.getText().isEmpty()){
         b.setBarberID(Integer.parseInt(lblBarberId.getText()));
+        }
         b.setEmail(txtEmail.getText());
         b.setFirstname(txtFirstname.getText());
         b.setLastname(txtLastname.getText());
@@ -706,7 +765,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         b.setPositionID(bp.getPositionID());
         return b;
     }
-
+    
     @Override
     public void fillToTable(List<Barber> lst) {
         dtm.setRowCount(0);
@@ -714,67 +773,67 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             dtm.addRow(new Object[]{b.getBarberID(), b.isBusy() ? "Rảnh" : "Bận", b.isStatus() ? "Đi làm" : "Nghỉ", b.getFirstname(), b.getLastname(), b.getPhone(), b.getEmail(), b.getPositionID()});
         }
     }
-
+    
     public void fillToPositionCombobox(List<BarberPosition> lst) {
         dcbm.removeAllElements();
         for (BarberPosition bp : lst) {
             dcbm.addElement(bp.getPositionName());
         }
     }
-
+    
     @Override
     public void edit() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void clear() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void setEditable(boolean editable) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void checkAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void uncheckAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void deleteCheckedItems() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void moveFirst() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void movePrevious() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void moveNext() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void moveLast() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
     public void moveTo(int rowIndex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
 }

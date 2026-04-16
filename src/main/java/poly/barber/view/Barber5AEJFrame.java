@@ -334,7 +334,7 @@ private boolean denyIfNoPermission(boolean condition) {
         // TODO add your handling code here:
     if (denyIfNoPermission(AuthUtil.canCustomer(Session.user))) return;
 
-    openDialog(new CustomerView(this, true));
+    openDialog(new CustomerView(this, true,false)); //Tham số thứ 3 truyền vào để ẩn nút chọn khách hàng
     }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btninvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninvoiceActionPerformed

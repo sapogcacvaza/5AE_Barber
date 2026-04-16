@@ -46,6 +46,19 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
     }
 
+    // Constructor có tham số (dùng khi mở từ màn đặt lịch)
+    public CustomerView(java.awt.Frame parent, boolean modal, boolean isSelecting) {
+        super(parent, modal);
+        initComponents();
+        setLocationRelativeTo(null);
+        btnUseCustomer.setVisible(isSelecting); // Hiện hoặc ẩn dựa trên tham số truyền vào
+        dtm = (DefaultTableModel) tblKhachHang.getModel();
+        fillToTable(khrepo.getAll());
+        btnDelete.setEnabled(false);
+        auth();
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -81,6 +94,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         txtCustomerCode = new javax.swing.JTextField();
+        btnUpdate1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Khách hàng");
@@ -271,6 +285,13 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
 
         jLabel14.setText("Mã Khách Hàng:");
 
+        btnUpdate1.setText("Làm mới Form");
+        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdate1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -289,10 +310,6 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                             .addComponent(jLabel13))
                         .addGap(102, 102, 102)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel10)
                             .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCustomerCode, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -301,7 +318,15 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                                 .addComponent(rdoNam)
                                 .addGap(18, 18, 18)
                                 .addComponent(rdoNu, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel12))))
+                            .addComponent(jLabel12)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(btnUpdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -337,15 +362,17 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                         .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(21, 21, 21)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnThem)
-                            .addComponent(btnUpdate)))
+                            .addComponent(btnUpdate)
+                            .addComponent(btnUpdate1)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rdoNu)
                             .addComponent(rdoNam))))
-                .addContainerGap(119, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnThem)
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         jPanel2Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnThem, btnUpdate});
@@ -376,6 +403,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 khrepo.add(getForm());
                 fillToTable(khrepo.getAll());
                 JOptionPane.showMessageDialog(this, "Đã thêm khách hàng thành công");
+                clearForm();
             }
         }
 
@@ -388,6 +416,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 if (confirm == JOptionPane.YES_OPTION) {
                     khrepo.update(getForm());
                     JOptionPane.showMessageDialog(this, "Đã chỉnh sửa thành công");
+                    clearForm();
                     fillToTable(khrepo.getAll());
 
                 }
@@ -415,10 +444,11 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
         int index = tblKhachHang.getSelectedRow();
         setForm(index);
-        try{
-        if (index != -1 &&user.getRole()==1) {
-            btnDelete.setEnabled(true);
-        }}catch(Exception e){
+        try {
+            if (index != -1 && user.getRole() == 1) {
+                btnDelete.setEnabled(true);
+            }
+        } catch (Exception e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_tblKhachHangMouseClicked
@@ -452,6 +482,10 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         this.dispose();
     }//GEN-LAST:event_btnUseCustomerActionPerformed
 
+    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnUpdate1ActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -474,6 +508,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdate1;
     private javax.swing.JButton btnUseCustomer;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboFilter;
@@ -500,6 +535,14 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+    public void clearForm() {
+        txtCustomerCode.setText("");
+        txtCustomerID.setText("");
+        txtEmail.setText("");
+        txtName.setText("");
+        txtPhone.setText("");
+    }
 
     public void auth() {
         if (user != null) {
@@ -626,7 +669,9 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         kh.setPhone(txtPhone.getText());
         kh.setEmail(txtEmail.getText());
         kh.setGender(rdoNam.isSelected());
-        kh.setCustomerID(Integer.parseInt(txtCustomerID.getText()));
+        if (!txtCustomerID.getText().isEmpty()) {
+            kh.setCustomerID(Integer.parseInt(txtCustomerID.getText()));
+        }
         kh.setCustomerCode(txtCustomerCode.getText());
         return kh;
     }
@@ -674,12 +719,13 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
         } else {
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không. Việc này sẽ xóa toàn bộ thông tin liên quan đến khách hàng này.");
             if (confirm == JOptionPane.YES_OPTION) {
-                try{
-                khrepo.delete(Integer.parseInt(txtCustomerID.getText()));
-                }catch(Exception e){
+                try {
+                    khrepo.delete(Integer.parseInt(txtCustomerID.getText()));
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(this, "Không thể xóa khách hàng này!");
                 }
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
+                clearForm();
                 fillToTable(khrepo.getAll());
             } else {
                 return;

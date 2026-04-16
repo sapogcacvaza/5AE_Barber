@@ -28,6 +28,21 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     String sqlIsBusyFilter = "select *from Barber where isBusy = ?";
     String updateStatus = "update Barber set Status = ? where BarberID = ?";
     String updateIsBusy = "update Barber set IsBusy = ? where BarberID = ?";
+    String sqlSearchByName = "select * from Barber where Firstname like ?";
+    String sqlSearchByPhone = "select * from Barber where Phone like ?";
+    String sqlSearchByEmail = "select * from Barber where Email like ?";
+
+    public List<Barber> searchByEmail(String email) {
+        return XQuery.getBeanList(Barber.class, sqlSearchByEmail, "%" + email + "%");
+    }
+
+    public List<Barber> searchByPhone(String phone) {
+        return XQuery.getBeanList(Barber.class, sqlSearchByPhone, "%" + phone + "%");
+    }
+
+    public List<Barber> searchByName(String name) {
+        return XQuery.getBeanList(Barber.class, sqlSearchByName, "%" + name + "%");
+    }
 
     public List<Barber> statusFilter(int id) {
         return XQuery.getBeanList(Barber.class, sqlStatusFilter, id);
