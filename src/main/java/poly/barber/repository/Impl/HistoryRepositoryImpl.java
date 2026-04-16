@@ -1,5 +1,6 @@
 package poly.barber.repository.Impl;
 
+import java.util.Date;
 import java.util.List;
 import poly.barber.entity.Barber;
 import poly.barber.util.XQuery;
@@ -197,5 +198,38 @@ public class HistoryRepositoryImpl {
 
         return XQuery.getRawList(sql, appointmentId); // Sử dụng hàm tiện ích XQuery bạn đã cung cấp
     }
+
+    public List<Object[]> getFilteredLichDat(int status, int empId, Date from, Date to) {
+    String sql = "SELECT \n"
+            + "    a.AppointmentID, \n"
+            + "    a.AppointmentCode, \n"
+            + "    c.Fullname, \n"
+            + "    c.Phone, \n"
+            + "    a.AppointmentDateTime, \n"
+            + "    CASE a.Status \n"
+            + "        WHEN 1 THEN N'Chưa đến' \n" // Bổ sung mã 1
+            + "        WHEN 2 THEN N'Đã đến' \n"
+            + "        WHEN 3 THEN N'Đã hủy' \n"
+            + "        WHEN 4 THEN N'Đang chờ xử lý' \n"
+            + "        WHEN 5 THEN N'Đã xong' \n"
+            + "    END, \n"
+            + "    e.FirstName + ' ' + e.LastName \n"
+            + "FROM Appointment a \n"
+            + "JOIN Customer c ON a.CustomerID = c.CustomerID \n"
+            + "JOIN Employee e ON a.CreatedByEmployeeID = e.EmployeeID \n"
+            + "WHERE \n"
+            + "    (? = -1 OR a.Status = ?) \n"
+            + "    AND (? = -1 OR a.CreatedByEmployeeID = ?) \n"
+            + "    AND (? IS NULL OR CAST(a.AppointmentDateTime AS DATE) >= ?) \n"
+            + "    AND (? IS NULL OR CAST(a.AppointmentDateTime AS DATE) <= ?) \n"
+            + "ORDER BY a.AppointmentDateTime DESC";
+
+    // Chuyển đổi Date sang java.sql.Date để SQL Server hiểu đúng định dạng
+    java.sql.Date sDate = (from != null) ? new java.sql.Date(from.getTime()) : null;
+    java.sql.Date eDate = (to != null) ? new java.sql.Date(to.getTime()) : null;
+
+    // Truyền tham số: Chú ý dùng empId (ID nhân viên) thay vì barberId vì bảng Appointment lưu CreatedByEmployeeID
+    return XQuery.getRawList(sql, status, status, empId, empId, sDate, sDate, eDate, eDate);
+}
 
 }

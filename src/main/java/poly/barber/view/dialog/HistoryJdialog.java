@@ -4,6 +4,7 @@
  */
 package poly.barber.view.dialog;
 
+import static java.util.Collections.list;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -128,16 +129,14 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblLichDat = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
-        btnTimKiemDL = new javax.swing.JButton();
-        btnBoLocDL = new javax.swing.JButton();
-        jdDenNgayDL = new com.toedter.calendar.JDateChooser();
+        btnTimKiemLD = new javax.swing.JButton();
+        btnBoLocLD = new javax.swing.JButton();
+        jdDenNgayLD = new com.toedter.calendar.JDateChooser();
         jLabel13 = new javax.swing.JLabel();
-        jdTuNgayDL = new com.toedter.calendar.JDateChooser();
+        jdTuNgayLD = new com.toedter.calendar.JDateChooser();
         jLabel38 = new javax.swing.JLabel();
-        cboNhanVienDl = new javax.swing.JComboBox<>();
-        jLabel39 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
-        cboTrangThaiDl = new javax.swing.JComboBox<>();
+        cboTrangThaiLD = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -627,9 +626,16 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel15.setText("Phương Thức Thanh Toán ");
 
+        txtPhuongThucThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPhuongThucThanhToanActionPerformed(evt);
+            }
+        });
+
         jLabel36.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel36.setText("Thành Tiền");
 
+        txtThanhTien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtThanhTien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtThanhTienActionPerformed(evt);
@@ -782,51 +788,42 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        btnTimKiemDL.setText("Tìm Kiếm");
-        btnTimKiemDL.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiemLD.setText("Tìm Kiếm");
+        btnTimKiemLD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTimKiemDLActionPerformed(evt);
+                btnTimKiemLDActionPerformed(evt);
             }
         });
 
-        btnBoLocDL.setText("Bỏ Lọc");
-        btnBoLocDL.addActionListener(new java.awt.event.ActionListener() {
+        btnBoLocLD.setText("Bỏ Lọc");
+        btnBoLocLD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBoLocDLActionPerformed(evt);
+                btnBoLocLDActionPerformed(evt);
             }
         });
 
-        jdDenNgayDL.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        jdDenNgayLD.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jdDenNgayDLPropertyChange(evt);
+                jdDenNgayLDPropertyChange(evt);
             }
         });
 
         jLabel13.setText("Đến Ngày");
 
-        jdTuNgayDL.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+        jdTuNgayLD.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jdTuNgayDLPropertyChange(evt);
+                jdTuNgayLDPropertyChange(evt);
             }
         });
 
         jLabel38.setText("Từ Ngày");
 
-        cboNhanVienDl.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboNhanVienDl.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboNhanVienDlActionPerformed(evt);
-            }
-        });
-
-        jLabel39.setText("Nhân Viên");
-
         jLabel40.setText("Trạng Thái ");
 
-        cboTrangThaiDl.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cboTrangThaiDl.addActionListener(new java.awt.event.ActionListener() {
+        cboTrangThaiLD.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboTrangThaiLD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboTrangThaiDlActionPerformed(evt);
+                cboTrangThaiLDActionPerformed(evt);
             }
         });
 
@@ -835,60 +832,48 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel40)
-                    .addComponent(jLabel39))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cboNhanVienDl, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cboTrangThaiDl, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel40)
+                .addGap(44, 44, 44)
+                .addComponent(cboTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel38)
                 .addGap(18, 18, 18)
-                .addComponent(jdTuNgayDL, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jdTuNgayLD, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
-                .addComponent(jdDenNgayDL, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jdDenNgayLD, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnBoLocDL, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnBoLocLD, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnTimKiemDL)
+                .addComponent(btnTimKiemLD)
                 .addContainerGap(154, Short.MAX_VALUE))
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnTimKiemDL)
-                            .addComponent(btnBoLocDL)))
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel40)
-                            .addComponent(cboTrangThaiDl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cboNhanVienDl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnTimKiemLD)
+                    .addComponent(btnBoLocLD))
+                .addContainerGap(36, Short.MAX_VALUE))
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel18Layout.createSequentialGroup()
                             .addGap(34, 34, 34)
-                            .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cboTrangThaiLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel40)))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
                             .addGap(29, 29, 29)
-                            .addComponent(jdTuNgayDL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jdTuNgayLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jdDenNgayDL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jdDenNgayLD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -910,7 +895,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE))
         );
 
         tabAppointmentDetail.addTab("Lịch Sử Đặt Lịch ", jPanel4);
@@ -940,6 +925,12 @@ public class HistoryJdialog extends javax.swing.JDialog {
         txtGhiChu.setColumns(20);
         txtGhiChu.setRows(5);
         jScrollPane4.setViewportView(txtGhiChu);
+
+        txtTrangThaiLD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTrangThaiLDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -1123,7 +1114,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        tabAppointmentDetail.addTab("Chi Tiết Lịch Đăt", jPanel5);
+        tabAppointmentDetail.addTab("Chi Tiết Lịch Đặt", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1204,35 +1195,46 @@ public class HistoryJdialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtThanhTienActionPerformed
 
-    private void btnTimKiemDLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemDLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTimKiemDLActionPerformed
+    private void btnTimKiemLDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemLDActionPerformed
+        performFilterLichDat();
+    }//GEN-LAST:event_btnTimKiemLDActionPerformed
 
-    private void btnBoLocDLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoLocDLActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBoLocDLActionPerformed
+    private void btnBoLocLDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoLocLDActionPerformed
+        // Reset combo về "Tất Cả"
+        cboTrangThaiLD.setSelectedIndex(0);
+        // Reset ngày về null
+        jdTuNgayLD.setDate(null);
+        jdDenNgayLD.setDate(null);
+        // Load lại toàn bộ danh sách mặc định
+        loadToTableLichDat(null);
+        JOptionPane.showMessageDialog(this, "Đã làm mới dữ liệu");
+    }//GEN-LAST:event_btnBoLocLDActionPerformed
 
-    private void jdDenNgayDLPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jdDenNgayDLPropertyChange
+    private void jdDenNgayLDPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jdDenNgayLDPropertyChange
         // TODO add your handling code here:
-    }//GEN-LAST:event_jdDenNgayDLPropertyChange
+    }//GEN-LAST:event_jdDenNgayLDPropertyChange
 
-    private void jdTuNgayDLPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jdTuNgayDLPropertyChange
+    private void jdTuNgayLDPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jdTuNgayLDPropertyChange
         // TODO add your handling code here:
-    }//GEN-LAST:event_jdTuNgayDLPropertyChange
+    }//GEN-LAST:event_jdTuNgayLDPropertyChange
 
-    private void cboNhanVienDlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNhanVienDlActionPerformed
+    private void cboTrangThaiLDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTrangThaiLDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cboNhanVienDlActionPerformed
-
-    private void cboTrangThaiDlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTrangThaiDlActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboTrangThaiDlActionPerformed
+    }//GEN-LAST:event_cboTrangThaiLDActionPerformed
 
     private void tblLichDatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLichDatMouseClicked
         if (evt.getClickCount() == 2) {
             showDetailLD();
         }
     }//GEN-LAST:event_tblLichDatMouseClicked
+
+    private void txtPhuongThucThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPhuongThucThanhToanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPhuongThucThanhToanActionPerformed
+
+    private void txtTrangThaiLDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTrangThaiLDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTrangThaiLDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1278,14 +1280,13 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBoLoc;
-    private javax.swing.JButton btnBoLocDL;
+    private javax.swing.JButton btnBoLocLD;
     private javax.swing.JButton btnTimKiem;
-    private javax.swing.JButton btnTimKiemDL;
+    private javax.swing.JButton btnTimKiemLD;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboNhanVien;
-    private javax.swing.JComboBox<String> cboNhanVienDl;
-    private javax.swing.JComboBox<String> cboTrangThaiDl;
     private javax.swing.JComboBox<String> cboTrangThaiHD;
+    private javax.swing.JComboBox<String> cboTrangThaiLD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1314,7 +1315,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
-    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel6;
@@ -1343,10 +1343,10 @@ public class HistoryJdialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private com.toedter.calendar.JDateChooser jdDenNgayDL;
     private com.toedter.calendar.JDateChooser jdDenNgayHD;
-    private com.toedter.calendar.JDateChooser jdTuNgayDL;
+    private com.toedter.calendar.JDateChooser jdDenNgayLD;
     private com.toedter.calendar.JDateChooser jdTuNgayHD;
+    private com.toedter.calendar.JDateChooser jdTuNgayLD;
     private javax.swing.JRadioButton rdoChuaThanhToan;
     private javax.swing.JRadioButton rdoDaThanhToan;
     private javax.swing.JTabbedPane tabAppointmentDetail;
@@ -1455,22 +1455,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
             txtThanhTien.setText(df.format(amount)); // Kết quả sẽ là: 800,000
             txtTimeCheckIn.setText(String.valueOf(invoice.getCheckInDateTime()));
             txtTimeCheckOut.setText(String.valueOf(invoice.getCheckOutDateTime()));
-//            txtGiamGia.setText(String.valueOf(invoice.getTotalDiscount()));
             txtIdHD.setText(String.valueOf(invoice.getInvoiceID()));
-
-            //txtPhuongThucThanhToan
-            Payment p = paymentRepo.getOneByInvoiceID(invoiceID);
-            if (p != null) {
-                // Truy vấn nhanh cái tên dựa vào ID phương thức
-                String sql = "SELECT PaymentName FROM PaymentMethod WHERE PaymentMethodID = ?";
-                List<Object[]> list = XQuery.getRawList(sql, p.getPaymentMethodID());
-
-                if (!list.isEmpty()) {
-                    txtPhuongThucThanhToan.setText(list.get(0)[0].toString());
-                }
-            } else {
-                txtPhuongThucThanhToan.setText("Chưa xác định");
-            }
 
             int trangThai = invoice.getStatus();
             if (trangThai == 1) {
@@ -1522,7 +1507,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
     public void loadToComboboxNhanVien(List<Barber> list) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboNhanVien.getModel();
         model.removeAllElements();
-        model.addElement("Tất Cả"); // Thêm dòng này để mặc định không lọc theo ai
+        model.addElement("Tất Cả");
         for (Barber b : list) {
             model.addElement(b.getFirstname() + " " + b.getLastname());
         }
@@ -1541,15 +1526,15 @@ public class HistoryJdialog extends javax.swing.JDialog {
         jdTuNgayHD.setMaxSelectableDate(new java.util.Date());
         jdDenNgayHD.setMaxSelectableDate(new java.util.Date());
 
-        jdTuNgayDL.setLocale(localeVN);
-        jdDenNgayDL.setLocale(localeVN);
+        jdTuNgayLD.setLocale(localeVN);
+        jdDenNgayLD.setLocale(localeVN);
 
         // Nếu muốn hiển thị định dạng ngày kiểu Việt Nam (dd/MM/yyyy)
-        jdTuNgayDL.setDateFormatString("dd/MM/yyyy");
-        jdDenNgayDL.setDateFormatString("dd/MM/yyyy");
+        jdTuNgayLD.setDateFormatString("dd/MM/yyyy");
+        jdDenNgayLD.setDateFormatString("dd/MM/yyyy");
         //Không cho phép chọn tương lai
-        jdTuNgayDL.setMaxSelectableDate(new java.util.Date());
-        jdDenNgayDL.setMaxSelectableDate(new java.util.Date());
+        jdTuNgayLD.setMaxSelectableDate(new java.util.Date());
+        jdDenNgayLD.setMaxSelectableDate(new java.util.Date());
     }
 
     private boolean validateFilter(Date tuNgay, Date denNgay) {
@@ -1564,7 +1549,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
     }
 
     private void performFilter() {
-        // 1. Lấy dữ liệu từ giao diện
         String trangThai = cboTrangThaiHD.getSelectedItem().toString();
         String nhanVien = cboNhanVien.getSelectedItem().toString();
         java.util.Date tuNgayHD = jdTuNgayHD.getDate();
@@ -1572,8 +1556,6 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         validateFilter(tuNgayHD, denNgayHD);
 
-        // 3. Gọi Repo lọc và đổ lại bảng
-        // Hàm filterHistory trong Repo của bạn đã xử lý 1=1 và SQL động rất tốt rồi
         List<Object[]> list = historyRepo.filterHistory(trangThai, nhanVien, tuNgayHD, denNgayHD);
         loadToTableLichSu(list);
     }
@@ -1584,7 +1566,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
         loadToTableLichSu(historyRepo.showHistoryDF());
         loadToComboboxNhanVien(barberRepo.getAll());
         setupComboBox();
-        loadToTableLichDat();
+        loadToTableLichDat(null);
+        loadToComboBoxTrangThaiLd();
     }
 
     private void setupComboBox() {
@@ -1612,18 +1595,27 @@ public class HistoryJdialog extends javax.swing.JDialog {
         }
     }
 
-    private void loadToTableLichDat() {
+    private void loadToTableLichDat(List<Object[]> list) {
         DefaultTableModel model = (DefaultTableModel) tblLichDat.getModel();
-        model.setRowCount(0); // Xóa sạch dữ liệu cũ
+        model.setRowCount(0);
 
         try {
-            List<Object[]> list = historyRepo.getAppointmentHistory();
+            if (list == null) {
+                list = historyRepo.getAppointmentHistory();
+            }
             for (Object[] row : list) {
-                model.addRow(row);
+                model.addRow(new Object[]{
+                    row[0], // AppointmentID
+                    row[1], // AppointmentCode
+                    row[2], // Customer Fullname
+                    row[3], // Customer Phone
+                    row[4], // AppointmentDateTime
+                    row[5], // Status (Chuỗi đã convert qua CASE WHEN)
+                    row[6] // Employee Name (Người tạo)
+                });
             }
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi truy vấn lịch sử lịch hẹn!");
         }
     }
 
@@ -1656,7 +1648,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
             txtTongTienGiamGia.setText(df.format(totalDiscount));
 
             // 4. Phương thức thanh toán (Index 3)
-            txtPhuongThucThanhToan.setText(data[3] != null ? data[3].toString() : "N/A");
+            txtPhuongThucThanhToan.setText(data[3] != null ? data[3].toString() : "Tiền Mặt");
 
             // 5. Thành tiền - Ô chữ to bên phải (Index 2)
             double totalAmount = data[2] != null ? Double.parseDouble(data[2].toString()) : 0;
@@ -1703,6 +1695,47 @@ public class HistoryJdialog extends javax.swing.JDialog {
         model.setRowCount(0);
         for (Object[] rowObj : listServices) {
             model.addRow(rowObj);
+        }
+    }
+
+    private void loadToComboBoxTrangThaiLd() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboTrangThaiLD.getModel();
+        model.removeAllElements();
+
+        model.addElement("Tất cả");            // Index 0 -> status = -1
+        model.addElement("Chưa đến");          // Index 1 -> status = 1
+        model.addElement("Đã đến");            // Index 2 -> status = 2
+        model.addElement("Đã hủy");            // Index 3 -> status = 3
+        model.addElement("Đang chờ xử lý");     // Index 4 -> status = 4
+        model.addElement("Đã xong");           // Index 5 -> status = 5
+    }
+
+    private void performFilterLichDat() {
+        // 1. Lấy Trạng thái từ ComboBox (theo đúng thứ tự index Nam vừa bổ sung)
+        int indexStatus = cboTrangThaiLD.getSelectedIndex();
+        int status;
+        // Index 0: Tất cả (-1), Index 1: Chưa đến (1), Index 2: Đã đến (2),...
+        status = (indexStatus == 0) ? -1 : indexStatus;
+
+        // 2. Lấy khoảng ngày
+        java.util.Date tuNgay = jdTuNgayLD.getDate();
+        java.util.Date denNgay = jdDenNgayLD.getDate();
+
+        // 3. Validate ngày
+        if (!validateFilter(tuNgay, denNgay)) {
+            return;
+        }
+
+        try {
+            // 4. Gọi Repo: Vì đã xóa ComboBox nhân viên, Nam truyền -1 vào tham số ID nhân viên
+            // để SQL bỏ qua điều kiện lọc theo người tạo.
+            List<Object[]> data = historyRepo.getFilteredLichDat(status, -1, tuNgay, denNgay);
+
+            // 5. Đổ lên bảng
+            loadToTableLichDat(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi lọc dữ liệu!");
         }
     }
 
