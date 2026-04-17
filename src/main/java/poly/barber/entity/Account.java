@@ -15,4 +15,21 @@ public class Account {
     private String password;
     private int role; // 🔥 THÊM CÁI NÀY
     private int employeeID;
+public String getRoleName() {
+    switch (this.role) {
+        case 1:
+            return "Admin";
+        case 2:
+            return "Quản lý";
+        case 3:
+            return "Nhân viên";
+        default:
+            return "Không xác định";
+    }
+}
+
+@Override
+public String toString() {
+    return username + " (" + getRoleName() + ")";
+}
 }

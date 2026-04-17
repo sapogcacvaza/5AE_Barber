@@ -115,7 +115,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setBackground(new java.awt.Color(0, 102, 153));
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +124,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnDelete.setBackground(new java.awt.Color(0, 102, 153));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,7 +170,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -186,7 +188,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        btnFilter1.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter1.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter1.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter1.setText("Lọc");
         btnFilter1.addActionListener(new java.awt.event.ActionListener() {
@@ -195,7 +197,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
-        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -286,7 +288,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         jLabel13.setText("Địa Chỉ:");
 
-        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setBackground(new java.awt.Color(0, 102, 153));
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -295,6 +297,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             }
         });
 
+        btnUpdate.setForeground(new java.awt.Color(0, 102, 153));
         btnUpdate.setText("Chỉnh sửa");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

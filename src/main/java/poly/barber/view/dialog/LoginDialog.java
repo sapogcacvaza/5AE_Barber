@@ -237,7 +237,7 @@ public class LoginDialog extends javax.swing.JDialog {
             }
 
             JOptionPane.showMessageDialog(this,
-                    "Đăng nhập thành công!\nRole: " + acc.getRole()
+                    "Đăng nhập thành công!\nRole: " + acc.getRoleName()
             );
 
             loginSuccess = true;
@@ -264,28 +264,70 @@ public class LoginDialog extends javax.swing.JDialog {
 
     private void btnlilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlilActionPerformed
         // TODO add your handling code here:
-        java.util.List<String> accounts = getSavedAccounts();
+    java.util.List<String> accounts = getSavedAccounts();
 
-        if (accounts.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Chưa có tài khoản nào được lưu!");
-            return;
+    if (accounts.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Chưa có tài khoản nào được lưu!");
+        return;
+    }
+
+    // 👉 Danh sách hiển thị
+    java.util.List<String> displayList = new java.util.ArrayList<>();
+
+    // 👉 Map display -> account gốc
+    java.util.Map<String, String[]> map = new java.util.HashMap<>();
+
+    for (String acc : accounts) {
+        String[] parts = acc.split("\\|");
+
+        String username = parts.length > 0 ? parts[0] : "";
+        String password = parts.length > 1 ? parts[1] : "";
+        String roleName = "Không rõ";
+
+        if (parts.length >= 3) {
+            try {
+                int role = Integer.parseInt(parts[2]);
+                switch (role) {
+                    case 1:
+                        roleName = "Admin";
+                        break;
+                    case 2:
+                        roleName = "Quản lý";
+                        break;
+                    case 3:
+                        roleName = "Nhân viên";
+                        break;
+                }
+            } catch (Exception e) {
+                roleName = "Không rõ";
+            }
         }
 
-        String selected = (String) JOptionPane.showInputDialog(
-                this,
-                "Chọn tài khoản:",
-                "Danh sách tài khoản",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                accounts.toArray(),
-                accounts.get(0)
-        );
+        String display = username + " (" + roleName + ")";
+        displayList.add(display);
 
-        if (selected != null) {
-            String[] parts = selected.split("\\|");
-            txtname.setText(parts[0]);
-            psw.setText(parts[1]);
-        }
+        // lưu để map ngược
+        map.put(display, parts);
+    }
+
+    // 👉 Hiển thị dialog
+    String selected = (String) JOptionPane.showInputDialog(
+            this,
+            "Chọn tài khoản:",
+            "Danh sách tài khoản",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            displayList.toArray(),
+            displayList.get(0)
+    );
+
+    // 👉 Set lại input
+    if (selected != null && map.containsKey(selected)) {
+        String[] parts = map.get(selected);
+
+        txtname.setText(parts.length > 0 ? parts[0] : "");
+        psw.setText(parts.length > 1 ? parts[1] : "");
+    }
     }//GEN-LAST:event_btnlilActionPerformed
 
     /**

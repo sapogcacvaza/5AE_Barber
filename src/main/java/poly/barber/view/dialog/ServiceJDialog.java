@@ -182,6 +182,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
+        btnThem.setBackground(new java.awt.Color(0, 102, 153));
+        btnThem.setForeground(new java.awt.Color(255, 255, 255));
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,6 +191,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnSua.setBackground(new java.awt.Color(0, 102, 153));
+        btnSua.setForeground(new java.awt.Color(255, 255, 255));
         btnSua.setText("Sửa");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,6 +207,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnLoc.setBackground(new java.awt.Color(0, 102, 153));
+        btnLoc.setForeground(new java.awt.Color(255, 255, 255));
         btnLoc.setText("Lọc");
         btnLoc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,6 +260,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             tblService.getColumnModel().getColumn(3).setMaxWidth(150);
         }
 
+        btnClear.setBackground(new java.awt.Color(0, 102, 153));
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Làm mới");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -416,6 +424,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnThem1.setBackground(new java.awt.Color(0, 102, 153));
+        btnThem1.setForeground(new java.awt.Color(255, 255, 255));
         btnThem1.setText("Thêm");
         btnThem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -423,6 +433,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnSua1.setBackground(new java.awt.Color(0, 102, 153));
+        btnSua1.setForeground(new java.awt.Color(255, 255, 255));
         btnSua1.setText("Sửa");
         btnSua1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -430,6 +442,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnXoa.setBackground(new java.awt.Color(0, 102, 153));
+        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
         btnXoa.setText("Xoá");
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -437,6 +451,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
             }
         });
 
+        btnClear2.setBackground(new java.awt.Color(0, 102, 153));
+        btnClear2.setForeground(new java.awt.Color(255, 255, 255));
         btnClear2.setText("Làm mới");
         btnClear2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

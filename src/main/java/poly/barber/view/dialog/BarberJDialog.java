@@ -109,7 +109,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        btnTimKiem.setBackground(new java.awt.Color(0, 153, 255));
+        btnTimKiem.setBackground(new java.awt.Color(0, 102, 153));
         btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +118,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnDelete.setBackground(new java.awt.Color(0, 102, 153));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Xóa");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,7 +160,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        btnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Lọc");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +178,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        btnFilter1.setBackground(new java.awt.Color(0, 153, 255));
+        btnFilter1.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter1.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter1.setText("Lọc");
         btnFilter1.addActionListener(new java.awt.event.ActionListener() {
@@ -185,7 +187,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
-        btnUnFilter.setBackground(new java.awt.Color(0, 153, 255));
+        btnUnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnUnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnUnFilter.setText("Bỏ Lọc");
         btnUnFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -267,7 +269,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         rdoTrangThai.setText("Trạng Thái");
 
-        btnAdd.setBackground(new java.awt.Color(0, 153, 255));
+        btnAdd.setBackground(new java.awt.Color(0, 102, 153));
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Thêm");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -276,6 +278,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         });
 
+        btnUpdate.setForeground(new java.awt.Color(0, 102, 153));
         btnUpdate.setText("Chỉnh sửa");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

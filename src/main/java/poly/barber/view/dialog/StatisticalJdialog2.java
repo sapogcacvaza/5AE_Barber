@@ -171,6 +171,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
 
         jLabel2.setText("Đến Ngày");
 
+        btnReset.setBackground(new java.awt.Color(0, 102, 153));
+        btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("Làm Mới");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +180,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnSearch.setBackground(new java.awt.Color(0, 102, 153));
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("Tìm Kiếm");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -185,6 +189,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnExportExcel.setBackground(new java.awt.Color(0, 102, 153));
+        btnExportExcel.setForeground(new java.awt.Color(255, 255, 255));
         btnExportExcel.setText("Xuất Excel");
         btnExportExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,6 +306,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
 
         jLabel4.setText("Đến Ngày");
 
+        btnReset1.setBackground(new java.awt.Color(0, 102, 153));
+        btnReset1.setForeground(new java.awt.Color(255, 255, 255));
         btnReset1.setText("Làm Mới");
         btnReset1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,6 +315,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnSearch1.setBackground(new java.awt.Color(0, 102, 153));
+        btnSearch1.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch1.setText("Tìm Kiếm");
         btnSearch1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -314,6 +324,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnExportExcel1.setBackground(new java.awt.Color(0, 102, 153));
+        btnExportExcel1.setForeground(new java.awt.Color(255, 255, 255));
         btnExportExcel1.setText("Xuất Excel");
         btnExportExcel1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -448,6 +460,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
 
         jLabel6.setText("Đến Ngày");
 
+        btnReset2.setBackground(new java.awt.Color(0, 102, 153));
+        btnReset2.setForeground(new java.awt.Color(255, 255, 255));
         btnReset2.setText("Làm Mới");
         btnReset2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -455,6 +469,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnSearch2.setBackground(new java.awt.Color(0, 102, 153));
+        btnSearch2.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch2.setText("Tìm Kiếm");
         btnSearch2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -462,6 +478,8 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
             }
         });
 
+        btnExportExcel2.setBackground(new java.awt.Color(0, 102, 153));
+        btnExportExcel2.setForeground(new java.awt.Color(255, 255, 255));
         btnExportExcel2.setText("Xuất Excel");
         btnExportExcel2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
