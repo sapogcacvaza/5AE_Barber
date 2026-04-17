@@ -152,5 +152,25 @@ public List<Invoice> searchByCustomerName(String name) {
     public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
         return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
     }
-
+public Object[] getCustomerInfoByInvoice(int invoiceId) {
+    String sql = "SELECT c.Fullname, c.Phone " +
+                 "FROM Invoice i " +
+                 "JOIN Appointment a ON i.AppointmentID = a.AppointmentID " +
+                 "JOIN Customer c ON a.CustomerID = c.CustomerID " +
+                 "WHERE i.InvoiceID = ?";
+    
+    List<Object[]> list = XQuery.getRawList(sql, invoiceId);
+    return list.isEmpty() ? null : list.get(0);
+    }
+public boolean cancelInvoice(int invoiceId) {
+        // Cập nhật trạng thái thành 3 và ghi nhận giờ hủy
+    String sql = "UPDATE Invoice SET Status = 3, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
+    try {
+        XJdbc.executeUpdate(sql, invoiceId);
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+    }
 }
