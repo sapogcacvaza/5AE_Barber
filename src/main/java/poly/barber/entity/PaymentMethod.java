@@ -10,7 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class PaymentMethod {
+
     private int paymentMethodID;
     private String paymentName;
 
+    @Override
+    public String toString() {
+        return this.getPaymentName();
+    }
 }

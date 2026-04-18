@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class Invoice {
 
-    private String barberName;
     private int invoiceID;
     private String invoiceCode; // Mã Hóa Đơn
     private LocalDateTime checkInDateTime;
