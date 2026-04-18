@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Account;
 import poly.barber.entity.Discount;
 import poly.barber.repository.Impl.DiscountRepository;
@@ -41,65 +42,55 @@ public class DiscountJdialog extends javax.swing.JDialog {
         loadTable();
 
 //        cbbdc.addActionListener(e -> loadTable());
-
 //        txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
 //            public void keyReleased(java.awt.event.KeyEvent evt) {
 //                loadTable();
 //            }
 //        });
-
         // ✅ FIX ở đây
 //        cbLoai.addActionListener(e -> txtmagiamgia.setText(generateCode()));
     }
 
-void initComboFilter() {  // ✔ nằm ngoài
-    cbbdc.removeAllItems();
-    cbbdc.addItem("Tất cả");
-    cbbdc.addItem("Giảm %");
-    cbbdc.addItem("Giảm tiền");
+    void initComboFilter() {  // ✔ nằm ngoài
+        cbbdc.removeAllItems();
+        cbbdc.addItem("Tất cả");
+        cbbdc.addItem("Giảm %");
+        cbbdc.addItem("Giảm tiền");
 
-    cbbtrangthai.removeAllItems();
-    cbbtrangthai.addItem("Tất cả");
-    cbbtrangthai.addItem("Hoạt động");
-    cbbtrangthai.addItem("Ngưng");
-}
+        cbbtrangthai.removeAllItems();
+        cbbtrangthai.addItem("Tất cả");
+        cbbtrangthai.addItem("Hoạt động");
+        cbbtrangthai.addItem("Ngưng");
+    }
 
- void loadTable() {
-    var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
+void loadTable() {
+    DefaultTableModel model = (DefaultTableModel) tbldc.getModel();
     model.setRowCount(0);
 
-    String keyword = txtfind.getText().toLowerCase();
+    String keyword = txtfind.getText() == null ? "" : txtfind.getText().toLowerCase();
 
-    int typeIndex = cbbdc.getSelectedIndex();
-    int statusIndex = cbbtrangthai.getSelectedIndex();
+    int loai = cbbdc.getSelectedIndex();       // 0 all, 1 %, 2 tiền
+    int trangthai = cbbtrangthai.getSelectedIndex(); // 0 all, 1 active, 2 off
 
-    int type = 0;
-    if (typeIndex == 1) type = 1;
-    if (typeIndex == 2) type = 2;
+    list = service.getAll().stream()
+            .filter(d ->
+                (keyword.isEmpty()
+                || d.getDiscountName().toLowerCase().contains(keyword)
+                || d.getDiscountCode().toLowerCase().contains(keyword))
+            )
+            .filter(d ->
+                loai == 0 ||
+                (loai == 1 && d.getDiscountType() == 1) ||
+                (loai == 2 && d.getDiscountType() == 2)
+            )
+            .filter(d ->
+                trangthai == 0 ||
+                (trangthai == 1 && d.getStatus() == 1) ||
+                (trangthai == 2 && d.getStatus() == 0)
+            )
+            .toList();
 
-    int status = -1;
-    if (statusIndex == 1) status = 1;
-    if (statusIndex == 2) status = 0;
-
-    list = service.getAll(); // 👉 lấy all
-
-    for (var d : list) {
-
-        // 🔍 SEARCH
-        if (!d.getDiscountName().toLowerCase().contains(keyword)) {
-            continue;
-        }
-
-        // 🎯 FILTER LOẠI
-        if (type != 0 && d.getDiscountType() != type) {
-            continue;
-        }
-
-        // 🎯 FILTER TRẠNG THÁI
-        if (status != -1 && d.getStatus() != status) {
-            continue;
-        }
-
+    for (Discount d : list) {
         model.addRow(new Object[]{
             d.getDiscountID(),
             d.getDiscountCode(),
@@ -126,69 +117,32 @@ void initComboFilter() {  // ✔ nằm ngoài
         cbTrangThai.addItem("Ngưng");     // 0
     }
 
-    Discount getForm() {
-        txtten.setBackground(Color.white);
-        txtgiatri.setBackground(Color.white);
-        txtsoluong.setBackground(Color.white);
-        txtmagiamgia.setBackground(Color.white);
-        if (txtmagiamgia.getText().trim().isEmpty()) {
-            throw new RuntimeException("Mã giảm giá không được trống");
-        }
+   Discount getForm(boolean isInsert) {
 
-        if (txtten.getText().trim().isEmpty()) {
-            txtten.setBackground(Color.pink);
-            throw new RuntimeException("Tên không được trống");
-        }
+    DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    try {
+    new BigDecimal(txtgiatri.getText());
+    Integer.parseInt(txtsoluong.getText());
+} catch (Exception e) {
+    throw new RuntimeException("Giá trị hoặc số lượng không hợp lệ");
+}
 
-        if (txtgiatri.getText().trim().isEmpty()) {
-            txtgiatri.setBackground(Color.pink);
-            throw new RuntimeException("Giá trị không được trống");
-        }
-
-        if (txtsoluong.getText().trim().isEmpty()) {
-            throw new RuntimeException("Số lượng không được trống");
-        }
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        LocalDateTime start;
-        LocalDateTime end;
-
-        try {
-            start = LocalDateTime.parse(txtstart.getText(), formatter);
-            end = LocalDateTime.parse(txtend.getText(), formatter);
-        } catch (Exception e) {
-            throw new RuntimeException("Sai định dạng ngày! Ví dụ: 2026-04-07 14:30");
-        }
-
-        if (end.isBefore(start)) {
-            throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
-        }
-
-        int type = cbLoai.getSelectedIndex() == 0 ? 1 : 2;
-        int status = cbTrangThai.getSelectedIndex() == 0 ? 1 : 0;
-
-        BigDecimal value;
-        try {
-            value = new BigDecimal(txtgiatri.getText());
-        } catch (Exception e) {
-            throw new RuntimeException("Giá trị phải là số");
-        }
-
-        return Discount.builder()
-                .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
-                .discountCode(txtmagiamgia.getText())
-                .discountName(txtten.getText())
-                .discountType(type)
-                .discountValue(value)
-                .description(txtmota.getText())
-                .startDateTime(start)
-                .endDateTime(end)
-                .status(status)
-                .maxUsage(Integer.parseInt(txtsoluong.getText()))
-                .usedCount(Integer.parseInt(txtdasudung.getText()))
-                .build();
-    }
+    return Discount.builder()
+            .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
+            .discountCode(txtmagiamgia.getText()) // 🔥 nhập tay
+            .discountName(txtten.getText())
+            .discountType(cbLoai.getSelectedIndex() == 0 ? 1 : 2)
+            .discountValue(new BigDecimal(txtgiatri.getText()))
+            .description(txtmota.getText())
+            .startDateTime(LocalDateTime.parse(txtstart.getText(), f))
+            .endDateTime(LocalDateTime.parse(txtend.getText(), f))
+            .status(cbTrangThai.getSelectedIndex() == 0 ? 1 : 0)
+            .maxUsage(Integer.parseInt(txtsoluong.getText()))
+            .usedCount(isInsert ? 0 : Integer.parseInt(txtdasudung.getText()))
+            .build();
+    
+    
+}
 
     String generateCode() {
         String prefix = cbLoai.getSelectedIndex() == 0 ? "PT" : "TM";
@@ -232,6 +186,21 @@ void initComboFilter() {  // ✔ nằm ngoài
         txtdasudung.setText(String.valueOf(d.getUsedCount()));
     }
 
+void clearForm() {
+    txtid.setText("");
+    txtmagiamgia.setText("");
+    txtten.setText("");
+    txtgiatri.setText("");
+    txtmota.setText("");
+    txtstart.setText("");
+    txtend.setText("");
+    txtsoluong.setText("");
+    txtdasudung.setText("0");
+
+    cbLoai.setSelectedIndex(0);
+    cbTrangThai.setSelectedIndex(0);
+}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -254,6 +223,7 @@ void initComboFilter() {  // ✔ nằm ngoài
         jLabel14 = new javax.swing.JLabel();
         btnlocloai = new javax.swing.JButton();
         btnloctrangthai = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
@@ -279,6 +249,7 @@ void initComboFilter() {  // ✔ nằm ngoài
         txtmagiamgia = new javax.swing.JTextField();
         cbTrangThai = new javax.swing.JComboBox<>();
         cbLoai = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -292,7 +263,7 @@ void initComboFilter() {  // ✔ nằm ngoài
             }
         });
         jPanel2.add(cbbdc, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 150, -1));
-        jPanel2.add(txtfind, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 220, -1));
+        jPanel2.add(txtfind, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 153));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -302,7 +273,7 @@ void initComboFilter() {  // ✔ nằm ngoài
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 90, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 90, -1));
 
         tbldc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -353,8 +324,8 @@ void initComboFilter() {  // ✔ nằm ngoài
         jLabel13.setText("Lọc Theo Trạng Thái:");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, -1, 20));
 
-        jLabel14.setText("Lọc Theo Loại:");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, -1, 20));
+        jLabel14.setText("Tìm theo mã hoặc tên giảm giá ");
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 20));
 
         btnlocloai.setBackground(new java.awt.Color(0, 102, 153));
         btnlocloai.setForeground(new java.awt.Color(255, 255, 255));
@@ -376,12 +347,21 @@ void initComboFilter() {  // ✔ nằm ngoài
         });
         jPanel2.add(btnloctrangthai, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 70, 60, -1));
 
+        jLabel15.setText("Lọc Theo Loại:");
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, -1, 20));
+
         jTabbedPane1.addTab("Danh sách", jPanel2);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("ID");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+
+        txtid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtidActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtid, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 160, -1));
 
         jLabel3.setText("TÊN");
@@ -404,16 +384,18 @@ void initComboFilter() {  // ✔ nằm ngoài
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, -1, -1));
         jPanel1.add(txtend, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 160, -1));
 
-        jLabel8.setText("TRẠNG THÁI");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel8.setText("Nhập theo format: năm-tháng-ngày | giờ-phút");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 280, -1));
 
         jLabel9.setText("SỐ LƯỢNG");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
-        jPanel1.add(txtsoluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 160, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, -1, -1));
+        jPanel1.add(txtsoluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 160, -1));
 
         jLabel10.setText("ĐÃ SỬ DỤNG");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, -1, -1));
-        jPanel1.add(txtdasudung, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 160, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, -1, -1));
+        jPanel1.add(txtdasudung, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 160, -1));
 
         jLabel11.setText("LOẠI");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
@@ -426,7 +408,7 @@ void initComboFilter() {  // ✔ nằm ngoài
                 txtthemActionPerformed(evt);
             }
         });
-        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 130, 30));
+        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 230, 130, 30));
 
         txtsua.setBackground(new java.awt.Color(0, 102, 153));
         txtsua.setForeground(new java.awt.Color(255, 255, 255));
@@ -436,17 +418,20 @@ void initComboFilter() {  // ✔ nằm ngoài
                 txtsuaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 130, 130, 30));
+        jPanel1.add(txtsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 230, 130, 30));
 
         jLabel12.setText("MÃ GIẢM GIÁ");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
         jPanel1.add(txtmagiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 160, -1));
 
         cbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(cbTrangThai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 160, -1));
+        jPanel1.add(cbTrangThai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 160, -1));
 
         cbLoai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cbLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 160, -1));
+
+        jLabel16.setText("TRẠNG THÁI");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
 
         jTabbedPane1.addTab("Thêm mới", jPanel1);
 
@@ -470,32 +455,43 @@ void initComboFilter() {  // ✔ nằm ngoài
 
     private void txtthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtthemActionPerformed
         // TODO add your handling code here:
-        try {
-            Discount d = getForm();
-            d.setDiscountCode(generateCode());
-            service.add(d);
+  try {
+        Discount d = getForm(true);
 
-            JOptionPane.showMessageDialog(this, "Thêm thành công!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+        // 🔥 check trùng lần 2 cho chắc
+        if (service.getAll().stream()
+                .anyMatch(x -> x.getDiscountCode().equalsIgnoreCase(d.getDiscountCode()))) {
+
+            JOptionPane.showMessageDialog(this, "Mã giảm giá đã tồn tại!");
+            return;
         }
+
+        service.add(d);
+
+        loadTable();
+        clearForm();
+
+        JOptionPane.showMessageDialog(this, "Thêm thành công");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
     }//GEN-LAST:event_txtthemActionPerformed
 
     private void txtsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsuaActionPerformed
         // TODO add your handling code here:
-        try {
-            Discount d = getForm();
-            if (txtid.getText().isEmpty()) {
-                d.setDiscountCode(generateCode()); // thêm mới
-            } else {
-                // nếu sửa thì chỉ update khi đổi loại
-                d.setDiscountCode(generateCode());
-            }
-            service.update(d);
-            JOptionPane.showMessageDialog(this, "Sửa thành công!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
-        }
+     try {
+        Discount d = getForm(false);
+
+        service.update(d);
+
+        loadTable();
+
+        JOptionPane.showMessageDialog(this, "Sửa thành công");
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, e.getMessage());
+    }
     }//GEN-LAST:event_txtsuaActionPerformed
 
     private void tbldcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbldcMouseClicked
@@ -518,10 +514,10 @@ void initComboFilter() {  // ✔ nằm ngoài
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-            txtfind.setText("");
-    cbbdc.setSelectedIndex(0);
-    cbbtrangthai.setSelectedIndex(0);
-    loadTable();
+        txtfind.setText("");
+        cbbdc.setSelectedIndex(0);
+        cbbtrangthai.setSelectedIndex(0);
+        loadTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnlocloaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlocloaiActionPerformed
@@ -537,6 +533,10 @@ void initComboFilter() {  // ✔ nằm ngoài
     private void cbbtrangthaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbtrangthaiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbtrangthaiActionPerformed
+
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtidActionPerformed
 
     /**
      * @param args the command line arguments
@@ -590,6 +590,8 @@ void initComboFilter() {  // ✔ nằm ngoài
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

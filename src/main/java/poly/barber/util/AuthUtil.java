@@ -54,7 +54,7 @@ public static boolean canInvoice(Account u) {
 
 // 💳 THANH TOÁN (admin + manager)
 public static boolean canPayment(Account u) {
-    return isAdminOrManager(u);
+    return isStaffOrAbove(u);
 }
 
 // 💈 BARBER (admin + manager)
