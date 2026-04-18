@@ -21,14 +21,14 @@ import poly.barber.repository.Impl.BarberRepositoryImpl;
  * @author Dell
  */
 public class BarberJDialog extends javax.swing.JDialog implements BarberController {
-    
+
     Account user = poly.barber.util.Session.user;
     BarberPositionRepositoryImpl bprepo = new BarberPositionRepositoryImpl();
     BarberRepositoryImpl brepo = new BarberRepositoryImpl();
     DefaultTableModel dtm = new DefaultTableModel();
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbmStatusFilter = new DefaultComboBoxModel();
-    
+
     public BarberJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -39,7 +39,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         fillToTable(brepo.getAll());
         fillToPositionCombobox(bprepo.getAll());
         auth();
-        
+
     }
 
     /**
@@ -515,19 +515,19 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             fillToTable(lst);
             return;
         }
-        
+
         List<Barber> lst2 = brepo.searchByEmail(txtTimKiem.getText());
         if (!lst2.isEmpty()) {
             fillToTable(lst2);
             return;
         }
-        
+
         List<Barber> lst3 = brepo.searchByName(txtTimKiem.getText());
         if (!lst3.isEmpty()) {
             fillToTable(lst3);
             return;
         }
-        
+
         JOptionPane.showMessageDialog(this,
                 "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
         fillToTable(brepo.getAll());
@@ -630,18 +630,19 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     private javax.swing.JTextField txtPhone;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
- 
-    public void clearForm(){
+
+    public void clearForm() {
         txtEmail.setText("");
         txtFirstname.setText("");
         txtLastname.setText("");
         txtPhone.setText("");
         lblBarberId.setText("");
     }
+
     public void auth() {
         if (user != null) {
             int role = user.getRole();
-            
+
             if (role == 2) {
                 btnDelete.setEnabled(false);
             } else if (role == 3) {
@@ -650,21 +651,21 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             }
         }
     }
-    
+
     public int statusFilter() {
         if (cboStatusFilter.getSelectedItem().equals("Đi làm")) {
             return 1;
         }
         return 0;
     }
-    
+
     public int isBusyFilter() {
         if (cboIsBusy.getSelectedItem().equals("Rảnh")) {
             return 1;
         }
         return 0;
     }
-    
+
     public boolean checkNull() {
         try {
             int phone = Integer.parseInt(txtPhone.getText());
@@ -694,7 +695,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-    
+
     public boolean checkDuplicateInsert() {
         for (Barber b : brepo.getAll()) {
             if (txtEmail.getText().equals(b.getEmail())) {
@@ -708,11 +709,11 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-    
+
     public boolean checkDuplicateUpdate() {
         int currentID = Integer.parseInt(lblBarberId.getText());
         for (Barber b : brepo.getAll()) {
-            
+
             if (b.getBarberID() == currentID) {
                 continue;
             }
@@ -727,17 +728,17 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         }
         return true;
     }
-    
+
     @Override
     public void open() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void setForm(Barber entity) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public void setForm(int index) {
         lblBarberId.setText(tblBarber.getValueAt(index, 0) + "");
         if (tblBarber.getValueAt(index, 2) == "Đi làm") {
@@ -752,12 +753,12 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         BarberPosition b = bprepo.getOne((int) tblBarber.getValueAt(index, 7));
         cboPosition.setSelectedItem(b.getPositionName());
     }
-    
+
     @Override
     public Barber getForm() {
         Barber b = new Barber();
-        if(!lblBarberId.getText().isEmpty()){
-        b.setBarberID(Integer.parseInt(lblBarberId.getText()));
+        if (!lblBarberId.getText().isEmpty()) {
+            b.setBarberID(Integer.parseInt(lblBarberId.getText()));
         }
         b.setEmail(txtEmail.getText());
         b.setFirstname(txtFirstname.getText());
@@ -768,75 +769,86 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         b.setPositionID(bp.getPositionID());
         return b;
     }
-    
+
     @Override
     public void fillToTable(List<Barber> lst) {
         dtm.setRowCount(0);
         for (Barber b : lst) {
-            dtm.addRow(new Object[]{b.getBarberID(), b.isBusy() ? "Rảnh" : "Bận", b.isStatus() ? "Đi làm" : "Nghỉ", b.getFirstname(), b.getLastname(), b.getPhone(), b.getEmail(), b.getPositionID()});
+            System.out.println(b.isBusy());
+            Object[] row = {
+                b.getBarberID(),
+                b.isBusy() == true ? "Bận" : "Rảnh",
+                b.isStatus() ? "Đi làm" : "Nghỉ",
+                b.getFirstname(),
+                b.getLastname(),
+                b.getPhone(),
+                b.getEmail(),
+                b.getPositionID()
+            };
+            dtm.addRow(row);
         }
     }
-    
+
     public void fillToPositionCombobox(List<BarberPosition> lst) {
         dcbm.removeAllElements();
         for (BarberPosition bp : lst) {
             dcbm.addElement(bp.getPositionName());
         }
     }
-    
+
     @Override
     public void edit() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void clear() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void setEditable(boolean editable) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void checkAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void uncheckAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void deleteCheckedItems() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveFirst() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void movePrevious() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveNext() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveLast() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public void moveTo(int rowIndex) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

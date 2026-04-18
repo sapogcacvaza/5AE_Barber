@@ -23,7 +23,7 @@ import poly.barber.service.DiscountService;
  * @author Os
  */
 public class DiscountJdialog extends javax.swing.JDialog {
-
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DiscountJdialog.class.getName());
     DiscountService service = new DiscountService();
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -41,81 +41,87 @@ public class DiscountJdialog extends javax.swing.JDialog {
         loadTable();
 
 //        cbbdc.addActionListener(e -> loadTable());
-
 //        txtfind.addKeyListener(new java.awt.event.KeyAdapter() {
 //            public void keyReleased(java.awt.event.KeyEvent evt) {
 //                loadTable();
 //            }
 //        });
-
         // ✅ FIX ở đây
 //        cbLoai.addActionListener(e -> txtmagiamgia.setText(generateCode()));
     }
-
-void initComboFilter() {  // ✔ nằm ngoài
-    cbbdc.removeAllItems();
-    cbbdc.addItem("Tất cả");
-    cbbdc.addItem("Giảm %");
-    cbbdc.addItem("Giảm tiền");
-
-    cbbtrangthai.removeAllItems();
-    cbbtrangthai.addItem("Tất cả");
-    cbbtrangthai.addItem("Hoạt động");
-    cbbtrangthai.addItem("Ngưng");
-}
-
- void loadTable() {
-    var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
-    model.setRowCount(0);
-
-    String keyword = txtfind.getText().toLowerCase();
-
-    int typeIndex = cbbdc.getSelectedIndex();
-    int statusIndex = cbbtrangthai.getSelectedIndex();
-
-    int type = 0;
-    if (typeIndex == 1) type = 1;
-    if (typeIndex == 2) type = 2;
-
-    int status = -1;
-    if (statusIndex == 1) status = 1;
-    if (statusIndex == 2) status = 0;
-
-    list = service.getAll(); // 👉 lấy all
-
-    for (var d : list) {
-
-        // 🔍 SEARCH
-        if (!d.getDiscountName().toLowerCase().contains(keyword)) {
-            continue;
-        }
-
-        // 🎯 FILTER LOẠI
-        if (type != 0 && d.getDiscountType() != type) {
-            continue;
-        }
-
-        // 🎯 FILTER TRẠNG THÁI
-        if (status != -1 && d.getStatus() != status) {
-            continue;
-        }
-
-        model.addRow(new Object[]{
-            d.getDiscountID(),
-            d.getDiscountCode(),
-            d.getDiscountName(),
-            d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
-            d.getDiscountValue(),
-            d.getDescription(),
-            d.getStartDateTime(),
-            d.getEndDateTime(),
-            d.getStatus() == 1 ? "Hoạt động" : "Ngưng",
-            d.getMaxUsage(),
-            d.getUsedCount()
-        });
+    
+    void initComboFilter() {  // ✔ nằm ngoài
+        cbbdc.removeAllItems();
+        cbbdc.addItem("Tất cả");
+        cbbdc.addItem("Giảm %");
+        cbbdc.addItem("Giảm tiền");
+        
+        cbbtrangthai.removeAllItems();
+        cbbtrangthai.addItem("Tất cả");
+        cbbtrangthai.addItem("Hoạt động");
+        cbbtrangthai.addItem("Ngưng");
     }
-}
+    
+    void loadTable() {
+        var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
+        model.setRowCount(0);
+        
+        String keyword = txtfind.getText().toLowerCase();
+        
+        int typeIndex = cbbdc.getSelectedIndex();
+        int statusIndex = cbbtrangthai.getSelectedIndex();
+        
+        int type = 0;
+        if (typeIndex == 1) {
+            type = 1;
+        }
+        if (typeIndex == 2) {
+            type = 2;
+        }
+        
+        int status = -1;
+        if (statusIndex == 1) {
+            status = 1;
+        }
+        if (statusIndex == 2) {
+            status = 0;
+        }
+        
+        list = service.getAll(); // 👉 lấy all
 
+        for (var d : list) {
+
+            // 🔍 SEARCH
+            if (!d.getDiscountName().toLowerCase().contains(keyword)) {
+                continue;
+            }
+
+            // 🎯 FILTER LOẠI
+            if (type != 0 && d.getDiscountType() != type) {
+                continue;
+            }
+
+            // 🎯 FILTER TRẠNG THÁI
+            if (status != -1 && d.getStatus() != status) {
+                continue;
+            }
+            
+            model.addRow(new Object[]{
+                d.getDiscountID(),
+                d.getDiscountCode(),
+                d.getDiscountName(),
+                d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
+                d.getDiscountValue(),
+                d.getDescription(),
+                d.getStartDateTime(),
+                d.getEndDateTime(),
+                d.getStatus() == 1 ? "Hoạt động" : "Ngưng",
+                d.getMaxUsage(),
+                d.getUsedCount()
+            });
+        }
+    }
+    
     void initComboForm() {
         cbLoai.removeAllItems();
         cbLoai.addItem("Giảm %");     // 1
@@ -125,7 +131,7 @@ void initComboFilter() {  // ✔ nằm ngoài
         cbTrangThai.addItem("Hoạt động"); // 1
         cbTrangThai.addItem("Ngưng");     // 0
     }
-
+    
     Discount getForm() {
         txtten.setBackground(Color.white);
         txtgiatri.setBackground(Color.white);
@@ -134,47 +140,47 @@ void initComboFilter() {  // ✔ nằm ngoài
         if (txtmagiamgia.getText().trim().isEmpty()) {
             throw new RuntimeException("Mã giảm giá không được trống");
         }
-
+        
         if (txtten.getText().trim().isEmpty()) {
             txtten.setBackground(Color.pink);
             throw new RuntimeException("Tên không được trống");
         }
-
+        
         if (txtgiatri.getText().trim().isEmpty()) {
             txtgiatri.setBackground(Color.pink);
             throw new RuntimeException("Giá trị không được trống");
         }
-
+        
         if (txtsoluong.getText().trim().isEmpty()) {
             throw new RuntimeException("Số lượng không được trống");
         }
-
+        
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+        
         LocalDateTime start;
         LocalDateTime end;
-
+        
         try {
             start = LocalDateTime.parse(txtstart.getText(), formatter);
             end = LocalDateTime.parse(txtend.getText(), formatter);
         } catch (Exception e) {
             throw new RuntimeException("Sai định dạng ngày! Ví dụ: 2026-04-07 14:30");
         }
-
+        
         if (end.isBefore(start)) {
             throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
         }
-
+        
         int type = cbLoai.getSelectedIndex() == 0 ? 1 : 2;
         int status = cbTrangThai.getSelectedIndex() == 0 ? 1 : 0;
-
+        
         BigDecimal value;
         try {
             value = new BigDecimal(txtgiatri.getText());
         } catch (Exception e) {
             throw new RuntimeException("Giá trị phải là số");
         }
-
+        
         return Discount.builder()
                 .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
                 .discountCode(txtmagiamgia.getText())
@@ -189,12 +195,12 @@ void initComboFilter() {  // ✔ nằm ngoài
                 .usedCount(Integer.parseInt(txtdasudung.getText()))
                 .build();
     }
-
+    
     String generateCode() {
         String prefix = cbLoai.getSelectedIndex() == 0 ? "PT" : "TM";
         return prefix + System.currentTimeMillis();
     }
-
+    
     public void setUser(Account user) {
         AccountService service = new AccountService();
 
@@ -209,25 +215,25 @@ void initComboFilter() {  // ✔ nằm ngoài
             // ok
         }
     }
-
+    
     void showDetail(int index) {
         Discount d = list.get(index);
-
+        
         txtid.setText(String.valueOf(d.getDiscountID()));
         txtmagiamgia.setText(d.getDiscountCode());
         txtten.setText(d.getDiscountName());
-
+        
         cbLoai.setSelectedIndex(d.getDiscountType() == 1 ? 0 : 1);
-
+        
         txtgiatri.setText(d.getDiscountValue().toString());
         txtmota.setText(d.getDescription());
-
+        
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         txtstart.setText(d.getStartDateTime().format(f));
         txtend.setText(d.getEndDateTime().format(f));
-
+        
         cbTrangThai.setSelectedIndex(d.getStatus() == 1 ? 0 : 1);
-
+        
         txtsoluong.setText(String.valueOf(d.getMaxUsage()));
         txtdasudung.setText(String.valueOf(d.getUsedCount()));
     }
@@ -279,6 +285,7 @@ void initComboFilter() {  // ✔ nằm ngoài
         txtmagiamgia = new javax.swing.JTextField();
         cbTrangThai = new javax.swing.JComboBox<>();
         cbLoai = new javax.swing.JComboBox<>();
+        txtClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -426,7 +433,7 @@ void initComboFilter() {  // ✔ nằm ngoài
                 txtthemActionPerformed(evt);
             }
         });
-        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 70, 130, 30));
+        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, 130, 30));
 
         txtsua.setBackground(new java.awt.Color(0, 102, 153));
         txtsua.setForeground(new java.awt.Color(255, 255, 255));
@@ -447,6 +454,16 @@ void initComboFilter() {  // ✔ nằm ngoài
 
         cbLoai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cbLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 160, -1));
+
+        txtClear.setBackground(new java.awt.Color(0, 102, 153));
+        txtClear.setForeground(new java.awt.Color(255, 255, 255));
+        txtClear.setText("LÀM MỚI");
+        txtClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClearActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 130, 30));
 
         jTabbedPane1.addTab("Thêm mới", jPanel1);
 
@@ -474,7 +491,7 @@ void initComboFilter() {  // ✔ nằm ngoài
             Discount d = getForm();
             d.setDiscountCode(generateCode());
             service.add(d);
-
+            
             JOptionPane.showMessageDialog(this, "Thêm thành công!");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -518,10 +535,10 @@ void initComboFilter() {  // ✔ nằm ngoài
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-            txtfind.setText("");
-    cbbdc.setSelectedIndex(0);
-    cbbtrangthai.setSelectedIndex(0);
-    loadTable();
+        txtfind.setText("");
+        cbbdc.setSelectedIndex(0);
+        cbbtrangthai.setSelectedIndex(0);
+        loadTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnlocloaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlocloaiActionPerformed
@@ -537,6 +554,18 @@ void initComboFilter() {  // ✔ nằm ngoài
     private void cbbtrangthaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbtrangthaiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbtrangthaiActionPerformed
+
+    private void txtClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClearActionPerformed
+        txtid.setText("");
+        txtmagiamgia.setText("");
+        txtten.setText("");
+        txtgiatri.setText("");
+        txtmota.setText("");
+        txtstart.setText("");
+        txtend.setText("");
+        txtsoluong.setText("");
+        txtdasudung.setText("");
+    }//GEN-LAST:event_txtClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -602,6 +631,7 @@ void initComboFilter() {  // ✔ nằm ngoài
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tbldc;
+    private javax.swing.JButton txtClear;
     private javax.swing.JTextField txtdasudung;
     private javax.swing.JTextField txtend;
     private javax.swing.JTextField txtfind;
