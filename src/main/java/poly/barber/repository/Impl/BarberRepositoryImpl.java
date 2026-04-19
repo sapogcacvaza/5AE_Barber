@@ -31,6 +31,7 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     String sqlSearchByName = "select * from Barber where Firstname like ?";
     String sqlSearchByPhone = "select * from Barber where Phone like ?";
     String sqlSearchByEmail = "select * from Barber where Email like ?";
+    String sqlSearchByLastName = "select * from Barber where Lastname like ?";
 
     public List<Barber> searchByEmail(String email) {
         return XQuery.getBeanList(Barber.class, sqlSearchByEmail, "%" + email + "%");
@@ -42,6 +43,9 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
 
     public List<Barber> searchByName(String name) {
         return XQuery.getBeanList(Barber.class, sqlSearchByName, "%" + name + "%");
+    }
+        public List<Barber> searchByLastName(String name) {
+        return XQuery.getBeanList(Barber.class, sqlSearchByLastName, "%" + name + "%");
     }
 
     public List<Barber> statusFilter(int id) {

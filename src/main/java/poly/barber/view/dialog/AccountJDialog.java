@@ -30,6 +30,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbm2 = new DefaultComboBoxModel();
     DefaultComboBoxModel dcbm3 = new DefaultComboBoxModel();
+    Account user = poly.barber.util.Session.user;
 
     public AccountJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -65,8 +66,8 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         jLabel5 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        btnXoa = new javax.swing.JButton();
-        btnChinhSua = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         txtAccountID = new javax.swing.JTextField();
         btnFilter = new javax.swing.JButton();
@@ -84,7 +85,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         btnAdd = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         cboEmployeeID = new javax.swing.JComboBox<>();
-        btnClearForm = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Account");
@@ -130,25 +131,27 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         jLabel6.setText("Quyền:");
 
-        btnXoa.setBackground(new java.awt.Color(0, 102, 153));
-        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
-        btnXoa.setText("Xóa");
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+        btnDelete.setBackground(new java.awt.Color(0, 102, 153));
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
+                btnDeleteActionPerformed(evt);
             }
         });
 
-        btnChinhSua.setBackground(new java.awt.Color(0, 102, 153));
-        btnChinhSua.setForeground(new java.awt.Color(255, 255, 255));
-        btnChinhSua.setText("Chỉnh sửa");
-        btnChinhSua.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setBackground(new java.awt.Color(0, 102, 153));
+        btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        btnUpdate.setText("Chỉnh sửa");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChinhSuaActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
         jLabel8.setText("ID Tài Khoản:");
+
+        txtAccountID.setEditable(false);
 
         btnFilter.setBackground(new java.awt.Color(0, 102, 153));
         btnFilter.setForeground(new java.awt.Color(255, 255, 255));
@@ -250,12 +253,12 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
             }
         });
 
-        btnClearForm.setBackground(new java.awt.Color(0, 153, 255));
-        btnClearForm.setForeground(new java.awt.Color(255, 255, 255));
-        btnClearForm.setText("Xóa Form");
-        btnClearForm.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setBackground(new java.awt.Color(0, 153, 255));
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("Xóa Form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearFormActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -290,15 +293,15 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
                             .addComponent(jLabel5)
                             .addComponent(txtPassword)
                             .addComponent(jLabel6)
-                            .addComponent(btnChinhSua, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                            .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel8)
                             .addComponent(txtAccountID)
                             .addComponent(cboRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
                             .addComponent(jLabel7)
                             .addComponent(cboEmployeeID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnClearForm, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))))
+                            .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))))
                 .addGap(0, 18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -346,15 +349,15 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnChinhSua)
+                        .addComponent(btnUpdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClearForm)
+                        .addComponent(btnClear)
                         .addGap(20, 20, 20))))
         );
 
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnChinhSua, btnXoa});
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnDelete, btnUpdate});
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -382,14 +385,14 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         int index = tblAccount.getSelectedRow();
         setForm(index);
         if(AuthUtil.isAdmin(acrepo.getOne(Integer.parseInt(txtAccountID.getText())))){
-            btnXoa.setEnabled(false);
+            btnDelete.setEnabled(false);
         }else{
-           btnXoa.setEnabled(true); 
+           btnDelete.setEnabled(true); 
         }
         
     }//GEN-LAST:event_tblAccountMouseClicked
 
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
     int index = tblAccount.getSelectedRow();
 
     if (index == -1) {
@@ -415,9 +418,9 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
         JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
     }
-    }//GEN-LAST:event_btnXoaActionPerformed
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnChinhSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChinhSuaActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         if (checkNull()) {
             if (checkDuplicateUpdate()) {
                 int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn sửa thông tin Account này không?");
@@ -433,7 +436,7 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         }
 
 
-    }//GEN-LAST:event_btnChinhSuaActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
         fillToTable(acrepo.getRole(roleFilter()));
@@ -478,9 +481,9 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
         // TODO add your handling code here:
     }//GEN-LAST:event_cboEmployeeIDActionPerformed
 
-    private void btnClearFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFormActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearForm();
-    }//GEN-LAST:event_btnClearFormActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -533,12 +536,12 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
-    private javax.swing.JButton btnChinhSua;
-    private javax.swing.JButton btnClearForm;
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
-    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JComboBox<String> cboEmployeeID;
@@ -564,6 +567,24 @@ public class AccountJDialog extends javax.swing.JDialog implements AccountContro
     private javax.swing.JTextField txtTimKiem;
     private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
+     public void auth() {
+        if (user != null) {
+            int role = user.getRole();
+
+            if (role == 2) {
+                btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
+            } else if (role == 3) {
+                btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
+            }
+        }
+    }
+    
     public void clearForm(){
         txtAccountID.setText("");
         txtPassword.setText("");

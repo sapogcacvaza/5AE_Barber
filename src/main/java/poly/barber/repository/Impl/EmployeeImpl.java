@@ -5,6 +5,7 @@
 package poly.barber.repository.Impl;
 
 import java.util.List;
+import poly.barber.entity.Account;
 import poly.barber.entity.Employee;
 import poly.barber.repository.ICommonRepository;
 import poly.barber.util.XJdbc;
@@ -21,7 +22,9 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     String sqlGetOne = "select EmployeeID,FirstName,LastName,Phone,Email,Gender,Address,PositionID from Employee where EmployeeID = ?";
     String sqlAdd = "insert into Employee values\n"
             + "(?,?,?,?,?,?,?)";
+    String sqlGetAccount = "select * from Account where EmployeeID = ?";
     String sqlDelete = "delete Employee where EmployeeID = ?";
+    String sqlDeleteAccount = "delete Account where EmployeeID = ?";
     String sqlUpdate = "update Employee set FirstName = ?,LastName = ?,Phone = ?,Email = ?,Gender = ?,Address = ?,PositionID = ? where EmployeeID = ?";
     String sqlGetGender = "select *from Employee where Gender like ?";
     String sqlGetPosition = "SELECT * \n"
@@ -30,7 +33,7 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     String sqlSearchByName = "select * from Employee where LastName like ?";
     String sqlSearchByPhone = "select * from Employee where Phone like ?";
     String sqlSearchByEmail = "select * from Employee where Email like ?";
-    
+    String sqlSearchByFirstName = "select * from Employee where FirstName like ?";
     
     
     public List<Employee> searchByEmail(String email){
@@ -41,6 +44,9 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     }
     public List<Employee> searchByName(String name){
         return XQuery.getBeanList(Employee.class, sqlSearchByName, "%"+name+"%");
+    }
+    public List<Employee> searchByFirstName(String name){
+        return XQuery.getBeanList(Employee.class, sqlSearchByFirstName, "%"+name+"%");
     }
     public List<Employee> getPosition(int id) {
         return XQuery.getBeanList(Employee.class, sqlGetPosition, id);
@@ -59,7 +65,9 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
     public Employee getOne(Integer id) {
         return XQuery.getSingleBean(Employee.class, sqlGetOne, id);
     }
-
+     public Account getAccount(Integer id) {
+        return XQuery.getSingleBean(Account.class, sqlGetAccount, id);
+    }
     @Override
     public void add(Employee obj) {
         Object[] data = {obj.getFirstname(), obj.getLastname(), obj.getPhone(), obj.getEmail(), obj.isGender(), obj.getAddress(), obj.getPositionID()};
@@ -72,6 +80,7 @@ public class EmployeeImpl implements ICommonRepository<Employee, Integer> {
 
     @Override
     public void delete(Integer id) {
+        XJdbc.executeUpdate(sqlDeleteAccount, id);
         XJdbc.executeUpdate(sqlDelete, id);
     }
 
