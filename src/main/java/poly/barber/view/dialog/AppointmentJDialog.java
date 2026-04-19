@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.controller.Impl.AppointmentController;
+import poly.barber.entity.Account;
 import poly.barber.entity.Appointment;
 import poly.barber.entity.AppointmentDetail;
 import poly.barber.entity.Barber;
@@ -23,6 +24,7 @@ import poly.barber.entity.Invoice;
 import poly.barber.entity.InvoiceDetail;
 import poly.barber.entity.Service;
 import poly.barber.entity.ServiceCategory;
+import poly.barber.service.AccountService;
 import poly.barber.service.AppointmentDetailService;
 import poly.barber.service.AppointmentService;
 import poly.barber.service.BarberService;
@@ -33,6 +35,7 @@ import poly.barber.service.ServiceCategoryService;
 import poly.barber.service.ServiceService;
 import poly.barber.util.AuthUtil;
 import poly.barber.util.CustomCalendar;
+import poly.barber.util.Session;
 import poly.barber.util.XDialog;
 
 public class AppointmentJDialog extends javax.swing.JDialog implements AppointmentController {
@@ -58,12 +61,14 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
     CustomerService serCustomer = new CustomerService();
     InvoiceDetailService serInvoiceDetail = new InvoiceDetailService();
     InvoiceService serInvoice = new InvoiceService();
+    AccountService serAccount = new AccountService();
 
     JPopupMenu popCalendar = new JPopupMenu();
     CustomCalendar cal = new CustomCalendar();
 
     List<Object[]> dichVu = new ArrayList<>();
 //    int appIDUpdating = 0;
+    Account user = poly.barber.util.Session.user;
 
     public AppointmentJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -1900,12 +1905,12 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 return false;
             }
 
-//            int createdEmployeeID = AuthUtil.get;
-            Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 3, customerID);
+            int createdEmployeeID = user.getAccountID();
+            Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, createdEmployeeID, customerID);
             Appointment apReturn = serAppointment.addAndReturn(apNew);
 
             BigDecimal finalTotal = new BigDecimal(txtTotalPrice.getText());
-            Invoice invoiceNew = new Invoice(finalTotal, 1, apReturn.getAppointmentID());
+            Invoice invoiceNew = new Invoice(finalTotal, createdEmployeeID, apReturn.getAppointmentID());
             Invoice invoiceReturn = serInvoice.addAndReturn(invoiceNew);
 
             List<InvoiceDetail> listID = new ArrayList<>();
@@ -2083,7 +2088,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             String dataText = txtAppointmentDate.getText().trim();
-            
+
             if (dataText.isEmpty()) {
                 XDialog.alert("Vui lòng chọn ngày đặt lịch!");
                 return false;

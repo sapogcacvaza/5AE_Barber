@@ -171,7 +171,7 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "ID Hóa Đơn", "Mã Hóa Đơn", "Nhân Viên", "Tên Khách Hàng", "SĐT", "Trạng Thái", "Thành Tiền"
+                "ID Hóa Đơn", "Mã Hóa Đơn", "Thợ cắt", "Tên Khách Hàng", "SĐT", "Trạng Thái", "Thành Tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -792,6 +792,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnTimKiemLD.setBackground(new java.awt.Color(0, 102, 153));
+        btnTimKiemLD.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiemLD.setText("Tìm Kiếm");
         btnTimKiemLD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -799,6 +801,8 @@ public class HistoryJdialog extends javax.swing.JDialog {
             }
         });
 
+        btnBoLocLD.setBackground(new java.awt.Color(0, 102, 153));
+        btnBoLocLD.setForeground(new java.awt.Color(255, 255, 255));
         btnBoLocLD.setText("Bỏ Lọc");
         btnBoLocLD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

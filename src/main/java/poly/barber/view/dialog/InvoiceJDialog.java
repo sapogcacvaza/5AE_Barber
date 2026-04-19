@@ -210,11 +210,11 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Tên dịch vụ", "Số lượng", "Đơn giá", "Trạng thái"
+                "Tên dịch vụ", "Số lượng", "Đơn giá"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

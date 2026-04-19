@@ -314,7 +314,7 @@
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="33" green="cc" red="0" type="rgb"/>
+                  <Color blue="99" green="66" red="0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Doanh Thu Th&#xe1;ng Hi&#x1ec7;n T&#x1ea1;i"/>
               </Properties>
@@ -325,7 +325,7 @@
                   <Font name="Segoe UI" size="14" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="cc" red="0" type="rgb"/>
+                  <Color blue="99" green="66" red="0" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Doanh Thu 7 Ng&#xe0;y V&#x1eeb;a Qua"/>
               </Properties>

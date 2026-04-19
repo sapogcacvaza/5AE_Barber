@@ -237,11 +237,11 @@ public class StatisticalJdialog2 extends javax.swing.JDialog {
         );
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 204, 51));
+        jLabel7.setForeground(new java.awt.Color(0, 102, 153));
         jLabel7.setText("Doanh Thu Tháng Hiện Tại");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 204, 0));
+        jLabel8.setForeground(new java.awt.Color(0, 102, 153));
         jLabel8.setText("Doanh Thu 7 Ngày Vừa Qua");
 
         txtDoanhThuThang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
