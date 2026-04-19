@@ -17,12 +17,12 @@ import poly.barber.util.XQuery;
 public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer> {
 
     public String sqlGetAll = "SELECT i.*, "
-    + "(SELECT (e.FirstName + ' ' + e.LastName) "
-    + " FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
-    + "(SELECT TOP 1 (b.FirstName + ' ' + b.LastName) "
-    + " FROM Barber b "
-    + " WHERE b.BarberID IN (SELECT ad.BarberID FROM AppointmentDetail ad WHERE ad.AppointmentID = i.AppointmentID)) AS barberName "
-    + "FROM Invoice i WHERE i.Status = 1";
+            + "(SELECT (e.FirstName + ' ' + e.LastName) "
+            + " FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
+            + "(SELECT TOP 1 (b.FirstName + ' ' + b.LastName) "
+            + " FROM Barber b "
+            + " WHERE b.BarberID IN (SELECT ad.BarberID FROM AppointmentDetail ad WHERE ad.AppointmentID = i.AppointmentID)) AS barberName "
+            + "FROM Invoice i WHERE i.Status = 1";
     public String sqlGetOneById = "select *from Invoice where InvoiceID = ?";
     public String createSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)";
     public String createAndReturnSql = "insert into Invoice (TotalAmount, CreatedByEmployeeID, AppointmentID) values (?, ?, ?)"
@@ -40,27 +40,29 @@ public class InvoiceRepositoryImpl implements ICommonRepository<Invoice, Integer
     public String sqlGetByEmployeeName = "SELECT Invoice.* FROM Invoice "
             + "JOIN Employee ON Invoice.CreatedByEmployeeID = Employee.EmployeeID "
             + "WHERE (Employee.FirstName + ' ' + Employee.LastName) LIKE ?";
-    public String sqlGetBarbersByInvoice = 
-      "SELECT b.BarberID, (b.FirstName + ' ' + b.LastName) AS BarberName, s.ServiceName "
-    + "FROM AppointmentDetail ad "
-    + "JOIN Barber b ON ad.BarberID = b.BarberID "
-    + "JOIN Service s ON ad.ServiceID = s.ServiceID "
-    + "WHERE ad.AppointmentID = (SELECT AppointmentID FROM Invoice WHERE InvoiceID = ?)";
+    public String sqlGetBarbersByInvoice
+            = "SELECT b.BarberID, (b.FirstName + ' ' + b.LastName) AS BarberName, s.ServiceName "
+            + "FROM AppointmentDetail ad "
+            + "JOIN Barber b ON ad.BarberID = b.BarberID "
+            + "JOIN Service s ON ad.ServiceID = s.ServiceID "
+            + "WHERE ad.AppointmentID = (SELECT AppointmentID FROM Invoice WHERE InvoiceID = ?)";
 
-public List<Object[]> getBarbersByInvoice(int invoiceId) {
-    return XQuery.getRawList(sqlGetBarbersByInvoice, invoiceId);
-}
-public List<Invoice> searchByCustomerName(String name) {
-       String sql = "SELECT i.*, "
-        + "(SELECT (e.FirstName + ' ' + e.LastName) FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
-        + "c.Fullname AS customerName "
-        + "FROM Invoice i "
-        + "LEFT JOIN Appointment a ON i.AppointmentID = a.AppointmentID "
-        + "LEFT JOIN Customer c ON a.CustomerID = c.CustomerID "
-        + "WHERE c.Fullname LIKE ? AND i.Status = 1";
-    
-    return XQuery.getBeanList(Invoice.class, sql, "%" + name + "%");
+    public List<Object[]> getBarbersByInvoice(int invoiceId) {
+        return XQuery.getRawList(sqlGetBarbersByInvoice, invoiceId);
     }
+
+    public List<Invoice> searchByCustomerName(String name) {
+        String sql = "SELECT i.*, "
+                + "(SELECT (e.FirstName + ' ' + e.LastName) FROM Employee e WHERE e.EmployeeID = i.CreatedByEmployeeID) AS employeeName, "
+                + "c.Fullname AS customerName "
+                + "FROM Invoice i "
+                + "LEFT JOIN Appointment a ON i.AppointmentID = a.AppointmentID "
+                + "LEFT JOIN Customer c ON a.CustomerID = c.CustomerID "
+                + "WHERE c.Fullname LIKE ? AND i.Status = 1";
+
+        return XQuery.getBeanList(Invoice.class, sql, "%" + name + "%");
+    }
+
     public List<Object[]> getHistoryByDate(String start, String end, String employeeName) {
         // 1. Khai báo câu SQL gốc (luôn lọc theo ngày)
         String sql = "SELECT i.InvoiceID, i.InvoiceCode, e.FirstName + ' ' + e.LastName, "
@@ -125,22 +127,22 @@ public List<Invoice> searchByCustomerName(String name) {
 
     @Override
     public void update(Invoice obj) {
-       // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
-    String sql = "UPDATE Invoice SET "
-               + "Status = ?, "
-               + "TotalAmount = ?, "
-               + "TotalDiscount = ?, "
-               + "CheckOutDateTime = GETDATE() "
-               + "WHERE InvoiceID = ?";
-    
-    // Truyền tham số theo đúng thứ tự của dấu hỏi chấm (?)
-    XQuery.update(sql, 
-        obj.getStatus(), 
-        obj.getTotalAmount(), 
-        obj.getTotalDiscount(), 
-        obj.getInvoiceID()
-    );
-    
+        // Cập nhật trạng thái và có thể là CheckOutDateTime (Giờ ra)
+        String sql = "UPDATE Invoice SET "
+                + "Status = ?, "
+                + "TotalAmount = ?, "
+                + "TotalDiscount = ?, "
+                + "CheckOutDateTime = GETDATE() "
+                + "WHERE InvoiceID = ?";
+
+        // Truyền tham số theo đúng thứ tự của dấu hỏi chấm (?)
+        XQuery.update(sql,
+                obj.getStatus(),
+                obj.getTotalAmount(),
+                obj.getTotalDiscount(),
+                obj.getInvoiceID()
+        );
+
 //
     }
 
@@ -152,25 +154,27 @@ public List<Invoice> searchByCustomerName(String name) {
     public List<Object[]> GetDetailsByInvoiceId(String invoiceId) {
         return XQuery.getRawList(sqlGetDetailsByInvoiceId, invoiceId);
     }
-public Object[] getCustomerInfoByInvoice(int invoiceId) {
-    String sql = "SELECT c.Fullname, c.Phone " +
-                 "FROM Invoice i " +
-                 "JOIN Appointment a ON i.AppointmentID = a.AppointmentID " +
-                 "JOIN Customer c ON a.CustomerID = c.CustomerID " +
-                 "WHERE i.InvoiceID = ?";
-    
-    List<Object[]> list = XQuery.getRawList(sql, invoiceId);
-    return list.isEmpty() ? null : list.get(0);
+
+    public Object[] getCustomerInfoByInvoice(int invoiceId) {
+        String sql = "SELECT c.Fullname, c.Phone "
+                + "FROM Invoice i "
+                + "JOIN Appointment a ON i.AppointmentID = a.AppointmentID "
+                + "JOIN Customer c ON a.CustomerID = c.CustomerID "
+                + "WHERE i.InvoiceID = ?";
+
+        List<Object[]> list = XQuery.getRawList(sql, invoiceId);
+        return list.isEmpty() ? null : list.get(0);
     }
-public boolean cancelInvoice(int invoiceId) {
+
+    public boolean cancelInvoice(int invoiceId) {
         // Cập nhật trạng thái thành 3 và ghi nhận giờ hủy
-    String sql = "UPDATE Invoice SET Status = 3, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
-    try {
-        XJdbc.executeUpdate(sql, invoiceId);
-        return true;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-    }
+        String sql = "UPDATE Invoice SET Status = 3, CheckOutDateTime = GETDATE() WHERE InvoiceID = ?";
+        try {
+            XJdbc.executeUpdate(sql, invoiceId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

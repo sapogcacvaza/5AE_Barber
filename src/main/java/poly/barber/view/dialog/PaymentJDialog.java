@@ -467,39 +467,23 @@ public class PaymentJDialog extends javax.swing.JDialog {
             // 2. Lấy thông tin phương thức thanh toán
             String tenPhuongThuc = cboPaymentMethods.getSelectedItem().toString();
 
-            // 3. Kiểm tra logic Mã giao dịch (Nếu đang hiện ô nhập mã QR/Giao dịch)
-            // Nếu Khánh có dùng JTextField txtMaGiaoDich để khách nhập mã đối soát
-            /*
-        if (txtMaGiaoDich.isVisible() && txtMaGiaoDich.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập mã giao dịch từ app ngân hàng/ví điện tử!");
-            return;
-        }
-             */
-            // 4. Tính toán số tiền (Xử lý replace dấu phẩy để tránh lỗi ép kiểu)
+            // 3. Tính toán số tiền
             double tongGoc = Double.parseDouble(lblTongTien1.getText().replace(",", ""));
             double thanhTien = Double.parseDouble(lblThanhTien.getText().replace(",", ""));
             double tienGiam = tongGoc - thanhTien;
 
-            // 5. Đóng gói dữ liệu vào đối tượng Invoice (Sử dụng Lombok)
+            // 4. Đóng gói dữ liệu vào đối tượng Invoice (CHƯA UPDATE STATUS VÀO DB VỘI)
             Invoice inv = new Invoice();
             inv.setInvoiceID(Integer.parseInt(maHDStr));
             inv.setTotalAmount(BigDecimal.valueOf(thanhTien));
             inv.setTotalDiscount(BigDecimal.valueOf(tienGiam));
-            inv.setStatus(2); // Trạng thái: Đã thanh toán
+            inv.setStatus(2); // Set sẵn status = 2 để tí nữa update một thể
 
-            // Nếu có trường mã giao dịch trong Database, hãy thêm dòng này:
-            // inv.setTransactionCode(txtMaGiaoDich.getText().trim());
-            // 6. Gọi Repository để cập nhật Database
-            InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
-            ir.update(inv);
-
+            // 5. LƯU CHI TIẾT DỊCH VỤ (InvoiceDetail) TRƯỚC
             for (int i = 0; i < tblServiceDetails.getRowCount(); i++) {
                 try {
-                    // Lấy ServiceID (Cột 0)
                     int serviceID = Integer.parseInt(tblServiceDetails.getValueAt(i, 3).toString());
-                    // Lấy Số lượng (Cột 2)
                     int quantity = Integer.parseInt(tblServiceDetails.getValueAt(i, 1).toString());
-                    // Lấy Giá (Cột 3) - Xử lý dấu phẩy
                     String giaStr = tblServiceDetails.getValueAt(i, 2).toString().replace(",", "").replace(" VNĐ", "").trim();
                     double price = Double.parseDouble(giaStr);
 
@@ -509,30 +493,36 @@ public class PaymentJDialog extends javax.swing.JDialog {
                     detail.setQuantity(quantity);
                     detail.setPrice(BigDecimal.valueOf(price));
 
-                    idr.add(detail);
-                    System.out.println("Lưu thành công dịch vụ ID: " + serviceID);
+                    idr.add(detail); // Lưu vào bảng InvoiceDetail
                 } catch (Exception e) {
-                    System.err.println("Lỗi lưu dòng " + i + ": " + e.getMessage());
+                    System.err.println("Lỗi lưu dòng dịch vụ " + i + ": " + e.getMessage());
                 }
             }
 
+            // 6. LƯU THÔNG TIN GIẢM GIÁ (InvoiceDiscount) TRƯỚC
+            // Bước này cực kỳ quan trọng để SQL Trigger có dữ liệu để tính UsedCount
             if (tienGiam > 0) {
                 Object selected = cboDiscount.getSelectedItem();
                 if (selected instanceof Discount d) {
                     InvoiceDiscount invDisc = InvoiceDiscount.builder()
-                            .discountID(d.getDiscountID()) // Lấy ID thật từ ComboBox
+                            .discountID(d.getDiscountID())
                             .invoiceID(inv.getInvoiceID())
                             .discountAmount(BigDecimal.valueOf(tienGiam))
                             .build();
-                    discountRepo.add(invDisc);
+                    discountRepo.add(invDisc); // Lưu vào bảng InvoiceDiscount
+                    System.out.println("Đã lưu mã giảm giá ID: " + d.getDiscountID());
                 }
             }
 
-            // 7. Thông báo và đóng cửa sổ
+            // 7. CUỐI CÙNG: Cập nhật Status hóa đơn lên 2 (KÍCH HOẠT TRIGGER SQL)
+            // Khi lệnh này chạy, SQL sẽ quét bảng InvoiceDiscount đã lưu ở bước 6 để tăng UsedCount
+            InvoiceRepositoryImpl ir = new InvoiceRepositoryImpl();
+            ir.update(inv);
+
+            // 8. Thông báo thành công
             JOptionPane.showMessageDialog(this, "Thanh toán thành công qua: " + tenPhuongThuc);
 
-            // Gợi ý: Có thể gọi hàm in hóa đơn tại đây nếu muốn
-            // btnInActionPerformed(null); 
+            // Đóng cửa sổ thanh toán
             this.dispose();
 
         } catch (NumberFormatException e) {
@@ -540,6 +530,7 @@ public class PaymentJDialog extends javax.swing.JDialog {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Lỗi thanh toán: " + e.getMessage());
             e.printStackTrace();
+
         }    }//GEN-LAST:event_btnThanhToanActionPerformed
 
     private void cboPaymentMethodsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboPaymentMethodsActionPerformed

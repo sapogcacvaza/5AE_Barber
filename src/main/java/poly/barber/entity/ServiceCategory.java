@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class ServiceCategory {
+
     private int serviceCategoryID;
-    private String serviceCategoryName;    
+    private String serviceCategoryName;
+    private int RequiredPositionID;
+    private String note;
 }

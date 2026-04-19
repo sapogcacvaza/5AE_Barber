@@ -72,7 +72,7 @@ public class AppointmentService {
         List<String> times = new ArrayList<>();
         LocalTime start = LocalTime.of(8, 0);
         LocalTime now = LocalTime.now();
-        LocalTime end = LocalTime.of(21, 30);
+        LocalTime end = LocalTime.of(21, 00);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         times.add("");
@@ -104,9 +104,5 @@ public class AppointmentService {
 
     public void updateStatus(int appointmentID, int status) {
         repo.updateStatus(appointmentID, status);
-    }
-
-    public int updateStatusAutomatically() {
-        return repo.updateStatusAutomatically();
     }
 }

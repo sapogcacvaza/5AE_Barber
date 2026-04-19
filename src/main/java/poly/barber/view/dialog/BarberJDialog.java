@@ -774,11 +774,13 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
     public void fillToTable(List<Barber> lst) {
         dtm.setRowCount(0);
         for (Barber b : lst) {
-            System.out.println(b.isBusy());
+            String sanSang = b.isBusy() ? "Bận" : "Rảnh";
+            String trangThai = b.isStatus() ? "Đi làm" : "Nghỉ việc";
+
             Object[] row = {
                 b.getBarberID(),
-                b.isBusy() == true ? "Bận" : "Rảnh",
-                b.isStatus() ? "Đi làm" : "Nghỉ",
+                sanSang,
+                trangThai,
                 b.getFirstname(),
                 b.getLastname(),
                 b.getPhone(),

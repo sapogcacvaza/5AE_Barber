@@ -207,15 +207,20 @@ public class InvoiceJDialog extends javax.swing.JDialog {
         tblServiceDetails.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tblServiceDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Tên dịch vụ", "Số lượng", "Đơn giá"
+                "Tên dịch vụ", "Số lượng", "Đơn giá", "Trạng thái"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(tblServiceDetails);
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thợ", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 14))); // NOI18N
@@ -608,6 +613,7 @@ public class InvoiceJDialog extends javax.swing.JDialog {
 
             if (details != null) {
                 for (Object[] row : details) {
+                    System.out.println(row);
                     dtmServices.addRow(new Object[]{
                         row[0], // Tên dịch vụ (ServiceName)
                         row[1], // Số lượng (Quantity)

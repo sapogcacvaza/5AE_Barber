@@ -66,54 +66,53 @@ public class Barber5AEJFrame extends javax.swing.JFrame {
         this.currentUser = acc;
         Session.user = acc; // 🔥 QUAN TRỌNG
 
-        lblUser.setText("<html>Xin chào,<br>" 
-        + acc.getUsername() + " (" + acc.getRoleName() + ")</html>");
+        lblUser.setText("<html>Xin chào,<br>"
+                + acc.getUsername() + " (" + acc.getRoleName() + ")</html>");
 
         // ❌ reset toàn bộ trước
-btnNhanVien.setEnabled(true);
-btnbarber.setEnabled(true);
-btngiamgia.setEnabled(true);
-btnservice.setEnabled(true);
-btnstatical.setEnabled(true);
-btntaikhoan.setEnabled(true);
+        btnNhanVien.setEnabled(true);
+        btnbarber.setEnabled(true);
+        btngiamgia.setEnabled(true);
+        btnservice.setEnabled(true);
+        btnstatical.setEnabled(true);
+        btntaikhoan.setEnabled(true);
 
         // ================= PHÂN QUYỀN =================
-if (AuthUtil.isAdmin(acc)) {
-    btnNhanVien.setEnabled(true);
-    btnbarber.setEnabled(true);
-    btngiamgia.setEnabled(true);
-    btnservice.setEnabled(true);
-    btnstatical.setEnabled(true);
-    btntaikhoan.setEnabled(true);
-}
-else if (AuthUtil.isManager(acc)) {
-    btnNhanVien.setEnabled(true); // ❗ sửa
-    btnbarber.setEnabled(true);
-    btnservice.setEnabled(true); // ❗ chỉ admin
-    btngiamgia.setEnabled(true);
-    btnstatical.setEnabled(true);
-    btntaikhoan.setEnabled(true);
-}
-else if (AuthUtil.isStaff(acc)) {
-    // staff chỉ đặt lịch → disable hết
-}
+        if (AuthUtil.isAdmin(acc)) {
+            btnNhanVien.setEnabled(true);
+            btnbarber.setEnabled(true);
+            btngiamgia.setEnabled(true);
+            btnservice.setEnabled(true);
+            btnstatical.setEnabled(true);
+            btntaikhoan.setEnabled(true);
+        } else if (AuthUtil.isManager(acc)) {
+            btnNhanVien.setEnabled(true); // ❗ sửa
+            btnbarber.setEnabled(true);
+            btnservice.setEnabled(true); // ❗ chỉ admin
+            btngiamgia.setEnabled(true);
+            btnstatical.setEnabled(true);
+            btntaikhoan.setEnabled(true);
+        } else if (AuthUtil.isStaff(acc)) {
+            // staff chỉ đặt lịch → disable hết
+        }
     }
 //ktra login
-private boolean requireLogin() {
-    if (Session.user == null) {
-        JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
-        return false;
-    }
-    return true;
-}
 
-private boolean denyIfNoPermission(boolean condition) {
-    if (!requireLogin() || !condition) {
-        JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
+    private boolean requireLogin() {
+        if (Session.user == null) {
+            JOptionPane.showMessageDialog(this, "Bạn chưa đăng nhập!");
+            return false;
+        }
         return true;
     }
-    return false;
-}
+
+    private boolean denyIfNoPermission(boolean condition) {
+        if (!requireLogin() || !condition) {
+            JOptionPane.showMessageDialog(this, "Bạn không có quyền!");
+            return true;
+        }
+        return false;
+    }
 
     // Mở dialog
     private void openDialog(javax.swing.JDialog dialog) {
@@ -310,82 +309,104 @@ private boolean denyIfNoPermission(boolean condition) {
 
     private void btngiamgiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngiamgiaActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canDiscount(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canDiscount(Session.user))) {
+            return;
+        }
 
-    DiscountJdialog d = new DiscountJdialog(this, true);
-    d.setUser(currentUser);
-    openDialog(d);
+        DiscountJdialog d = new DiscountJdialog(this, true);
+        d.setUser(currentUser);
+        openDialog(d);
     }//GEN-LAST:event_btngiamgiaActionPerformed
 
     private void btnbarberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbarberActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canBarber(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canBarber(Session.user))) {
+            return;
+        }
 
-    openDialog(new BarberJDialog(this, true));
+        openDialog(new BarberJDialog(this, true));
     }//GEN-LAST:event_btnbarberActionPerformed
 
     private void btnNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhanVienActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canEmployee(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canEmployee(Session.user))) {
+            return;
+        }
 
-    openDialog(new EmployeeView(this, true));
+        openDialog(new EmployeeView(this, true));
     }//GEN-LAST:event_btnNhanVienActionPerformed
 
     private void btnKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKhachHangActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canCustomer(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canCustomer(Session.user))) {
+            return;
+        }
 
-    openDialog(new CustomerView(this, true,false)); //Tham số thứ 3 truyền vào để ẩn nút chọn khách hàng
+        openDialog(new CustomerView(this, true, false)); //Tham số thứ 3 truyền vào để ẩn nút chọn khách hàng
     }//GEN-LAST:event_btnKhachHangActionPerformed
 
     private void btninvoiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btninvoiceActionPerformed
-    if (denyIfNoPermission(AuthUtil.canInvoice(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canInvoice(Session.user))) {
+            return;
+        }
 
-    openDialog(new InvoiceJDialog(this, true));
+        openDialog(new InvoiceJDialog(this, true));
     }//GEN-LAST:event_btninvoiceActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canAppointment(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canAppointment(Session.user))) {
+            return;
+        }
 
-    openDialog(new AppointmentJDialog(this, true));
+        openDialog(new AppointmentJDialog(this, true));
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void btnserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnserviceActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canService(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canService(Session.user))) {
+            return;
+        }
 
-    openDialog(new ServiceJDialog(this, true));
+        openDialog(new ServiceJDialog(this, true));
     }//GEN-LAST:event_btnserviceActionPerformed
 
     private void btnhistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnhistoryActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canHistory(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canHistory(Session.user))) {
+            return;
+        }
 
-    openDialog(new HistoryJdialog(this, true));
+        openDialog(new HistoryJdialog(this, true));
     }//GEN-LAST:event_btnhistoryActionPerformed
 
     private void btnstaticalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnstaticalActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canStatistic(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canStatistic(Session.user))) {
+            return;
+        }
 
-    openDialog(new StatisticalJdialog2(this, true));
+        openDialog(new StatisticalJdialog2(this, true));
     }//GEN-LAST:event_btnstaticalActionPerformed
 
     private void btntaikhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntaikhoanActionPerformed
         // TODO add your handling code here:
-    if (denyIfNoPermission(AuthUtil.canAccount(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canAccount(Session.user))) {
+            return;
+        }
 
-    openDialog(new AccountJDialog(this, true));
+        openDialog(new AccountJDialog(this, true));
     }//GEN-LAST:event_btntaikhoanActionPerformed
 
     private void btnpaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpaymentActionPerformed
         // TODO add your handling code here:
-     if (denyIfNoPermission(AuthUtil.canPayment(Session.user))) return;
+        if (denyIfNoPermission(AuthUtil.canPayment(Session.user))) {
+            return;
+        }
 
-    PaymentJDialog d = new PaymentJDialog(this, true);
-    d.setPaymentData("1", "500000");
-    openDialog(d);
+        PaymentJDialog d = new PaymentJDialog(this, true);
+        d.setPaymentData("1", "500000");
+        openDialog(d);
     }//GEN-LAST:event_btnpaymentActionPerformed
 
     private void btnout1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnout1ActionPerformed

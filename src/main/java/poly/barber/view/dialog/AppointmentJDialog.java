@@ -31,6 +31,7 @@ import poly.barber.service.InvoiceDetailService;
 import poly.barber.service.InvoiceService;
 import poly.barber.service.ServiceCategoryService;
 import poly.barber.service.ServiceService;
+import poly.barber.util.AuthUtil;
 import poly.barber.util.CustomCalendar;
 import poly.barber.util.XDialog;
 
@@ -1058,10 +1059,12 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
         boolean answer = XDialog.confirm("Bạn có chắc chắn muốn xác nhận đặt lịch này không?", "Xác nhân đặt lịch.");
         if (answer) {
             try {
-                if (addAppAndAppDetails()) {
-                    resetForm();
-                    fillToTable(serAppointment.getAll());
-                    fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+                if (checkValidateCreateApp()) {
+                    if (addAppAndAppDetails()) {
+                        resetForm();
+                        fillToTable(serAppointment.getAll());
+                        fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
+                    }
                 }
             } catch (Exception e) {
                 XDialog.alert("Lỗi hệ thống: Không thể lưu lịch hẹn.");
@@ -1158,12 +1161,24 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
     private void btnChooseDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseDateActionPerformed
         popCalendar.show(btnChooseDate, 0, btnChooseDate.getHeight());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         cal.setOnDateSelected(date -> {
+            LocalDate selectedDate = LocalDate.parse(date, formatter);
+            LocalDate today = LocalDate.now();
+            LocalDate maxDate = today.plusDays(7);
+            if (selectedDate.isBefore(today)) {
+                XDialog.alert("Không thể đặt lịch cho ngày đã qua!");
+                return;
+            }
+
+            if (selectedDate.isAfter(maxDate)) {
+                XDialog.alert("Chỉ đặt được lịch trong vòng 7 ngày tới!");
+                return;
+            }
+
             txtAppointmentDate.setText(date);
-
             fillToComboTimeRange();
-
             popCalendar.setVisible(false);
         });
     }//GEN-LAST:event_btnChooseDateActionPerformed
@@ -1205,6 +1220,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     int appointmentID = Integer.parseInt(tblAppointment.getValueAt(index, 0) + "");
                     serAppointment.updateStatus(appointmentID, 2);
                     // Đã đến
+                    modelAppointmentDetail.setRowCount(0);
                     fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
                 }
             } else if (rdoCancel.isSelected()) {
@@ -1214,6 +1230,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     serAppointment.updateStatus(appointmentID, 3);
                     // Hủy lịch
                     serAppointmentDetail.updateStatusByAppID(4, appointmentID);
+                    modelAppointmentDetail.setRowCount(0);
                     fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
                 }
             } else if (rdoDone.isSelected()) {
@@ -1223,6 +1240,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                     serAppointment.updateStatus(appointmentID, 5);
                     // Đã xong
                     serAppointmentDetail.updateStatusByAppID(2, appointmentID);
+                    modelAppointmentDetail.setRowCount(0);
                     fillToTableAppointment(serAppointment.getAllWhereStatusIsWaiting(chkToday.isSelected()));
                 }
             }
@@ -1470,6 +1488,7 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 //
 //        LocalDateTime dateTime = entity.getAppointmentDateTime();
 //        String appointmentDate = dateTime.format(dateFormatter);
+
     
 
     ////        String appointmentTime = dateTime.format(timeFormatter);
@@ -1881,7 +1900,8 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
                 return false;
             }
 
-            Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 1, customerID);
+//            int createdEmployeeID = AuthUtil.get;
+            Appointment apNew = new Appointment(dateTime, txtNote.getText(), totalDuration, 3, customerID);
             Appointment apReturn = serAppointment.addAndReturn(apNew);
 
             BigDecimal finalTotal = new BigDecimal(txtTotalPrice.getText());
@@ -2050,6 +2070,49 @@ public class AppointmentJDialog extends javax.swing.JDialog implements Appointme
 
         if (count > 0) {
             XDialog.alert("Đã tự động chuyển " + count + " lịch sang trạng thái 'Đang xử lý'!");
+        }
+    }
+
+    public boolean checkValidateCreateApp() {
+        try {
+            int duration = Integer.parseInt(txtTotalDuration.getText());
+            String selectedItem = cboTimeRange.getSelectedItem().toString();
+            if (selectedItem == null) {
+                return false;
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataText = txtAppointmentDate.getText().trim();
+            
+            if (dataText.isEmpty()) {
+                XDialog.alert("Vui lòng chọn ngày đặt lịch!");
+                return false;
+            }
+
+            LocalDate checkDate = LocalDate.parse(dataText, formatter);
+            if (checkDate.isBefore(LocalDate.now()) || checkDate.isAfter(LocalDate.now().plusDays(7))) {
+                XDialog.alert(dataText);
+                return false;
+            }
+
+            LocalTime appStartTime = LocalTime.parse(selectedItem);
+            LocalTime closingTime = LocalTime.of(21, 30);
+            LocalTime appEndTime = appStartTime.plusMinutes(duration);
+
+            if (appEndTime.isAfter(closingTime)) {
+                XDialog.alert("Tổng thời gian quá giờ làm việc!");
+                modelService.setRowCount(0);
+                dichVu.clear();
+                txtTotalDuration.setText("");
+                txtTotalPrice.setText("");
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            XDialog.alert("Dữ liệu nhập sai định dạng!");
+            return false;
         }
     }
 

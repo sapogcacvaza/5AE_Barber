@@ -15,7 +15,7 @@ import poly.barber.util.XQuery;
  */
 public class ServiceCategoryRepository implements ICommonRepository<ServiceCategory, Integer> {
 
-    private final String SELECT_ALL = "SELECT ServiceCategoryID, ServiceCategoryName FROM ServiceCategory ORDER BY ServiceCategoryID ASC";
+    private final String SELECT_ALL = "SELECT ServiceCategoryID, ServiceCategoryName, RequiredPositionID, Note FROM ServiceCategory ORDER BY ServiceCategoryID ASC";
     private final String SELECT_BY_ID = "SELECT * FROM ServiceCategory WHERE ServiceCategoryID = ?";
     private final String INSERT_SQL = "INSERT INTO ServiceCategory (ServiceCategoryName) VALUES (?)";
     private final String UPDATE_SQL = "UPDATE ServiceCategory SET ServiceCategoryName = ? WHERE ServiceCategoryID = ?";

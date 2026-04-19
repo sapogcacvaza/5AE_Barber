@@ -16,16 +16,16 @@ import poly.barber.util.XQuery;
 
 public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> {
 
-    String getAll = "select BarberID,IsBusy,Status,FirstName,LastName,Phone,Email,PositionID from Barber";
-    String getOne = "select BarberID,IsBusy,Status,FirstName,LastName,Phone,Email,PositionID from Barber where BarberID = ?";
+    String getAll = "select BarberID,IsBusy as Busy,Status,FirstName,LastName,Phone,Email,PositionID from Barber";
+    String getOne = "select BarberID,IsBusy as Busy,Status,FirstName,LastName,Phone,Email,PositionID from Barber where BarberID = ?";
     String getOneByName = "select * from Barber where (Lastname + ' ' + Firstname) like ?";
     String getPositionNameByID = "select PositionName from BarberPosition where PositionID = ?";
     String sqlUpdate = "update Barber set Status = ?,FirstName = ?,LastName = ?, Phone = ?, Email = ?, PositionID = ? where BarberID = ?";
     String sqlAdd = "insert into Barber (Status,FirstName,LastName,Phone,Email,PositionID) values\n"
             + "(?,?,?,?,?,?)";
     String sqlDelete = "delete Barber where BarberID = ?";
-    String sqlStatusFilter = "select *from Barber where Status = ?";
-    String sqlIsBusyFilter = "select *from Barber where isBusy = ?";
+    String sqlStatusFilter = "select * from Barber where Status = ?";
+    String sqlIsBusyFilter = "select * from Barber where isBusy = ?";
     String updateStatus = "update Barber set Status = ? where BarberID = ?";
     String updateIsBusy = "update Barber set IsBusy = ? where BarberID = ?";
     String sqlSearchByName = "select * from Barber where Firstname like ?";
@@ -152,7 +152,8 @@ public class BarberRepositoryImpl implements ICommonRepository<Barber, Integer> 
     }
 
     public static void main(String[] args) {
-        System.out.println(new BarberRepositoryImpl().getAll());
+        BarberRepositoryImpl repo = new BarberRepositoryImpl();
+        System.out.println(repo.getAll());
     }
 
     public void updateStatus(int status, int barberID) {

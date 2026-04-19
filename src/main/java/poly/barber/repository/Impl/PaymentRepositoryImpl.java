@@ -7,15 +7,17 @@ package poly.barber.repository.Impl;
 import java.util.List;
 import poly.barber.entity.Payment;
 import poly.barber.repository.ICommonRepository;
+import poly.barber.util.XJdbc;
 import poly.barber.util.XQuery;
 
 /**
  *
  * @author Admin
  */
-public class PaymentRepositoryImpl implements ICommonRepository<Payment, Integer>{
+public class PaymentRepositoryImpl implements ICommonRepository<Payment, Integer> {
+
     String sqlGetOne = "select * from Payment where PaymentID = ?";
-    
+    String sqlCreate = "insert into Payment (CreatedDateTime, Amount, InvoiceID, PaymentMethodID) values (?,?,?,?)";
 
     @Override
     public List<Payment> getAll() {
@@ -29,7 +31,14 @@ public class PaymentRepositoryImpl implements ICommonRepository<Payment, Integer
 
     @Override
     public void add(Payment obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Object[] values = {
+            obj.getCreatedDateTime(),
+            obj.getAmount(),
+            obj.getInvoiceID(),
+            obj.getPaymentMethodID()
+        };
+
+        XJdbc.executeUpdate(sqlCreate, values);
     }
 
     @Override
@@ -42,7 +51,8 @@ public class PaymentRepositoryImpl implements ICommonRepository<Payment, Integer
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     String sqlGetOneByInvoiceId = "select * from Payment where InvoiceID = ?";
-    public Payment getOneByInvoiceID(String invoiceId){
+
+    public Payment getOneByInvoiceID(String invoiceId) {
         return XQuery.getSingleBean(Payment.class, sqlGetOneByInvoiceId, invoiceId);
     }
 }

@@ -11,6 +11,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Service;
 import poly.barber.entity.ServiceCategory;
+import poly.barber.repository.Impl.BarberPositionRepositoryImpl;
 import poly.barber.repository.Impl.ServiceCategoryRepository;
 import poly.barber.repository.Impl.ServiceRepository;
 
@@ -22,6 +23,8 @@ public class ServiceJDialog extends javax.swing.JDialog {
 
     private ServiceCategoryRepository scr = new ServiceCategoryRepository();
     private ServiceRepository sr = new ServiceRepository();
+    private BarberPositionRepositoryImpl bPRI = new BarberPositionRepositoryImpl();
+
     private DefaultTableModel dtm = new DefaultTableModel();
     private DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
 
@@ -376,17 +379,14 @@ public class ServiceJDialog extends javax.swing.JDialog {
 
         tblServiceCategory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
-                "Mã", "Tên"
+                "Mã", "Tên", "Vị trí cần thiết", "Ghi chú"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -968,9 +968,15 @@ public class ServiceJDialog extends javax.swing.JDialog {
         List<ServiceCategory> listCategories = scr.getAll();
 
         for (ServiceCategory s : listCategories) {
+            String positionName = bPRI.getOne(s.getRequiredPositionID()).getPositionName();
+            
+            
+            
             dtm.addRow(new Object[]{
                 s.getServiceCategoryID(),
-                s.getServiceCategoryName()
+                s.getServiceCategoryName(),
+                positionName,
+                s.getNote()
             });
         }
     }

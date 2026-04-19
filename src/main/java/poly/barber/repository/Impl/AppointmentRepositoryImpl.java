@@ -25,7 +25,7 @@ public class AppointmentRepositoryImpl implements ICommonRepository<Appointment,
     String createSql = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)";
     String createAndReturn = "insert into Appointment (AppointmentDateTime, Note, TotalDuration, CreatedByEmployeeID, CustomerID) values (?,?,?,?,?)"
             + "SELECT * FROM Appointment WHERE AppointmentID = SCOPE_IDENTITY();";
-    String updateStatus = "update Appointment set Status = ? where AppointmentID = ?";
+    String updateStatus = "update Appointment set Status = ? where AppointmentID = ? and Status <> 4";
     String updateStatusAuto = "update Appointment set Status = 4 where Status = 1"
             + "AND CAST(AppointmentDateTime AS DATE) = CAST(GETDATE() AS DATE) "
             + "AND CAST(AppointmentDateTime AS TIME) <= CAST(GETDATE() AS TIME)";
