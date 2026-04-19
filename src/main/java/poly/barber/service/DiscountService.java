@@ -14,42 +14,50 @@ public class DiscountService {
     }
 
     public void add(Discount d) {
-        validate(d);
+        validate(d, true);
         repo.insert(d);
     }
 
     public void update(Discount d) {
-        validate(d);
+        validate(d, false);
         repo.update(d);
     }
 
-    // 🔥 FILTER luôn trong service
-    public List<Discount> filter(String keyword, int type) {
+    public List<Discount> search(String keyword) {
+        if (keyword == null) keyword = "";
+
+        String finalKeyword = keyword.toLowerCase();
+
         return repo.findAll().stream()
-                .filter(d -> d.getDiscountName() != null
-                && d.getDiscountName().toLowerCase().contains(keyword.toLowerCase()))
-                .filter(d -> type == 0 || d.getDiscountType() == type)
+                .filter(d ->
+                        (d.getDiscountName() != null &&
+                         d.getDiscountName().toLowerCase().contains(finalKeyword))
+                     ||
+                        (d.getDiscountCode() != null &&
+                         d.getDiscountCode().toLowerCase().contains(finalKeyword))
+                )
                 .toList();
     }
 
-    // 🔥 VALIDATE tập trung
-    private void validate(Discount d) {
+    // 🔥 VALIDATE FULL
+    private void validate(Discount d, boolean isInsert) {
 
-        if (d.getDiscountCode() == null || d.getDiscountCode().isEmpty()) {
-            throw new RuntimeException("Mã giảm giá không được trống");
+        if (d.getDiscountCode() == null || d.getDiscountCode().trim().isEmpty()) {
+            throw new RuntimeException("Mã không được trống");
         }
 
-        if (d.getDiscountName() == null || d.getDiscountName().isEmpty()) {
+        if (d.getDiscountName() == null || d.getDiscountName().trim().isEmpty()) {
             throw new RuntimeException("Tên không được trống");
         }
 
-        if (d.getDiscountValue() == null
-                || d.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
+        if (d.getDiscountValue() == null ||
+                d.getDiscountValue().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Giá trị phải > 0");
         }
 
-        if (d.getDiscountType() == 1
-                && d.getDiscountValue().compareTo(new BigDecimal("100")) > 0) {
+        // Giảm %
+        if (d.getDiscountType() == 1 &&
+                d.getDiscountValue().compareTo(new BigDecimal("100")) > 0) {
             throw new RuntimeException("Giảm % không được > 100");
         }
 
@@ -69,9 +77,10 @@ public class DiscountService {
             throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
         }
 
+        // 🔥 CHECK TRÙNG MÃ
         if (repo.existsCode(d.getDiscountCode(), d.getDiscountID())) {
             throw new RuntimeException("Mã giảm giá đã tồn tại");
         }
     }
-
+    
 }

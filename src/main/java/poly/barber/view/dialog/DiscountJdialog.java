@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import poly.barber.entity.Account;
 import poly.barber.entity.Discount;
 import poly.barber.repository.Impl.DiscountRepository;
@@ -23,7 +24,7 @@ import poly.barber.service.DiscountService;
  * @author Os
  */
 public class DiscountJdialog extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DiscountJdialog.class.getName());
     DiscountService service = new DiscountService();
     DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
@@ -49,63 +50,47 @@ public class DiscountJdialog extends javax.swing.JDialog {
         // ✅ FIX ở đây
 //        cbLoai.addActionListener(e -> txtmagiamgia.setText(generateCode()));
     }
-    
+
     void initComboFilter() {  // ✔ nằm ngoài
         cbbdc.removeAllItems();
         cbbdc.addItem("Tất cả");
         cbbdc.addItem("Giảm %");
         cbbdc.addItem("Giảm tiền");
-        
+
         cbbtrangthai.removeAllItems();
         cbbtrangthai.addItem("Tất cả");
         cbbtrangthai.addItem("Hoạt động");
         cbbtrangthai.addItem("Ngưng");
     }
-    
+
     void loadTable() {
-        var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
+        DefaultTableModel model = (DefaultTableModel) tbldc.getModel();
         model.setRowCount(0);
-        
-        String keyword = txtfind.getText().toLowerCase();
-        
-        int typeIndex = cbbdc.getSelectedIndex();
-        int statusIndex = cbbtrangthai.getSelectedIndex();
-        
-        int type = 0;
-        if (typeIndex == 1) {
-            type = 1;
-        }
-        if (typeIndex == 2) {
-            type = 2;
-        }
-        
-        int status = -1;
-        if (statusIndex == 1) {
-            status = 1;
-        }
-        if (statusIndex == 2) {
-            status = 0;
-        }
-        
-        list = service.getAll(); // 👉 lấy all
 
-        for (var d : list) {
+        String keyword = txtfind.getText() == null ? "" : txtfind.getText().toLowerCase();
 
-            // 🔍 SEARCH
-            if (!d.getDiscountName().toLowerCase().contains(keyword)) {
-                continue;
-            }
+        int loai = cbbdc.getSelectedIndex();       // 0 all, 1 %, 2 tiền
+        int trangthai = cbbtrangthai.getSelectedIndex(); // 0 all, 1 active, 2 off
 
-            // 🎯 FILTER LOẠI
-            if (type != 0 && d.getDiscountType() != type) {
-                continue;
-            }
+        list = service.getAll().stream()
+                .filter(d
+                        -> (keyword.isEmpty()
+                || d.getDiscountName().toLowerCase().contains(keyword)
+                || d.getDiscountCode().toLowerCase().contains(keyword))
+                )
+                .filter(d
+                        -> loai == 0
+                || (loai == 1 && d.getDiscountType() == 1)
+                || (loai == 2 && d.getDiscountType() == 2)
+                )
+                .filter(d
+                        -> trangthai == 0
+                || (trangthai == 1 && d.getStatus() == 1)
+                || (trangthai == 2 && d.getStatus() == 0)
+                )
+                .toList();
 
-            // 🎯 FILTER TRẠNG THÁI
-            if (status != -1 && d.getStatus() != status) {
-                continue;
-            }
-            
+        for (Discount d : list) {
             model.addRow(new Object[]{
                 d.getDiscountID(),
                 d.getDiscountCode(),
@@ -121,7 +106,67 @@ public class DiscountJdialog extends javax.swing.JDialog {
             });
         }
     }
-    
+
+//    void loadTable() {
+//        var model = (javax.swing.table.DefaultTableModel) tbldc.getModel();
+//        model.setRowCount(0);
+//
+//        String keyword = txtfind.getText().toLowerCase();
+//
+//        int typeIndex = cbbdc.getSelectedIndex();
+//        int statusIndex = cbbtrangthai.getSelectedIndex();
+//
+//        int type = 0;
+//        if (typeIndex == 1) {
+//            type = 1;
+//        }
+//        if (typeIndex == 2) {
+//            type = 2;
+//        }
+//
+//        int status = -1;
+//        if (statusIndex == 1) {
+//            status = 1;
+//        }
+//        if (statusIndex == 2) {
+//            status = 0;
+//        }
+//
+//        list = service.getAll(); // 👉 lấy all
+//
+//        for (var d : list) {
+//
+//            // 🔍 SEARCH
+//            if (!d.getDiscountName().toLowerCase().contains(keyword)) {
+//                continue;
+//            }
+//
+//            // 🎯 FILTER LOẠI
+//            if (type != 0 && d.getDiscountType() != type) {
+//                continue;
+//            }
+//
+//            // 🎯 FILTER TRẠNG THÁI
+//            if (status != -1 && d.getStatus() != status) {
+//                continue;
+//            }
+//
+//            model.addRow(new Object[]{
+//                d.getDiscountID(),
+//                d.getDiscountCode(),
+//                d.getDiscountName(),
+//                d.getDiscountType() == 1 ? "Giảm %" : "Giảm tiền",
+//                d.getDiscountValue(),
+//                d.getDescription(),
+//                d.getStartDateTime(),
+//                d.getEndDateTime(),
+//                d.getStatus() == 1 ? "Hoạt động" : "Ngưng",
+//                d.getMaxUsage(),
+//                d.getUsedCount()
+//            });
+//        }
+//    }
+
     void initComboForm() {
         cbLoai.removeAllItems();
         cbLoai.addItem("Giảm %");     // 1
@@ -131,76 +176,38 @@ public class DiscountJdialog extends javax.swing.JDialog {
         cbTrangThai.addItem("Hoạt động"); // 1
         cbTrangThai.addItem("Ngưng");     // 0
     }
-    
-    Discount getForm() {
-        txtten.setBackground(Color.white);
-        txtgiatri.setBackground(Color.white);
-        txtsoluong.setBackground(Color.white);
-        txtmagiamgia.setBackground(Color.white);
-        if (txtmagiamgia.getText().trim().isEmpty()) {
-            throw new RuntimeException("Mã giảm giá không được trống");
-        }
-        
-        if (txtten.getText().trim().isEmpty()) {
-            txtten.setBackground(Color.pink);
-            throw new RuntimeException("Tên không được trống");
-        }
-        
-        if (txtgiatri.getText().trim().isEmpty()) {
-            txtgiatri.setBackground(Color.pink);
-            throw new RuntimeException("Giá trị không được trống");
-        }
-        
-        if (txtsoluong.getText().trim().isEmpty()) {
-            throw new RuntimeException("Số lượng không được trống");
-        }
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        
-        LocalDateTime start;
-        LocalDateTime end;
-        
+
+    Discount getForm(boolean isInsert) {
+
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         try {
-            start = LocalDateTime.parse(txtstart.getText(), formatter);
-            end = LocalDateTime.parse(txtend.getText(), formatter);
+            new BigDecimal(txtgiatri.getText());
+            Integer.parseInt(txtsoluong.getText());
         } catch (Exception e) {
-            throw new RuntimeException("Sai định dạng ngày! Ví dụ: 2026-04-07 14:30");
+            throw new RuntimeException("Giá trị hoặc số lượng không hợp lệ");
         }
-        
-        if (end.isBefore(start)) {
-            throw new RuntimeException("Ngày kết thúc phải sau ngày bắt đầu");
-        }
-        
-        int type = cbLoai.getSelectedIndex() == 0 ? 1 : 2;
-        int status = cbTrangThai.getSelectedIndex() == 0 ? 1 : 0;
-        
-        BigDecimal value;
-        try {
-            value = new BigDecimal(txtgiatri.getText());
-        } catch (Exception e) {
-            throw new RuntimeException("Giá trị phải là số");
-        }
-        
+
         return Discount.builder()
                 .discountID(txtid.getText().isEmpty() ? 0 : Integer.parseInt(txtid.getText()))
-                .discountCode(txtmagiamgia.getText())
+                .discountCode(txtmagiamgia.getText()) // 🔥 nhập tay
                 .discountName(txtten.getText())
-                .discountType(type)
-                .discountValue(value)
+                .discountType(cbLoai.getSelectedIndex() == 0 ? 1 : 2)
+                .discountValue(new BigDecimal(txtgiatri.getText()))
                 .description(txtmota.getText())
-                .startDateTime(start)
-                .endDateTime(end)
-                .status(status)
+                .startDateTime(LocalDateTime.parse(txtstart.getText(), f))
+                .endDateTime(LocalDateTime.parse(txtend.getText(), f))
+                .status(cbTrangThai.getSelectedIndex() == 0 ? 1 : 0)
                 .maxUsage(Integer.parseInt(txtsoluong.getText()))
-                .usedCount(Integer.parseInt(txtdasudung.getText()))
+                .usedCount(isInsert ? 0 : Integer.parseInt(txtdasudung.getText()))
                 .build();
+
     }
-    
+
     String generateCode() {
         String prefix = cbLoai.getSelectedIndex() == 0 ? "PT" : "TM";
         return prefix + System.currentTimeMillis();
     }
-    
+
     public void setUser(Account user) {
         AccountService service = new AccountService();
 
@@ -215,27 +222,42 @@ public class DiscountJdialog extends javax.swing.JDialog {
             // ok
         }
     }
-    
+
     void showDetail(int index) {
         Discount d = list.get(index);
-        
+
         txtid.setText(String.valueOf(d.getDiscountID()));
         txtmagiamgia.setText(d.getDiscountCode());
         txtten.setText(d.getDiscountName());
-        
+
         cbLoai.setSelectedIndex(d.getDiscountType() == 1 ? 0 : 1);
-        
+
         txtgiatri.setText(d.getDiscountValue().toString());
         txtmota.setText(d.getDescription());
-        
+
         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         txtstart.setText(d.getStartDateTime().format(f));
         txtend.setText(d.getEndDateTime().format(f));
-        
+
         cbTrangThai.setSelectedIndex(d.getStatus() == 1 ? 0 : 1);
-        
+
         txtsoluong.setText(String.valueOf(d.getMaxUsage()));
         txtdasudung.setText(String.valueOf(d.getUsedCount()));
+    }
+
+    void clearForm() {
+        txtid.setText("");
+        txtmagiamgia.setText("");
+        txtten.setText("");
+        txtgiatri.setText("");
+        txtmota.setText("");
+        txtstart.setText("");
+        txtend.setText("");
+        txtsoluong.setText("");
+        txtdasudung.setText("0");
+
+        cbLoai.setSelectedIndex(0);
+        cbTrangThai.setSelectedIndex(0);
     }
 
     /**
@@ -260,6 +282,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
         jLabel14 = new javax.swing.JLabel();
         btnlocloai = new javax.swing.JButton();
         btnloctrangthai = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtid = new javax.swing.JTextField();
@@ -285,7 +308,8 @@ public class DiscountJdialog extends javax.swing.JDialog {
         txtmagiamgia = new javax.swing.JTextField();
         cbTrangThai = new javax.swing.JComboBox<>();
         cbLoai = new javax.swing.JComboBox<>();
-        txtClear = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        txtLamSach = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -299,7 +323,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
             }
         });
         jPanel2.add(cbbdc, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 70, 150, -1));
-        jPanel2.add(txtfind, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 220, -1));
+        jPanel2.add(txtfind, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 102, 153));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -309,7 +333,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 70, 90, -1));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, 90, -1));
 
         tbldc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -360,8 +384,8 @@ public class DiscountJdialog extends javax.swing.JDialog {
         jLabel13.setText("Lọc Theo Trạng Thái:");
         jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 40, -1, 20));
 
-        jLabel14.setText("Lọc Theo Loại:");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, -1, 20));
+        jLabel14.setText("Tìm theo mã hoặc tên giảm giá ");
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 20));
 
         btnlocloai.setBackground(new java.awt.Color(0, 102, 153));
         btnlocloai.setForeground(new java.awt.Color(255, 255, 255));
@@ -383,12 +407,21 @@ public class DiscountJdialog extends javax.swing.JDialog {
         });
         jPanel2.add(btnloctrangthai, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 70, 60, -1));
 
+        jLabel15.setText("Lọc Theo Loại:");
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 40, -1, 20));
+
         jTabbedPane1.addTab("Danh sách", jPanel2);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("ID");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+
+        txtid.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtidActionPerformed(evt);
+            }
+        });
         jPanel1.add(txtid, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 160, -1));
 
         jLabel3.setText("TÊN");
@@ -411,16 +444,18 @@ public class DiscountJdialog extends javax.swing.JDialog {
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, -1, -1));
         jPanel1.add(txtend, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 70, 160, -1));
 
-        jLabel8.setText("TRẠNG THÁI");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
+        jLabel8.setFont(new java.awt.Font("Segoe UI Black", 0, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel8.setText("Nhập theo format: năm-tháng-ngày | giờ-phút");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 280, -1));
 
         jLabel9.setText("SỐ LƯỢNG");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
-        jPanel1.add(txtsoluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 160, -1));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, -1, -1));
+        jPanel1.add(txtsoluong, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 160, -1));
 
         jLabel10.setText("ĐÃ SỬ DỤNG");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, -1, -1));
-        jPanel1.add(txtdasudung, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 190, 160, -1));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, -1, -1));
+        jPanel1.add(txtdasudung, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 230, 160, -1));
 
         jLabel11.setText("LOẠI");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
@@ -433,7 +468,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
                 txtthemActionPerformed(evt);
             }
         });
-        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 20, 130, 30));
+        jPanel1.add(txtthem, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 30, 130, 30));
 
         txtsua.setBackground(new java.awt.Color(0, 102, 153));
         txtsua.setForeground(new java.awt.Color(255, 255, 255));
@@ -443,27 +478,30 @@ public class DiscountJdialog extends javax.swing.JDialog {
                 txtsuaActionPerformed(evt);
             }
         });
-        jPanel1.add(txtsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 130, 130, 30));
+        jPanel1.add(txtsua, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 80, 130, 30));
 
         jLabel12.setText("MÃ GIẢM GIÁ");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, -1));
         jPanel1.add(txtmagiamgia, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 160, -1));
 
         cbTrangThai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel1.add(cbTrangThai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 160, -1));
+        jPanel1.add(cbTrangThai, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 160, -1));
 
         cbLoai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(cbLoai, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 150, 160, -1));
 
-        txtClear.setBackground(new java.awt.Color(0, 102, 153));
-        txtClear.setForeground(new java.awt.Color(255, 255, 255));
-        txtClear.setText("LÀM MỚI");
-        txtClear.addActionListener(new java.awt.event.ActionListener() {
+        jLabel16.setText("TRẠNG THÁI");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
+
+        txtLamSach.setBackground(new java.awt.Color(0, 102, 153));
+        txtLamSach.setForeground(new java.awt.Color(255, 255, 255));
+        txtLamSach.setText("LÀM SẠCH");
+        txtLamSach.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClearActionPerformed(evt);
+                txtLamSachActionPerformed(evt);
             }
         });
-        jPanel1.add(txtClear, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 80, 130, 30));
+        jPanel1.add(txtLamSach, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 130, 130, 30));
 
         jTabbedPane1.addTab("Thêm mới", jPanel1);
 
@@ -488,30 +526,41 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private void txtthemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtthemActionPerformed
         // TODO add your handling code here:
         try {
-            Discount d = getForm();
-            d.setDiscountCode(generateCode());
+            Discount d = getForm(true);
+
+            // 🔥 check trùng lần 2 cho chắc
+            if (service.getAll().stream()
+                    .anyMatch(x -> x.getDiscountCode().equalsIgnoreCase(d.getDiscountCode()))) {
+
+                JOptionPane.showMessageDialog(this, "Mã giảm giá đã tồn tại!");
+                return;
+            }
+
             service.add(d);
-            
-            JOptionPane.showMessageDialog(this, "Thêm thành công!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+
+            loadTable();
+            clearForm();
+
+            JOptionPane.showMessageDialog(this, "Thêm thành công");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_txtthemActionPerformed
 
     private void txtsuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtsuaActionPerformed
         // TODO add your handling code here:
         try {
-            Discount d = getForm();
-            if (txtid.getText().isEmpty()) {
-                d.setDiscountCode(generateCode()); // thêm mới
-            } else {
-                // nếu sửa thì chỉ update khi đổi loại
-                d.setDiscountCode(generateCode());
-            }
+            Discount d = getForm(false);
+
             service.update(d);
-            JOptionPane.showMessageDialog(this, "Sửa thành công!");
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+
+            loadTable();
+
+            JOptionPane.showMessageDialog(this, "Sửa thành công");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_txtsuaActionPerformed
 
@@ -555,7 +604,11 @@ public class DiscountJdialog extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbtrangthaiActionPerformed
 
-    private void txtClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClearActionPerformed
+    private void txtidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtidActionPerformed
+
+    private void txtLamSachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLamSachActionPerformed
         txtid.setText("");
         txtmagiamgia.setText("");
         txtten.setText("");
@@ -565,7 +618,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
         txtend.setText("");
         txtsoluong.setText("");
         txtdasudung.setText("");
-    }//GEN-LAST:event_txtClearActionPerformed
+    }//GEN-LAST:event_txtLamSachActionPerformed
 
     /**
      * @param args the command line arguments
@@ -619,6 +672,8 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -631,7 +686,7 @@ public class DiscountJdialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tbldc;
-    private javax.swing.JButton txtClear;
+    private javax.swing.JButton txtLamSach;
     private javax.swing.JTextField txtdasudung;
     private javax.swing.JTextField txtend;
     private javax.swing.JTextField txtfind;

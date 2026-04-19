@@ -52,9 +52,9 @@ public class AuthUtil {
     }
 
 // 💳 THANH TOÁN (admin + manager)
-    public static boolean canPayment(Account u) {
-        return isAdminOrManager(u);
-    }
+public static boolean canPayment(Account u) {
+    return isStaffOrAbove(u);
+}
 
 // 💈 BARBER (admin + manager)
     public static boolean canBarber(Account u) {

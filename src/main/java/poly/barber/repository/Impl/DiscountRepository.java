@@ -115,8 +115,8 @@ public class DiscountRepository {
     """;
 
         XJdbc.executeUpdate(sql,
-                d.getDiscountCode(), // ✅ đúng vị trí
-                d.getDiscountCode(), // ✅ đúng vị trí
+                d.getDiscountCode(),
+                d.getDiscountName(), // ✅ FIX
                 d.getDiscountType(),
                 d.getDiscountValue(),
                 d.getDescription(),
@@ -126,8 +126,6 @@ public class DiscountRepository {
                 d.getMaxUsage(),
                 d.getUsedCount()
         );
-//<<<<<<< HEAD
-//    }
     }
 
     // 🔥 thêm
@@ -190,11 +188,10 @@ public class DiscountRepository {
     }
 
     // 🔥 xoá mềm
-    public void updateStatus(int id, int status) {
-        String sql = "UPDATE Discount SET UsedCount = UsedCount + 1 WHERE DiscountID = ?";
-        XJdbc.executeUpdate(sql, status, id);
-    }
-
+public void updateStatus(int id, int status) {
+    String sql = "UPDATE Discount SET Status = ? WHERE DiscountID = ?";
+    XJdbc.executeUpdate(sql, status, id);
+}
     public boolean existsCode(String code, int id) {
         String sql = "SELECT COUNT(*) FROM Discount WHERE DiscountCode = ? AND DiscountID <> ?";
         try {
