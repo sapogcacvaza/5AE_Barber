@@ -88,7 +88,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         txtLastname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         lblBarberId = new javax.swing.JLabel();
-        btnUpdate1 = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Barber");
@@ -306,10 +306,10 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
         jLabel15.setText("BarberID:");
 
-        btnUpdate1.setText("Làm mới Form");
-        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setText("Làm mới Form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdate1ActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -346,7 +346,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                                     .addGap(18, 18, 18)
                                     .addComponent(rdoNghi))
                                 .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addComponent(btnUpdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -400,7 +400,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
-                    .addComponent(btnUpdate1))
+                    .addComponent(btnClear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd)
                 .addContainerGap(99, Short.MAX_VALUE))
@@ -527,6 +527,11 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             fillToTable(lst3);
             return;
         }
+        List<Barber> lst4 = brepo.searchByLastName(txtTimKiem.getText());
+        if (!lst4.isEmpty()) {
+            fillToTable(lst4);
+            return;
+        }
 
         JOptionPane.showMessageDialog(this,
                 "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
@@ -537,9 +542,9 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
-    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearForm();
-    }//GEN-LAST:event_btnUpdate1ActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -592,13 +597,13 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnFilter1;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnUpdate1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.ButtonGroup buttonGroup3;
@@ -644,10 +649,15 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
             int role = user.getRole();
 
             if (role == 2) {
-                btnDelete.setEnabled(false);
-            } else if (role == 3) {
-                btnDelete.setEnabled(false);
                 btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
+            } else if (role == 3) {
+                btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
             }
         }
     }

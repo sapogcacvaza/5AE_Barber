@@ -18,48 +18,10 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
 
     String sqlSearchByPhone = "select * from Customer where Phone like ?";
     String sqlSearchByName = "select * from Customer where Fullname like ?";
+    String sqlSearchByEmail = "select * from Customer where Email like ?";
     String sqlGetAll = "select CustomerID,Fullname,Phone,Email,Gender,Note,CustomerCode from Customer";
     String sqlGetOne = "select CustomerID,Fullname,Phone,Email,Gender,Note from Customer where CustomerID = ?";
     String sqlGetGender = "select *from Customer  where Gender like ?";
-    String sqlDeleteInvoiceDiscount = """
-    DELETE FROM InvoiceDiscount 
-    WHERE InvoiceID IN (
-        SELECT InvoiceID FROM Invoice 
-        WHERE AppointmentID IN (
-            SELECT AppointmentID FROM Appointment WHERE CustomerID = ?
-        )
-    )
-""";
-    String sqlDeletePayment = """
-    DELETE FROM Payment 
-    WHERE InvoiceID IN (
-        SELECT InvoiceID FROM Invoice 
-        WHERE AppointmentID IN (
-            SELECT AppointmentID FROM Appointment WHERE CustomerID = ?
-        )
-    )
-""";
-    String sqlDeleteInvoiceDetail = """
-    DELETE FROM InvoiceDetail 
-    WHERE InvoiceID IN (
-        SELECT InvoiceID FROM Invoice 
-        WHERE AppointmentID IN (
-            SELECT AppointmentID FROM Appointment WHERE CustomerID = ?
-        )
-    )
-""";
-    String sqlDeleteDetail = """
-    DELETE FROM AppointmentDetail 
-    WHERE AppointmentID IN (
-        SELECT AppointmentID FROM Appointment WHERE CustomerID = ?
-    )
-""";
-    String sqlDeleteInvoice = """
-    DELETE FROM Invoice 
-    WHERE AppointmentID IN (
-        SELECT AppointmentID FROM Appointment WHERE CustomerID = ?
-    )
-""";
     String sqlDeleteAppointment = "DELETE FROM Appointment WHERE CustomerID = ?";
     String sqlDeleteCustomer = "DELETE FROM Customer WHERE CustomerID = ?";
     String sqlAdd = "insert into Customer (Fullname,Phone,Email,Gender,Note) values\n"
@@ -72,6 +34,9 @@ public class CustomerImpl implements ICommonRepository<Customer, Integer> {
 
     public List<Customer> searchByName(String name) {
         return XQuery.getBeanList(Customer.class, sqlSearchByName, "%" + name + "%");
+    }
+        public List<Customer> searchByEmail(String email) {
+        return XQuery.getBeanList(Customer.class, sqlSearchByEmail, "%" + email + "%");
     }
 
     @Override

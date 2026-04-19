@@ -341,7 +341,7 @@
                                           <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="cboPosition" linkSize="3" alignment="0" min="-2" pref="318" max="-2" attributes="0"/>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="btnUpdate1" min="-2" pref="151" max="-2" attributes="0"/>
+                                              <Component id="btnClear" min="-2" pref="151" max="-2" attributes="0"/>
                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Component id="btnUpdate" pref="150" max="32767" attributes="0"/>
                                           </Group>
@@ -407,7 +407,7 @@
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnUpdate" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnUpdate1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnClear" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAdd" linkSize="2" min="-2" max="-2" attributes="0"/>
@@ -543,12 +543,12 @@
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="btnUpdate1">
+            <Component class="javax.swing.JButton" name="btnClear">
               <Properties>
                 <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i Form"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdate1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

@@ -470,6 +470,12 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             fillToTable(lst2);
             return;
         }
+        List<Customer> lst3 = khrepo.searchByEmail(txtTimKiem.getText());
+        System.out.println(lst3);
+        if (!lst3.isEmpty()) {
+            fillToTable(lst3);
+            return;
+        }
         JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
         fillToTable(khrepo.getAll());
     }//GEN-LAST:event_btnTimKiemActionPerformed
@@ -555,7 +561,6 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
                 btnDelete.setEnabled(false);
             } else if (role == 3) {
                 btnDelete.setEnabled(false);
-                btnUpdate.setEnabled(false);
             }
         }
     }
@@ -720,7 +725,7 @@ public class CustomerView extends javax.swing.JDialog implements CustomerControl
             JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng bạn muốn xóa!");
             return;
         } else {
-            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không. Việc này sẽ xóa toàn bộ thông tin liên quan đến khách hàng này.");
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?");
             if (confirm == JOptionPane.YES_OPTION) {
                 try {
                     khrepo.delete(Integer.parseInt(txtCustomerID.getText()));

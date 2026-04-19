@@ -92,7 +92,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         txtLastname = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
         txtEmployeeID = new javax.swing.JTextField();
-        btnUpdate1 = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nhân Viên");
@@ -323,10 +323,10 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
         txtEmployeeID.setEditable(false);
 
-        btnUpdate1.setText("Làm mới Form");
-        btnUpdate1.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setText("Làm mới Form");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdate1ActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -369,7 +369,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                                     .addComponent(jLabel7)
                                     .addComponent(cboPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(btnUpdate1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))))
                         .addGap(22, 22, 22))))
@@ -423,7 +423,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 .addGap(25, 25, 25)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdate)
-                    .addComponent(btnUpdate1))
+                    .addComponent(btnClear))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAdd)
                 .addContainerGap(54, Short.MAX_VALUE))
@@ -545,6 +545,11 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             fillToTable(lst3);
             return;
         }
+        List<Employee> lst4 = nvrepo.searchByFirstName(txtTimKiem.getText());
+        if (!lst4.isEmpty()) {
+            fillToTable(lst4);
+            return;
+        }
 
         JOptionPane.showMessageDialog(this,
                 "Không tìm thấy kết quả nào cho từ khóa " + txtTimKiem.getText());
@@ -555,9 +560,9 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
 
-    private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         clearForm();
-    }//GEN-LAST:event_btnUpdate1ActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -606,13 +611,13 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnFilter1;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnUnFilter;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnUpdate1;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cboFilter;
     private javax.swing.JComboBox<String> cboPosition;
@@ -659,10 +664,15 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             int role = user.getRole();
 
             if (role == 2) {
-                btnDelete.setEnabled(false);
-            } else if (role == 3) {
-                btnDelete.setEnabled(false);
                 btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
+            } else if (role == 3) {
+                btnUpdate.setEnabled(false);
+                btnDelete.setEnabled(false);
+                btnClear.setEnabled(false);
+                btnAdd.setEnabled(false);
             }
         }
     }
@@ -851,6 +861,11 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         try {
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên này không?");
             if (confirm == JOptionPane.YES_OPTION) {
+                Account ac = nvrepo.getAccount(Integer.parseInt(txtEmployeeID.getText()));
+                if(ac.getRole()==1){
+                    JOptionPane.showMessageDialog(this, "Không thể xóa Admin");
+                    return;
+                }
                 nvrepo.delete(nv.getEmployeeID());
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công!");
                 clearForm();
