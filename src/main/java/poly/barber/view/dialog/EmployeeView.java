@@ -142,7 +142,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Tên", "Họ", "Số Điện Thoại", "Email", "Giới Tính", "Địa chỉ", "ID Vị Trí"
+                "ID", "Tên", "Họ", "Số Điện Thoại", "Email", "Giới Tính", "Địa chỉ", "Vị Trí"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -678,8 +678,8 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     public int positionFiter() {
-        List<Employee> lst = nvrepo.getAll();
-        Employee nv = lst.get(cboPositionFilter.getSelectedIndex());
+        List<EmployeePosition> lst = eprepo.getAll();
+        EmployeePosition nv = lst.get(cboPositionFilter.getSelectedIndex());
 
         return nv.getPositionID();
     }
@@ -796,8 +796,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
         }
         txtAddress.setText(tblNhanVien.getValueAt(index, 6) + "");
 
-        EmployeePosition ep = eprepo.getOne((Integer) tblNhanVien.getValueAt(index, 7));
-        cboPosition.setSelectedItem(ep.getPositionName());
+        cboPosition.setSelectedItem(tblNhanVien.getValueAt(index, 7));
     }
 
     @Override
@@ -816,11 +815,19 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
     }
 
     @Override
-    public void fillToTable(List<Employee> lst
-    ) {
+    public void fillToTable(List<Employee> lst) {
         dtm.setRowCount(0);
         for (Employee nv : lst) {
-            dtm.addRow(new Object[]{nv.getEmployeeID(), nv.getFirstname(), nv.getLastname(), nv.getPhone(), nv.getEmail(), nv.isGender() ? "Nam" : "Nữ", nv.getAddress(), nv.getPositionID()});
+            List<EmployeePosition> ep = eprepo.getAll();
+            String position = "";
+            for (int i = 0; i < ep.size(); i++) {
+
+                EmployeePosition br = ep.get(i);
+                if (nv.getPositionID() == br.getPositionID()) {
+                    position = br.getPositionName();
+                }
+            }
+            dtm.addRow(new Object[]{nv.getEmployeeID(), nv.getFirstname(), nv.getLastname(), nv.getPhone(), nv.getEmail(), nv.isGender() ? "Nam" : "Nữ", nv.getAddress(), position});
         }
     }
 
@@ -862,7 +869,7 @@ public class EmployeeView extends javax.swing.JDialog implements EmployeeControl
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa nhân viên này không?");
             if (confirm == JOptionPane.YES_OPTION) {
                 Account ac = nvrepo.getAccount(Integer.parseInt(txtEmployeeID.getText()));
-                if(ac.getRole()==1){
+                if (ac.getRole() == 1) {
                     JOptionPane.showMessageDialog(this, "Không thể xóa Admin");
                     return;
                 }

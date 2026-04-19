@@ -760,8 +760,8 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         txtLastname.setText(tblBarber.getValueAt(index, 4) + "");
         txtPhone.setText(tblBarber.getValueAt(index, 5) + "");
         txtEmail.setText(tblBarber.getValueAt(index, 6) + "");
-        BarberPosition b = bprepo.getOne((int) tblBarber.getValueAt(index, 7));
-        cboPosition.setSelectedItem(b.getPositionName());
+       
+        cboPosition.setSelectedItem(tblBarber.getValueAt(index, 7));
     }
 
     @Override
@@ -786,7 +786,15 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
         for (Barber b : lst) {
             String sanSang = b.isBusy() ? "Bận" : "Rảnh";
             String trangThai = b.isStatus() ? "Đi làm" : "Nghỉ việc";
-
+            
+            List<BarberPosition> bp = bprepo.getAll();
+            String position="";
+            for(int i =0;i<bp.size();i++){
+                
+                BarberPosition br = bp.get(i);
+            if(b.getPositionID()==br.getPositionID()){
+                position = br.getPositionName();
+            }}
             Object[] row = {
                 b.getBarberID(),
                 sanSang,
@@ -795,7 +803,7 @@ public class BarberJDialog extends javax.swing.JDialog implements BarberControll
                 b.getLastname(),
                 b.getPhone(),
                 b.getEmail(),
-                b.getPositionID()
+                position
             };
             dtm.addRow(row);
         }
