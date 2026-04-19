@@ -680,34 +680,64 @@ public class InvoiceJDialog extends javax.swing.JDialog {
     }
 
     public void setForm() {
-        int index = tblHoaDon.getRowCount() - 1;
+        // 1. Kiểm tra bảng có dữ liệu hay không
+        int rowCount = tblHoaDon.getRowCount();
+        if (rowCount <= 0) {
+            // Nếu bảng trống, có thể xóa trắng các label hoặc thông báo
+            clearForm();
+            return;
+        }
 
-        Invoice lastInvoice = ir.getOne(Integer.parseInt(tblHoaDon.getValueAt(index, 1) + ""));
+        // 2. Lấy chỉ số dòng cuối cùng
+        int index = rowCount - 1;
 
-        int maHD = lastInvoice.getInvoiceID();
-        LocalDateTime dateTime = lastInvoice.getCheckInDateTime();
-        String ngTao = lastInvoice.getEmployeeName();
-
-        // Đổ dữ liệu lên Label
-        if (maHD != -1) {
-            String[] info = cr.getCustomerInfoByInvoiceId(maHD);
-            if (info != null && info.length >= 2) {
-                lblTenKhach.setText(info[0]);
-                lblSDT.setText(info[1]);
-            } else {
-                lblTenKhach.setText("Khách vãng lai");
-                lblSDT.setText("Không có");
+        try {
+            // 3. Lấy giá trị MaHD từ bảng (Cột index 1)
+            Object value = tblHoaDon.getValueAt(index, 1);
+            if (value == null) {
+                return;
             }
 
-            lblMaHD.setText(maHD + "");
-            lblNgay.setText(dateTime + ""); // Đã an toàn
+            int maHD_FromTable = Integer.parseInt(value.toString());
+            Invoice lastInvoice = ir.getOne(maHD_FromTable);
 
-            // Check null người tạo
-            String infoNguoiTao = (ngTao != null) ? ngTao : "Không rõ";
-            lblnguoitao.setText(infoNguoiTao);
+            if (lastInvoice != null) {
+                int maHD = lastInvoice.getInvoiceID();
+                LocalDateTime dateTime = lastInvoice.getCheckInDateTime();
+                String ngTao = lastInvoice.getEmployeeName();
 
-            loadServiceTable(maHD);
-            loadBarberTable(maHD);
+                // Đổ dữ liệu lên Label
+                String[] info = cr.getCustomerInfoByInvoiceId(maHD);
+                if (info != null && info.length >= 2) {
+                    lblTenKhach.setText(info[0]);
+                    lblSDT.setText(info[1]);
+                } else {
+                    lblTenKhach.setText("Khách vãng lai");
+                    lblSDT.setText("Không có");
+                }
+
+                lblMaHD.setText(String.valueOf(maHD));
+                // Định dạng ngày tháng cho đẹp hơn (tùy chọn)
+                lblNgay.setText(dateTime != null ? dateTime.toString() : "");
+
+                lblnguoitao.setText(ngTao != null ? ngTao : "Không rõ");
+
+                loadServiceTable(maHD);
+                loadBarberTable(maHD);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Có thể hiện thông báo lỗi log ở đây
         }
+    }
+
+// Nên có hàm này để xóa trắng form khi không có dữ liệu
+    private void clearForm() {
+        lblTenKhach.setText("");
+        lblSDT.setText("");
+        lblMaHD.setText("");
+        lblNgay.setText("");
+        lblnguoitao.setText("");
+        // Clear các bảng liên quan nếu cần
     }
 }
