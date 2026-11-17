@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Workshop 2 - Product Backlog và Sprint Goals | 5AE_Barber</title>
+<style>
+@page { size: A4; margin: 2cm; }
+body { font-family: Arial, "Calibri", sans-serif; color: #233044; font-size: 10.5pt; line-height: 1.45; }
+h1 { color: #123b5d; text-align: center; font-size: 23pt; margin-top: 40px; }
+h2 { color: #123b5d; font-size: 16pt; border-bottom: 2px solid #1684a7; padding-bottom: 5px; margin-top: 28px; }
+h3 { color: #17637b; font-size: 12.5pt; margin-top: 19px; }
+p { margin: 7px 0; }
+.subtitle { text-align:center; font-size: 15pt; color:#1684a7; font-weight:bold; }
+.meta { text-align:center; color:#526174; margin-top:28px; }
+.note { background:#eef6fa; border-left:4px solid #1684a7; padding:10px 13px; margin:12px 0; }
+table { border-collapse:collapse; width:100%; margin:10px 0 18px; font-size:9pt; }
+th { background:#164e68; color:white; text-align:left; }
+th,td { border:1px solid #aebcc7; padding:6px; vertical-align:top; }
+tr:nth-child(even) td { background:#f3f7f9; }
+.small { font-size:8.5pt; color:#536274; }
+.pagebreak { page-break-before:always; }
+ul { margin-top:5px; }
+</style>
+</head>
+<body>
+<h1>WORKSHOP 2 – AGILE / SCRUM</h1>
+<p class="subtitle">PRODUCT GOAL · PRODUCT BACKLOG · SPRINT GOALS</p>
+<p class="subtitle" style="font-size:13pt;color:#233044">Dự án phần mềm quản lý tiệm tóc 5AE_Barber</p>
+<p class="meta"><b>Nhóm thực hiện</b><br>Product Owner: Nguyễn Mạnh Cường<br>Scrum Master: Vũ Thành Long<br>Developer: Lê Văn Nam · Lê Tuấn Dũng · Phạm Ngọc Khánh</p>
+<p class="meta">Repo: <a href="https://github.com/sapogcacvaza/5AE_Barber">github.com/sapogcacvaza/5AE_Barber</a><br>Phân tích theo mã nguồn nhánh <b>master</b> tại commit <code>cbcb1fdee9d142d941022ce3a9a02a2a14d530ff</code></p>
+
+<h2>1. Thông tin chung về dự án</h2>
+<table><tr><th>Thông tin</th><th>Nội dung</th></tr>
+<tr><td>Tên sản phẩm</td><td>5AE_Barber – Phần mềm quản lý tiệm tóc 5AE</td></tr>
+<tr><td>Mô tả repo</td><td>Phần mềm quản lý tiệm tóc 5AE, xây dựng trên nền tảng Java Swing và JDBC với SQL Server.</td></tr>
+<tr><td>Công nghệ thể hiện trong mã nguồn</td><td>Java 21, Maven, Java Swing; JDBC/SQL Server; Apache POI (xuất Excel); JFreeChart (biểu đồ); iTextPDF (hóa đơn PDF); Lombok và JCalendar.</td></tr>
+<tr><td>Cấu trúc mã nguồn</td><td><code>poly.barber.view</code> (giao diện), <code>entity</code> (đối tượng nghiệp vụ), <code>repository</code> (truy cập dữ liệu), <code>service</code> (nghiệp vụ), <code>controller</code> (điều phối), <code>util</code> (kết nối, phiên đăng nhập, phân quyền và tiện ích).</td></tr>
+<tr><td>Vai trò người dùng trong ứng dụng</td><td>Admin, Quản lý (Manager), Nhân viên (Staff). Các vai trò và điều kiện phân quyền được khai báo trong <code>AuthUtil</code>.</td></tr></table>
+<div class="note"><b>Căn cứ và giới hạn phân tích:</b> repository có các lớp entity, repository, service, giao diện Swing và cấu hình Maven; không thấy README hoặc tệp SQL tạo database/seed schema trong cây mã nguồn đã rà soát. Vì vậy tài liệu xác định nghiệp vụ từ các lớp như <code>Account</code>, <code>Appointment</code>, <code>Invoice</code>, <code>Payment</code>, các repository và màn hình hiện có; không khẳng định chi tiết lược đồ SQL ngoài bằng chứng từ code. Product Backlog là mô tả sản phẩm theo chức năng quan sát được, không phải xác nhận trạng thái hoàn thành hay tiến độ hiện tại.</div>
+<h3>Nhóm Scrum</h3>
+<table><tr><th>Thành viên</th><th>Vai trò</th><th>Trách nhiệm trong Workshop</th></tr>
+<tr><td>Nguyễn Mạnh Cường</td><td>Product Owner</td><td>Làm rõ nhu cầu, sắp xếp Product Backlog và xác nhận giá trị sản phẩm.</td></tr>
+<tr><td>Vũ Thành Long</td><td>Scrum Master</td><td>Điều phối các hoạt động Scrum, hỗ trợ nhóm xử lý trở ngại.</td></tr>
+<tr><td>Lê Văn Nam</td><td>Developer</td><td>Phối hợp xây dựng, kiểm thử và hoàn thiện phần mềm.</td></tr>
+<tr><td>Lê Tuấn Dũng</td><td>Developer</td><td>Phối hợp xây dựng, kiểm thử và hoàn thiện phần mềm.</td></tr>
+<tr><td>Phạm Ngọc Khánh</td><td>Developer</td><td>Phối hợp xây dựng, kiểm thử và hoàn thiện phần mềm.</td></tr></table>
+
+<h2>2. Product Goal – Mục tiêu sản phẩm</h2>
+<table><tr><th>Thành phần</th><th>Mô tả</th></tr>
+<tr><td>Tên sản phẩm</td><td>5AE_Barber – Phần mềm quản lý tiệm tóc 5AE.</td></tr>
+<tr><td>Mục đích</td><td>Cung cấp ứng dụng desktop tập trung để nhân viên và người quản lý theo dõi hoạt động phục vụ khách tại tiệm: từ hồ sơ khách, lịch hẹn, dịch vụ và barber đến hóa đơn, thanh toán, lịch sử và báo cáo.</td></tr>
+<tr><td>Vấn đề giải quyết</td><td>Hỗ trợ thay thế việc tra cứu và ghi nhận nghiệp vụ rời rạc bằng dữ liệu được quản lý trong ứng dụng kết nối SQL Server; giúp theo dõi lịch, trạng thái phục vụ, hóa đơn và kết quả kinh doanh thuận tiện hơn.</td></tr>
+<tr><td>Đối tượng người dùng</td><td>Admin, Quản lý và Nhân viên của tiệm tóc. Khách hàng và barber là đối tượng dữ liệu/nghiệp vụ được quản lý; repository hiện không thể hiện ứng dụng tự phục vụ dành cho khách hàng.</td></tr>
+<tr><td>Giá trị mang lại</td><td>Quản lý lịch hẹn theo tuần, barber và trạng thái; ghi nhận dịch vụ và thời lượng; lập và thanh toán hóa đơn, áp dụng giảm giá; tra cứu lịch sử; xem thống kê doanh thu/lượt khách/dịch vụ/barber và xuất báo cáo.</td></tr>
+<tr><td>Kết quả mong muốn</td><td>Một ứng dụng Java Swing dùng được trong nội bộ tiệm, có luồng nghiệp vụ nhất quán từ đăng nhập, đặt lịch và phục vụ đến lập hóa đơn/thanh toán, đồng thời cung cấp dữ liệu lịch sử và báo cáo để hỗ trợ quản lý.</td></tr></table>
+<p><b>Product Goal:</b> Xây dựng một ứng dụng desktop thống nhất giúp 5AE Barber quản lý lịch hẹn, khách hàng, nhân sự, dịch vụ và giao dịch tại tiệm; hỗ trợ phân quyền nhân viên và cung cấp lịch sử, thống kê để hoạt động phục vụ và quản lý chính xác, thuận tiện hơn.</p>
+
+<h2>3. Product Backlog Goal – Mục tiêu Product Backlog</h2>
+<p><b>Mục tiêu:</b> Tập hợp và ưu tiên các năng lực cần có để hỗ trợ quy trình vận hành tiệm tóc mà mã nguồn đang thể hiện: xác thực và phân quyền; quản lý danh mục và nhân sự; lập/theo dõi lịch; lập hóa đơn, thanh toán, lưu lịch sử và thống kê. Story Point là ước lượng tương đối phục vụ lập kế hoạch, không phải số giờ.</p>
+<p class="small"><b>Quy ước vai trò:</b> Admin / Quản lý / Nhân viên tương ứng các role trong <code>AuthUtil</code>. Quyền thực tế được giới hạn theo từng chức năng; một số kiểm tra giao diện và <code>AuthUtil</code> chưa hoàn toàn thống nhất nên cần PO xác nhận khi triển khai.</p>
+<table>
+<tr><th>ID</th><th>ROLE</th><th>User Story</th><th>Mô tả chức năng</th><th>Ưu tiên</th><th>SP</th></tr>
+<tr><td>PB-01</td><td>Admin, Quản lý, Nhân viên</td><td>Là người dùng, tôi muốn đăng nhập bằng tài khoản để sử dụng các chức năng phù hợp với vai trò.</td><td>Nhập username/password, xác thực tài khoản, lưu người dùng hiện hành vào phiên và mở màn hình chính; ứng dụng có thao tác đăng xuất.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-02</td><td>Admin</td><td>Là Admin, tôi muốn quản lý tài khoản và vai trò để kiểm soát quyền truy cập hệ thống.</td><td>Tra cứu, thêm, cập nhật, lọc theo role và xóa tài khoản; liên kết tài khoản với nhân viên. Vai trò gồm Admin, Quản lý, Nhân viên.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-03</td><td>Admin</td><td>Là Admin, tôi muốn quản lý hồ sơ nhân viên để cập nhật nhân sự và chức vụ.</td><td>Thêm, sửa, xóa, tìm kiếm theo tên/điện thoại/email và lọc theo giới tính/chức vụ; hồ sơ gồm thông tin liên hệ, giới tính, địa chỉ, chức vụ. Mã nguồn tự tạo tài khoản nhân viên khi thêm nhân viên.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-04</td><td>Admin, Quản lý</td><td>Là người quản lý, tôi muốn quản lý hồ sơ barber để biết nhân sự phục vụ và tình trạng sẵn sàng.</td><td>Thêm, sửa, xóa, tìm kiếm, lọc theo chức vụ, trạng thái đi làm/nghỉ và bận/rảnh; hồ sơ có thông tin liên hệ, vị trí/chức vụ và trạng thái.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-05</td><td>Admin, Quản lý</td><td>Là người quản lý, tôi muốn quản lý hồ sơ khách hàng để sử dụng khi đặt lịch và xem giao dịch.</td><td>Thêm, sửa, xóa, tìm kiếm theo tên/điện thoại/email, lọc giới tính và chọn khách hàng từ màn hình đặt lịch; lưu tên, điện thoại, email, giới tính, mã khách hàng.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-06</td><td>Admin</td><td>Là Admin, tôi muốn quản lý dịch vụ và nhóm dịch vụ để cập nhật danh mục phục vụ, giá và thời lượng.</td><td>Quản lý dịch vụ (tên, giá, phút thực hiện, nhóm), lọc theo nhóm; quản lý nhóm dịch vụ và vị trí barber cần thiết. Màn hình có thêm/sửa dịch vụ và thêm/sửa/xóa nhóm.</td><td>High</td><td>8</td></tr>
+<tr><td>PB-07</td><td>Admin, Quản lý, Nhân viên</td><td>Là nhân viên, tôi muốn tạo lịch hẹn với khách, dịch vụ, thời gian và barber để sắp xếp việc phục vụ.</td><td>Chọn khách/ngày/khung giờ/nhóm dịch vụ/dịch vụ/barber; xem barber khả dụng, số lượng dịch vụ, tổng thời lượng và giá; ghi chú và lưu lịch cùng chi tiết dịch vụ. Có kiểm tra ngày, giờ và xung đột lịch trong code.</td><td>High</td><td>8</td></tr>
+<tr><td>PB-08</td><td>Admin, Quản lý, Nhân viên</td><td>Là nhân viên, tôi muốn theo dõi lịch và cập nhật trạng thái để biết tiến độ phục vụ.</td><td>Xem lịch theo tuần trước/tuần này/tuần sau; tìm theo khách, lọc barber/trạng thái; cập nhật lịch: chưa đến, đã đến, đã hủy, đang chờ xử lý, đã xong; cập nhật trạng thái từng dịch vụ: chờ, đang làm, xong, tạm dừng, hủy.</td><td>High</td><td>8</td></tr>
+<tr><td>PB-09</td><td>Admin</td><td>Là Admin, tôi muốn quản lý chương trình giảm giá để cấu hình ưu đãi áp dụng cho hóa đơn.</td><td>Thêm, sửa, tìm kiếm theo mã/tên, lọc theo loại và trạng thái; lưu loại giảm theo phần trăm hoặc số tiền, giá trị, thời hạn, giới hạn sử dụng và số lần đã dùng.</td><td>Medium</td><td>5</td></tr>
+<tr><td>PB-10</td><td>Admin, Quản lý</td><td>Là người phụ trách, tôi muốn xem danh sách hóa đơn và chi tiết dịch vụ để kiểm tra giao dịch.</td><td>Hiển thị hóa đơn, thời gian check-in/check-out, tổng tiền/giảm giá/trạng thái/người tạo; tìm theo tên khách và xem khách, barber, dịch vụ chi tiết. Chỉ thanh toán khi lịch đã kết thúc và hóa đơn chưa thanh toán.</td><td>High</td><td>5</td></tr>
+<tr><td>PB-11</td><td>Admin, Quản lý, Nhân viên</td><td>Là nhân viên, tôi muốn thanh toán hóa đơn và áp dụng voucher để hoàn tất giao dịch của khách.</td><td>Chọn phương thức thanh toán và mã giảm giá; tính số tiền phải trả và tiền thừa; ghi nhận tổng tiền, giảm giá, trạng thái và liên kết phương thức thanh toán. Giao diện có QR cho phương thức không phải tiền mặt.</td><td>High</td><td>8</td></tr>
+<tr><td>PB-12</td><td>Admin, Quản lý, Nhân viên</td><td>Là nhân viên, tôi muốn in hóa đơn để cung cấp thông tin thanh toán cho khách.</td><td>Xuất hóa đơn PDF gồm mã hóa đơn, khách hàng, thời gian, nhân viên, dịch vụ, số lượng, đơn giá, ưu đãi, phương thức và số tiền.</td><td>Medium</td><td>3</td></tr>
+<tr><td>PB-13</td><td>Admin, Quản lý</td><td>Là người quản lý, tôi muốn tra cứu lịch sử hóa đơn và lịch đặt để xem lại hoạt động đã phát sinh.</td><td>Lọc lịch sử hóa đơn theo trạng thái, barber/người phụ trách và khoảng ngày; xem chi tiết hóa đơn, thanh toán, dịch vụ; xem/lọc lịch sử đặt lịch theo trạng thái và khoảng ngày.</td><td>Medium</td><td>5</td></tr>
+<tr><td>PB-14</td><td>Admin</td><td>Là Admin, tôi muốn xem thống kê doanh thu, lượt khách, dịch vụ và barber để theo dõi kinh doanh.</td><td>Tổng quan doanh thu tháng/7 ngày, biểu đồ và bảng theo ngày; thống kê dịch vụ theo lượt/doanh thu; thống kê barber theo lượt/doanh thu; lọc theo khoảng ngày và xuất từng bảng thống kê ra Excel.</td><td>Medium</td><td>8</td></tr>
+<tr><td>PB-15</td><td>Ứng dụng / Nhóm phát triển</td><td>Là hệ thống, tôi muốn truy cập SQL Server qua JDBC để đọc và lưu dữ liệu nghiệp vụ.</td><td>Dùng tiện ích JDBC và các repository để truy vấn/cập nhật dữ liệu của các entity nghiệp vụ. Cần cấu hình môi trường kết nối đúng; không mô tả thêm chức năng quản trị database vì repo không có căn cứ đó.</td><td>High</td><td>5</td></tr>
+</table>
+<div class="note"><b>Ghi chú phạm vi:</b> Không đưa vào backlog các chức năng như đặt lịch trực tuyến cho khách, quản lý kho, lương/chấm công, thông báo SMS/email hay tích hợp cổng thanh toán bên ngoài vì mã nguồn hiện được rà soát không cung cấp căn cứ cho các nghiệp vụ này. Mã nguồn có một số bất nhất về phân quyền (đặc biệt ghi chú/quyền thanh toán và các lớp giao diện); Product Owner nên xác nhận quy tắc cuối cùng.</div>
+
+<div class="pagebreak"></div>
+<h2>4. Sprint Goals – Mục tiêu các Sprint</h2>
+<p>Đề xuất chia thành 5 Sprint theo phụ thuộc nghiệp vụ. Sprint Goal mô tả giá trị/khả năng được tạo ra; danh sách PB liên kết các User Story ở Product Backlog. Phân chia này là kế hoạch học tập, không khẳng định đã hoàn thành.</p>
+<table><tr><th>Sprint</th><th>Tên Sprint</th><th>Sprint Goal</th><th>User Stories</th><th>Kết quả cần đạt</th></tr>
+<tr><td>Sprint 1</td><td>Nền tảng ứng dụng, dữ liệu và truy cập</td><td>Thiết lập nền tảng chạy được và cho phép người dùng đăng nhập an toàn theo vai trò.</td><td>PB-15, PB-01, PB-02</td><td>Kết nối ứng dụng với SQL Server; đăng nhập, phiên người dùng, phân quyền cơ bản và quản lý tài khoản có thể trình diễn được.</td></tr>
+<tr><td>Sprint 2</td><td>Danh mục và hồ sơ vận hành</td><td>Hoàn thiện dữ liệu nền cần thiết để lập lịch và cung cấp dịch vụ.</td><td>PB-03, PB-04, PB-05, PB-06</td><td>Quản lý được khách hàng, nhân viên, barber, dịch vụ và nhóm dịch vụ; tìm kiếm/lọc theo các tiêu chí có trong giao diện.</td></tr>
+<tr><td>Sprint 3</td><td>Lịch hẹn và theo dõi phục vụ</td><td>Cho phép nhân viên lập lịch có đủ khách, dịch vụ và barber, đồng thời theo dõi trạng thái lịch/chi tiết dịch vụ.</td><td>PB-07, PB-08</td><td>Tạo lịch và chi tiết dịch vụ; kiểm tra dữ liệu, thời lượng/xung đột; xem lịch theo tuần và cập nhật trạng thái theo nghiệp vụ.</td></tr>
+<tr><td>Sprint 4</td><td>Hóa đơn, ưu đãi và thanh toán</td><td>Hoàn tất luồng từ lịch phục vụ đến hóa đơn và ghi nhận khoản thanh toán của khách.</td><td>PB-09, PB-10, PB-11, PB-12</td><td>Quản lý giảm giá; xem hóa đơn/chi tiết; áp dụng ưu đãi, chọn phương thức, tính tiền và tiền thừa; đánh dấu thanh toán; xuất PDF.</td></tr>
+<tr><td>Sprint 5</td><td>Lịch sử, báo cáo và hoàn thiện</td><td>Cung cấp khả năng tra cứu hoạt động đã phát sinh và số liệu hỗ trợ quản lý; kiểm tra tích hợp các luồng chính.</td><td>PB-13, PB-14; kiểm thử tích hợp PB-01–PB-12, PB-15</td><td>Tra cứu lịch sử hóa đơn/lịch hẹn, xem thống kê doanh thu/khách/dịch vụ/barber, xuất Excel; kiểm thử luồng đăng nhập → đặt lịch → phục vụ → thanh toán → lịch sử/báo cáo.</td></tr>
+</table>
+<h3>Diễn giải mục tiêu theo Sprint</h3>
+<h3>Sprint 1 – Nền tảng ứng dụng, dữ liệu và truy cập</h3>
+<p><b>Sprint Goal:</b> Tạo nền tảng để nhóm có thể chạy ứng dụng, truy cập dữ liệu nghiệp vụ và kiểm soát chức năng theo tài khoản đăng nhập.</p>
+<ul><li>Thiết lập kết nối SQL Server/JDBC theo cấu hình dự án (PB-15).</li><li>Xây dựng/kiểm tra đăng nhập, phiên làm việc, phân quyền và thao tác tài khoản (PB-01, PB-02).</li></ul>
+<p><b>Kết quả:</b> Người dùng đăng nhập được; hệ thống nhận diện role Admin/Quản lý/Nhân viên và hiển thị/cho phép chức năng tương ứng theo quy tắc đã được PO thống nhất.</p>
+<h3>Sprint 2 – Danh mục và hồ sơ vận hành</h3>
+<p><b>Sprint Goal:</b> Có đầy đủ dữ liệu khách hàng, nhân viên, barber và dịch vụ làm đầu vào cho việc xếp lịch và tính hóa đơn.</p>
+<ul><li>Quản lý thông tin khách hàng và tìm kiếm/lọc hồ sơ (PB-05).</li><li>Quản lý nhân viên, chức vụ và liên kết tài khoản nhân viên (PB-03).</li><li>Quản lý barber, vị trí, trạng thái đi làm và bận/rảnh (PB-04).</li><li>Quản lý dịch vụ, giá, thời lượng và nhóm dịch vụ/vị trí yêu cầu (PB-06).</li></ul>
+<p><b>Kết quả:</b> Có thể tra cứu và cập nhật các danh mục cần thiết trước khi đặt lịch.</p>
+<h3>Sprint 3 – Lịch hẹn và theo dõi phục vụ</h3>
+<p><b>Sprint Goal:</b> Hỗ trợ nhân viên tiếp nhận lịch hẹn, phân bổ barber/dịch vụ và cập nhật tiến độ phục vụ tại tiệm.</p>
+<ul><li>Tạo lịch có khách hàng, ngày/giờ, dịch vụ, barber, số lượng, thời lượng và ghi chú (PB-07).</li><li>Tra cứu lịch theo tuần, khách, barber, trạng thái và cập nhật trạng thái lịch/dịch vụ (PB-08).</li></ul>
+<p><b>Kết quả:</b> Lịch có thể được tạo, xem theo lịch và chuyển trạng thái từ chưa đến/đã đến đến đã xong hoặc hủy; chi tiết dịch vụ có trạng thái riêng.</p>
+<h3>Sprint 4 – Hóa đơn, ưu đãi và thanh toán</h3>
+<p><b>Sprint Goal:</b> Ghi nhận giá trị dịch vụ và hoàn tất thanh toán cho lịch đã phục vụ, có thể áp dụng giảm giá và in hóa đơn.</p>
+<ul><li>Quản lý chương trình giảm giá theo loại, thời hạn, trạng thái và hạn mức sử dụng (PB-09).</li><li>Tra cứu hóa đơn, khách hàng, barber và dịch vụ chi tiết (PB-10).</li><li>Áp dụng voucher, chọn phương thức thanh toán, tính tiền phải trả/tiền thừa và cập nhật trạng thái (PB-11).</li><li>Xuất hóa đơn PDF cho giao dịch (PB-12).</li></ul>
+<p><b>Kết quả:</b> Nhân viên có thể xem hóa đơn của lịch đã kết thúc, thanh toán một hóa đơn chưa thanh toán và in thông tin giao dịch.</p>
+<h3>Sprint 5 – Lịch sử, báo cáo và hoàn thiện</h3>
+<p><b>Sprint Goal:</b> Giúp người quản lý xem lại hoạt động kinh doanh và xác nhận các luồng chính vận hành cùng nhau.</p>
+<ul><li>Lọc và xem chi tiết lịch sử hóa đơn/thanh toán và lịch sử đặt lịch (PB-13).</li><li>Xem tổng quan, thống kê dịch vụ/barber theo ngày và xuất báo cáo Excel (PB-14).</li><li>Kiểm thử tích hợp theo luồng sử dụng; rà soát phân quyền, dữ liệu và xử lý lỗi kết nối (PB-01–PB-15).</li></ul>
+<p><b>Kết quả:</b> Quản lý tra cứu được lịch sử và có báo cáo tổng quan; nhóm có bản ứng dụng đã kiểm thử các luồng đăng nhập, quản lý dữ liệu, lịch hẹn, hóa đơn và thanh toán.</p>
+
+<h2>5. Căn cứ mã nguồn đã rà soát</h2>
+<p class="small">Các tệp tiêu biểu dùng để xác định chức năng và mô hình: <code>pom.xml</code>; <code>src/main/java/poly/barber/view/Barber5AEJFrame.java</code>; các màn hình <code>LoginDialog.java</code>, <code>AccountJDialog.java</code>, <code>CustomerView.java</code>, <code>EmployeeView.java</code>, <code>BarberJDialog.java</code>, <code>ServiceJDialog.java</code>, <code>AppointmentJDialog.java</code>, <code>DiscountJdialog.java</code>, <code>InvoiceJDialog.java</code>, <code>PaymentJDialog.java</code>, <code>HistoryJdialog.java</code>, <code>StatisticalJdialog2.java</code>; lớp <code>AuthUtil.java</code>, <code>XJdbc.java</code>; entities trong <code>poly.barber.entity</code>; các repository/service tương ứng, đặc biệt <code>StatisticalRepositoryImpl.java</code>.</p>
+<p class="small"><b>Lưu ý bảo mật/phân tích:</b> <code>XJdbc.java</code> chứa thông tin kết nối SQL Server viết trực tiếp trong mã nguồn; <code>LoginDialog.java</code> có chức năng lưu tài khoản vào tệp văn bản. Đây là quan sát hiện trạng, không phải yêu cầu sản phẩm được thêm vào Product Backlog. Nên cân nhắc xử lý an toàn cấu hình và thông tin xác thực trong quá trình hoàn thiện.</p>
+<p class="small" style="text-align:center;margin-top:30px">— Hết —</p>
+</body>
+</html>
